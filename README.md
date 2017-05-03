@@ -7,7 +7,7 @@
 - 可视化打包工具配置渠道
 - debug|release版本控制debug开关
 - 签名信息在local.properties配置
-- 默认debug&release都开启 -> 混淆 | zipalign优化 | 移除无用的resource文件
+- 默认debug&release都开启 -> <a href="http://blog.csdn.net/wxd_beijing/article/details/70140536">混淆</a> | zipalign优化 | 移除无用的resource文件
 - 默认生成包名为:项目名_v版本_当前时间_debug | release.apk
 - 框架已对<a href="https://github.com/AcmenXD">com.github.AcmenXD</a>:<a href="https://github.com/AcmenXD/Toaster">Toaster</a> | <a href="https://github.com/AcmenXD/SpTool">SpTool</a> | <a href="https://github.com/AcmenXD/Retrofit">Retrofit</a> | <a href="https://github.com/AcmenXD/Marketer">Marketer</a> | <a href="https://github.com/AcmenXD/FrescoView">FrescoView</a> | <a href="https://github.com/AcmenXD/Logger">Logger</a> | <a href="https://github.com/AcmenXD/RecyclerView">RecyclerView</a>做好配置支持
 - 框架已集成并添加<a href="https://github.com/ReactiveX/RxJava">rxandroid</a> | <a href="https://github.com/ReactiveX/RxAndroid">rxandroid</a> | <a href="https://github.com/greenrobot/greenDAO">greendao</a> | <a href="https://github.com/greenrobot/EventBus">eventbus</a>支持
