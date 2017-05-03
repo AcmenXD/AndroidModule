@@ -7,8 +7,8 @@
 - 可视化打包工具配置渠道
 - debug|release版本控制debug开关
 - 签名信息在local.properties配置
-- 默认debug&release都开启 -> 混淆|zipalign优化|移除无用的resource文件
-- 默认生成包名为:项目名_v版本_当前时间_debug|release.apk
+- 默认debug&release都开启 -> 混淆 | zipalign优化 | 移除无用的resource文件
+- 默认生成包名为:项目名_v版本_当前时间_debug | release.apk
 - 框架已对com.github.AcmenXD:Toaster | SpTool | Retrofit | Marketer | FrescoView | Logger | RecyclerView做好配置支持
 - 框架已集成并添加rxandroid | greendao | eventbus支持
 - 特别说明 -> 框架支持库请移步对应的github查看使用方法及源码
@@ -17,8 +17,8 @@
 ---
 **configs**
 ```java
--> AppConfig  : App相关配置,程序启动时装载 版本号/包名/渠道/IMEI等信息
--> BaseConfig : 基础配置,debug开关/默认渠道号/数据库名称/Log开关/Net等诸多初始化配置,都在此类中设置
+-> AppConfig  : App相关配置,程序启动时装载 版本号 / 包名 / 渠道 / IMEI等信息
+-> BaseConfig : 基础配置,debug开关 / 默认渠道号 / 数据库名称 / Log开关 / Net等诸多初始化配置,都在此类中设置
 ```
 ---
 **base**
