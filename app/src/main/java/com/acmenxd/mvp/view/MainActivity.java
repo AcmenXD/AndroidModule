@@ -15,6 +15,7 @@ import com.acmenxd.mvp.model.response.TestEntity;
 import com.acmenxd.mvp.utils.EventBusUtils;
 import com.acmenxd.mvp.view.test.DBActivity;
 import com.acmenxd.mvp.view.test.FileActivity;
+import com.acmenxd.mvp.view.test.GlideActivity;
 import com.acmenxd.mvp.view.test.LogActivity;
 import com.acmenxd.mvp.view.test.RecyclerActivity;
 import com.acmenxd.mvp.view.test.RetrofitActivity;
@@ -103,6 +104,10 @@ public class MainActivity extends BaseActivity {
                         "4.支持公共Header,param,body的设置 \n" +
                         "5.支持RxJava \n" +
                         "6.支持统一错误处理!", RetrofitActivity.class));
+        datas.add(new DataInfo("Image -> Glide 相关操作",
+                "1.使用方式同glide一样 \n" +
+                        "2.提供glide初始的一些函数调用 \n" +
+                        "3.提供圆角|圆形支持!", GlideActivity.class));
         datas.add(new DataInfo("Image -> fresco 相关操作",
                 "1.支持PNG / GIF / WebP / JPEG格式,支持加载网络/res资源/本地资源 \n" +
                         "2.支持 低分辨率&高分辨率加载 > 缩略图式加载 > 渐进式加载 \n" +
@@ -122,11 +127,11 @@ public class MainActivity extends BaseActivity {
                         "6.支持自定义分隔线 & item动画\n" +
                         "7.未更改任何RecyclerView实现,无缝支持RecyclerView所有功能\n" +
                         "8.链式Adapter调用~ 易读,易懂!\n" +
-                        "9.支持item单击&长按&滑动删除&拖拽换位&侧滑菜单功能", RecyclerActivity.class));
+                        "9.支持item单击&长按&滑动删除&拖拽换位&侧滑菜单功能!", RecyclerActivity.class));
         datas.add(new DataInfo("GreenDao3.x相关操作",
                 "1.实体类一键创建数据库表\n" +
                         "2.实体Dao自动生成管理,提供诸多操作数据库函数\n" +
-                        "3.数据库版本号一键修改,升级支持增减表字段\n", DBActivity.class));
+                        "3.数据库版本号一键修改,升级支持增减表字段!", DBActivity.class));
     }
 
     private class DataInfo {

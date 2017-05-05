@@ -143,6 +143,11 @@
 -keepclassmembers class * {
     native <methods>;
 }
+#Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep class com.bumptech.glide.** {
+    *;
+}
 #greenDAO 3.2.0
 -keep class org.greenrobot.greendao.** { *; }
 -keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {

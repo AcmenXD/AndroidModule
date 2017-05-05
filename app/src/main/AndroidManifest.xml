@@ -40,6 +40,9 @@
             android:name=".view.test.FileActivity"
             android:theme="@style/ActivityTheme"/>
         <activity
+            android:name=".view.test.GlideActivity"
+            android:theme="@style/ActivityTheme"/>
+        <activity
             android:name=".view.test.frescoActivity"
             android:theme="@style/ActivityTheme"/>
         <activity
@@ -51,6 +54,10 @@
         <activity
             android:name=".view.test.DBActivity"
             android:theme="@style/ActivityTheme"/>
+
+        <meta-data
+            android:name="com.acmenxd.glide.GlideManager"
+            android:value="GlideModule" />
     </application>
 
 </manifest>

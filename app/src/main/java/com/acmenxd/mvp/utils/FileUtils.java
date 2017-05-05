@@ -24,11 +24,11 @@ public final class FileUtils {
     /**
      * 1KB字节数
      */
-    public static final int ONE_KB = ByteConstants.KB;
+    public static final int ONE_KB = 1024;
     /**
      * 1M字节数
      */
-    public static final int ONE_MB = ByteConstants.MB;
+    public static final int ONE_MB = 1024 * ONE_KB;
     /**
      * String 路径
      */

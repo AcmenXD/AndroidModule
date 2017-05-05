@@ -119,7 +119,7 @@ apt {
 // EventBus Config End ------------------------------------
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -135,12 +135,13 @@ dependencies {
     compile 'com.github.AcmenXD:Marketer:1.1'
     compile 'com.github.AcmenXD:Toaster:1.1'
     compile 'com.github.AcmenXD:SpTool:1.1'
+    compile 'com.github.AcmenXD:Glide:1.1'
     compile 'com.github.AcmenXD:Retrofit:1.2'
-    compile 'com.github.AcmenXD:FrescoView:1.3'
+    compile 'com.github.AcmenXD:FrescoView:1.4'
     compile 'com.github.AcmenXD:Logger:1.4'
     compile 'com.github.AcmenXD:RecyclerView:1.5'
     /**
-     * 响应式编程
+     * 响应式编程库
      */
     compile 'io.reactivex:rxandroid:1.2.1'
     /**

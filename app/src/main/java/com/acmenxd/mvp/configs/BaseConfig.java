@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.acmenxd.frescoview.FrescoManager;
+import com.acmenxd.glide.GlideManager;
 import com.acmenxd.logger.LogType;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.retrofit.NetCodeUtils;
@@ -20,6 +21,7 @@ import com.acmenxd.mvp.base.BaseApplication;
 import com.acmenxd.mvp.utils.code.EncodeDecode;
 import com.acmenxd.mvp.utils.FileUtils;
 import com.acmenxd.mvp.net.NetCode;
+import com.bumptech.glide.load.DecodeFormat;
 
 import java.io.File;
 import java.io.IOException;
@@ -258,6 +260,28 @@ public final class BaseConfig {
          * 初始化 -> 配置完成后必须调用此函数生效
          */
         SpManager.init();
+
+        //------------------------------------Glide配置---------------------------------
+        /**
+         * 设置缓存磁盘大小
+         *
+         * @param mainCacheSize  大图片磁盘大小(MB) 默认为50MB
+         */
+        GlideManager.setCacheSize(50);
+        /**
+         * 设置缓存图片的存放路径
+         * Environment.getExternalStorageDirectory().getAbsolutePath() + "/Glide/"
+         *
+         * @param cachePath     路径:默认为SD卡根目录Glide下 (此路径非直接存储图片的路径,还需要以下目录设置)
+         * @param mainCacheDir  大图片存放目录:默认为MainCache目录
+         */
+        GlideManager.setCachePath(FileUtils.imgCacheDirPath, "MainCache");
+        /**
+         * 设置图片解码格式
+         *
+         * @param decodeFormat 默认:DecodeFormat.PREFER_RGB_565
+         */
+        GlideManager.setDecodeFormat(DecodeFormat.PREFER_ARGB_8888);
 
         //------------------------------------FrescoView配置---------------------------------
         /**
