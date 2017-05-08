@@ -3,7 +3,6 @@ package com.acmenxd.mvp.utils;
 import android.text.TextUtils;
 
 import com.acmenxd.logger.Logger;
-import com.facebook.common.util.ByteConstants;
 import com.acmenxd.mvp.configs.BaseConfig;
 
 import java.io.BufferedInputStream;

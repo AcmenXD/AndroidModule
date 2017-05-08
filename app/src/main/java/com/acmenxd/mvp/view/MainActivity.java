@@ -32,7 +32,7 @@ import java.util.ArrayList;
  * @version v1.0
  * @github https://github.com/AcmenXD
  * @date 2016/12/16 15:34
- * @detail 应用程序启动的首个Activity
+ * @detail 主Activity
  */
 public class MainActivity extends BaseActivity {
     private ArrayList<DataInfo> datas;

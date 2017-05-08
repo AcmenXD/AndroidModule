@@ -14,7 +14,7 @@ import com.acmenxd.mvp.base.BaseApplication;
  * @version v1.0
  * @github https://github.com/AcmenXD
  * @date 2017/3/31 14:02
- * @detail something
+ * @detail 启动页
  */
 public class SplashActivity extends AppCompatActivity {
     private Handler mHandler;
