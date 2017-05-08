@@ -67,6 +67,12 @@ public abstract class BaseFragment extends Fragment implements IActivityFragment
     private View mContentView;
     private View mLoadingView;
     private View mErrorView;
+    // Fragment取消预加载后的显隐处理
+    private boolean viewPagerFragmentVisible;
+    // Fragment取消预加载后的首次显示处理
+    private boolean viewPagerFragmentFirstVisible;
+    // Fragment取消预加载后的显示计数(第一次显示计数为1)
+    private int viewPagerFragmentVisibleIndex;
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override
@@ -139,6 +145,26 @@ public abstract class BaseFragment extends Fragment implements IActivityFragment
         EventBusUtils.register(this);
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getUserVisibleHint()) {
+            viewPagerFragmentVisible = true;
+            viewPagerFragmentVisibleIndex++;
+            if(viewPagerFragmentVisibleIndex == 1){
+                viewPagerFragmentFirstVisible = true;
+                onViewPagerFragmentFirstVisible();
+            }else{
+                viewPagerFragmentFirstVisible = false;
+            }
+            onViewPagerFragmentVisible(viewPagerFragmentVisibleIndex);
+        } else {
+            viewPagerFragmentVisible = false;
+            viewPagerFragmentFirstVisible = false;
+            onViewPagerFragmentInVisible(viewPagerFragmentVisibleIndex);
+        }
+    }
+
     /**
      * EventBus默认添加的函数(子类无法重写,无需关心此函数)
      * * EventBus注册时,类中必须有@Subscribe注解的函数
@@ -156,6 +182,26 @@ public abstract class BaseFragment extends Fragment implements IActivityFragment
         return mActivity;
     }
 
+    /**
+     * Fragment取消预加载后,获取显隐状态
+     */
+    public boolean isViewPagerFragmentVisible() {
+        return viewPagerFragmentVisible;
+    }
+
+    /**
+     * Fragment取消预加载后,获取首次显隐状态
+     */
+    public boolean isViewPagerFragmentFirstVisible() {
+        return viewPagerFragmentFirstVisible;
+    }
+
+    /**
+     * Fragment取消预加载后,获取显示计数
+     */
+    public int getViewPagerFragmentVisibleIndex() {
+        return viewPagerFragmentVisibleIndex;
+    }
     //------------------------------------子类可重写的函数
 
     /**
@@ -163,6 +209,24 @@ public abstract class BaseFragment extends Fragment implements IActivityFragment
      */
     public View onCreateView(LayoutInflater inflater, Bundle savedInstanceState) {
         return null;
+    }
+
+    /**
+     * Fragment取消预加载后,首次显示时回调函数
+     */
+    protected void onViewPagerFragmentFirstVisible() {
+    }
+
+    /**
+     * Fragment取消预加载后,显示时回调函数
+     */
+    protected void onViewPagerFragmentVisible(int viewPagerFragmentVisibleIndex) {
+    }
+
+    /**
+     * Fragment取消预加载后,隐藏时回调函数
+     */
+    protected void onViewPagerFragmentInVisible(int viewPagerFragmentVisibleIndex) {
     }
 
     /**

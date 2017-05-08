@@ -139,7 +139,7 @@ dependencies {
     compile 'com.github.AcmenXD:Retrofit:1.2'
     compile 'com.github.AcmenXD:FrescoView:1.4'
     compile 'com.github.AcmenXD:Logger:1.4'
-    compile 'com.github.AcmenXD:RecyclerView:1.5'
+    compile 'com.github.AcmenXD:RecyclerView:1.8'
     /**
      * 响应式编程库
      */
