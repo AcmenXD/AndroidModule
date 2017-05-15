@@ -56,7 +56,7 @@ public abstract class BaseFragment extends Fragment implements IActivityFragment
     // 存储子控件
     private SparseArray<View> mChildViews;
     // 顶级视图View
-    private View rootView;
+    private View mRootView;
     // 布局容器
     private FrameLayout mContentLayout;
     private FrameLayout mLoadingLayout;
@@ -95,7 +95,7 @@ public abstract class BaseFragment extends Fragment implements IActivityFragment
     @Deprecated
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.activity_base, container, false);
+        mRootView = inflater.inflate(R.layout.activity_base, container, false);
         // 获取布局容器
         mContentLayout = getView(R.id.activity_base_contentLayout);
         mLoadingLayout = getView(R.id.activity_base_loadingLayout);
@@ -109,7 +109,7 @@ public abstract class BaseFragment extends Fragment implements IActivityFragment
         setErrorView(BasisView.getErrorView(mActivity));
         // 默认显示加载视图
         showContentView();
-        return rootView;
+        return mRootView;
     }
 
     @Override
@@ -665,7 +665,7 @@ public abstract class BaseFragment extends Fragment implements IActivityFragment
     public final <T extends View> T getView(int viewId) {
         View view = mChildViews.get(viewId);
         if (view == null) {
-            view = rootView.findViewById(viewId);
+            view = mRootView.findViewById(viewId);
             mChildViews.put(viewId, view);
         }
         return (T) view;
