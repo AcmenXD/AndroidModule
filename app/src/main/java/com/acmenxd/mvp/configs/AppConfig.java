@@ -19,19 +19,19 @@ public final class AppConfig {
     /**
      * App 版本号
      */
-    public static int APP_VERSION_CODE;
+    public static int VERSION_CODE;
     /**
      * App 版本name
      */
-    public static String APP_VERSION_NAME;
+    public static String VERSION_NAME;
     /**
      * App 包名
      */
-    public static String APP_PKG_NAME;
+    public static String PKG_NAME;
     /**
      * App 渠道
      */
-    public static String APP_MARKET;
+    public static String MARKET;
     /**
      * IMEI号
      */
@@ -57,10 +57,10 @@ public final class AppConfig {
         } catch (PackageManager.NameNotFoundException pE) {
             pE.printStackTrace();
         }
-        APP_VERSION_CODE = versionCode;
-        APP_VERSION_NAME = versionName;
-        APP_PKG_NAME = packageName;
-        APP_MARKET = market;
+        VERSION_CODE = versionCode;
+        VERSION_NAME = versionName;
+        PKG_NAME = packageName;
+        MARKET = market;
         IMEI = imei;
     }
 }
