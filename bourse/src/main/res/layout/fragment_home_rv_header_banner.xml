@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.acmenxd.frame.widget.RecyclerBannerView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_home_rv_header_banner"
+    android:layout_width="match_parent"
+    android:layout_height="180dp">
+
+</com.acmenxd.frame.widget.RecyclerBannerView>

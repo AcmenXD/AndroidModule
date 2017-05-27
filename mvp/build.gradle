@@ -1,0 +1,141 @@
+apply plugin: 'com.android.application'
+// GreenDao Config
+apply plugin: 'org.greenrobot.greendao'
+
+/**
+ * debug签名配置
+ */
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def debug_keyAlias = properties.getProperty("debug_keyAlias")
+def debug_keyPassword = properties.getProperty("debug_keyPassword")
+def debug_storePassword = properties.getProperty("debug_storePassword")
+def debug_storeFile = properties.getProperty("debug_storeFile")
+/**
+ * release签名配置
+ */
+def release_keyAlias = properties.getProperty("release_keyAlias")
+def release_keyPassword = properties.getProperty("release_keyPassword")
+def release_storePassword = properties.getProperty("release_storePassword")
+def release_storeFile = properties.getProperty("release_storeFile")
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    // 解决 -> Some file crunching failed问题
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
+    defaultConfig {
+        applicationId "com.acmenxd.mvp"
+        minSdkVersion 14
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                // EventBus Config
+                arguments = [eventBusIndex: 'com.acmenxd.mvp.MyEventBusIndex']
+            }
+        }
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        debug { // debug签名配置
+            keyAlias debug_keyAlias
+            keyPassword debug_keyPassword
+            storeFile file(debug_storeFile)
+            storePassword debug_storePassword
+            v2SigningEnabled false // 只使用旧版签名,禁用V2版签名模式,否则在Android7.0安装时会提示没有签名
+        }
+        release { // release签名配置
+            keyAlias release_keyAlias
+            keyPassword release_keyPassword
+            storeFile file(release_storeFile)
+            storePassword release_storePassword
+            v2SigningEnabled false // 只使用旧版签名,禁用V2版签名模式,否则在Android7.0安装时会提示没有签名
+        }
+    }
+    buildTypes {
+        debug {
+            buildConfigField "boolean", "MAIN_DEBUG", "true" // 调试总开关
+            minifyEnabled true     //混淆
+            zipAlignEnabled true   //zipalign优化
+            shrinkResources true   //移除无用的resource文件
+            //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug //debug签名配置
+        }
+        release {
+            buildConfigField "boolean", "MAIN_DEBUG", "false" // 调试总开关
+            minifyEnabled true     //混淆
+            zipAlignEnabled true   //zipalign优化
+            shrinkResources true   //移除无用的resource文件
+            //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release //release签名配置
+
+            // 打包apk文件名配置
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        def fileName
+                        if (variant.buildType.name.equals('debug')) {
+                            fileName = "AndroidProject_v${defaultConfig.versionName}_${defaultConfig.versionCode}_${releaseTime()}_debug.apk"
+                        } else if (variant.buildType.name.equals('release')) {
+                            fileName = "AndroidProject_v${defaultConfig.versionName}_${defaultConfig.versionCode}_${releaseTime()}_release.apk"
+                        }
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 获取当前时间
+ */
+def releaseTime() {
+    return new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone("GMT+0800"))
+}
+
+// GreenDao Config ------------------------------------
+greendao {
+    /**
+     * 数据库版本号不能降低,会导致App无法安装
+     * 数据库字段发生变更或新增表时,更新这个版本号,运行Make Project
+     * 版本号历史:
+     * 1:2016年11月21日13:32:33 - > 创建初始库和表
+     */
+    schemaVersion 1
+    daoPackage 'com.acmenxd.mvp.db.dao'//生成的dao文件存放路径
+    targetGenDir 'src/main/java'//自定义生成数据库文件的目录，可以将生成的文件放到我们的java目录中，而不是build中，这样就不用额外的设置资源目录了
+}
+// GreenDao Config End ------------------------------------
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    testCompile 'junit:junit:4.12'
+    /**
+     * 框架库
+     */
+    compile project(':frame')
+    /**
+     * 数据库
+     */
+    compile 'org.greenrobot:greendao:3.2.0'
+    /**
+     * 查看数据库表的工具库
+     */
+    compile 'com.amitshekhar.android:debug-db:1.0.0'
+    /**
+     * 消息传递处理库
+     */
+    compile 'org.greenrobot:eventbus:3.0.0'
+    annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
+}
