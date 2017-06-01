@@ -26,7 +26,7 @@
         android:visibility="gone"
         />
 
-    <com.acmenxd.frame.basis.FrameActivityFragmentLayout
+    <com.acmenxd.frame.basis.FrameActivityFragmentOtherLayout
         android:id="@+id/activity_base_otherLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

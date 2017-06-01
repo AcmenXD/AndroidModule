@@ -2,7 +2,7 @@ package com.acmenxd.mvp.db.migrator;
 
 
 import com.acmenxd.mvp.db.dao.StudentDao;
-import com.acmenxd.mvp.db.base.MigrationHelperUtil;
+import com.acmenxd.mvp.db.core.MigrationHelperUtil;
 import org.greenrobot.greendao.database.Database;
 
 /**

@@ -3,7 +3,7 @@ package com.acmenxd.bourse.db;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.acmenxd.bourse.db.base.DBManager;
+import com.acmenxd.bourse.db.core.DBManager;
 import com.acmenxd.bourse.db.dao.DaoSession;
 import com.acmenxd.bourse.db.dao.StudentDao;
 import com.acmenxd.bourse.model.db.Student;

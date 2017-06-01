@@ -1,10 +1,10 @@
-package com.acmenxd.bourse.db.base;
+package com.acmenxd.mvp.db.core;
 
 import android.database.Cursor;
 import android.text.TextUtils;
 
-import com.acmenxd.bourse.db.migrator.DefaultCallback;
 import com.acmenxd.logger.Logger;
+import com.acmenxd.mvp.db.migrator.DefaultCallback;
 
 import org.greenrobot.greendao.AbstractDao;
 import org.greenrobot.greendao.database.Database;

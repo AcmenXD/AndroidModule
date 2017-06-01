@@ -48,7 +48,7 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     private FrameLayout mContentLayout;
     private FrameLayout mLoadingLayout;
     private FrameLayout mErrorLayout;
-    private FrameActivityFragmentLayout mOtherLayout;
+    private FrameActivityFragmentOtherLayout mOtherLayout;
     private Dialog mLoadingDialog;
     // 视图view
     private View mContentView;

@@ -1,6 +1,6 @@
 package com.acmenxd.bourse.db.migrator;
 
-import com.acmenxd.bourse.db.base.MigrationHelperUtil;
+import com.acmenxd.bourse.db.core.MigrationHelperUtil;
 import com.acmenxd.bourse.db.dao.StudentDao;
 
 import org.greenrobot.greendao.database.Database;

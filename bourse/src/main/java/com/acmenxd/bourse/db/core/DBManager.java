@@ -1,12 +1,12 @@
-package com.acmenxd.mvp.db.base;
+package com.acmenxd.bourse.db.core;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.acmenxd.mvp.base.AppConfig;
-import com.acmenxd.mvp.base.BaseApplication;
-import com.acmenxd.mvp.db.dao.DaoMaster;
-import com.acmenxd.mvp.db.dao.DaoSession;
+import com.acmenxd.bourse.base.AppConfig;
+import com.acmenxd.bourse.base.BaseApplication;
+import com.acmenxd.bourse.db.dao.DaoMaster;
+import com.acmenxd.bourse.db.dao.DaoSession;
 
 /**
  * @author AcmenXD

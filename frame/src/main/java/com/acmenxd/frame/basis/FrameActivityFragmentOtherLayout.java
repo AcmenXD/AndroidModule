@@ -12,16 +12,16 @@ import android.widget.FrameLayout;
  * @date 2017/3/17 15:47
  * @detail BaseActivity|BaseFragment 的 otherLayout布局
  */
-public class FrameActivityFragmentLayout extends FrameLayout {
-    public FrameActivityFragmentLayout(Context context) {
+public class FrameActivityFragmentOtherLayout extends FrameLayout {
+    public FrameActivityFragmentOtherLayout(Context context) {
         this(context, null);
     }
 
-    public FrameActivityFragmentLayout(Context context, AttributeSet attrs) {
+    public FrameActivityFragmentOtherLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public FrameActivityFragmentLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FrameActivityFragmentOtherLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 

@@ -55,7 +55,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
     private FrameLayout mContentLayout;
     private FrameLayout mLoadingLayout;
     private FrameLayout mErrorLayout;
-    private FrameActivityFragmentLayout mOtherLayout;
+    private FrameActivityFragmentOtherLayout mOtherLayout;
     private Dialog mLoadingDialog;
     // 视图view
     private View mContentView;

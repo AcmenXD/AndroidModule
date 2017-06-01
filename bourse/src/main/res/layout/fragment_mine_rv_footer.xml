@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:text="客服电话 : 010-493845719"/>
+            android:text="客服电话 : 010-123456789"/>
 
 
     <View

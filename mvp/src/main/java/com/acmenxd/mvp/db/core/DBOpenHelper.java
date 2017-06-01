@@ -1,12 +1,12 @@
-package com.acmenxd.bourse.db.base;
+package com.acmenxd.mvp.db.core;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.acmenxd.bourse.db.dao.DaoMaster;
-import com.acmenxd.bourse.db.migrator.BaseMigratorHelper;
-import com.acmenxd.bourse.db.migrator.MigratorHelper1;
 import com.acmenxd.logger.Logger;
+import com.acmenxd.mvp.db.dao.DaoMaster;
+import com.acmenxd.mvp.db.migrator.BaseMigratorHelper;
+import com.acmenxd.mvp.db.migrator.MigratorHelper1;
 
 import org.greenrobot.greendao.database.Database;
 

@@ -4,7 +4,7 @@ import com.acmenxd.frame.basis.FrameApplication;
 import com.acmenxd.frame.configs.MvpConfig;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.MyEventBusIndex;
-import com.acmenxd.mvp.db.base.DBManager;
+import com.acmenxd.mvp.db.core.DBManager;
 import com.acmenxd.mvp.net.NetCode;
 
 import org.greenrobot.eventbus.EventBus;

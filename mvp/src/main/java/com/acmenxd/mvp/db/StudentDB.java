@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.acmenxd.mvp.db.dao.DaoSession;
 import com.acmenxd.mvp.db.dao.StudentDao;
 import com.acmenxd.mvp.model.db.Student;
-import com.acmenxd.mvp.db.base.DBManager;
+import com.acmenxd.mvp.db.core.DBManager;
 import org.greenrobot.greendao.query.Query;
 
 import java.util.Date;

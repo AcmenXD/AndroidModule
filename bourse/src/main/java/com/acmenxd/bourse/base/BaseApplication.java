@@ -1,10 +1,9 @@
 package com.acmenxd.bourse.base;
 
-import com.acmenxd.bourse.db.base.DBManager;
+import com.acmenxd.bourse.db.core.DBManager;
 import com.acmenxd.bourse.net.NetCode;
 import com.acmenxd.frame.basis.FrameApplication;
 import com.acmenxd.frame.configs.BourseConfig;
-import com.acmenxd.frame.configs.MvpConfig;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.MyEventBusIndex;
 
