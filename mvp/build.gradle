@@ -28,7 +28,7 @@ android {
     defaultConfig {
         applicationId "com.acmenxd.mvp"
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         javaCompileOptions {

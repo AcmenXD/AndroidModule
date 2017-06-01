@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
 
@@ -38,7 +38,7 @@ dependencies {
     compile 'com.github.AcmenXD:Marketer:1.1'
     compile 'com.github.AcmenXD:Toaster:1.1'
     compile 'com.github.AcmenXD:SpTool:1.1'
-    compile 'com.github.AcmenXD:Glide:1.1'
+    compile 'com.github.AcmenXD:Glide:1.2'
     compile 'com.github.AcmenXD:Retrofit:1.2'
     compile 'com.github.AcmenXD:Logger:1.4'
     compile 'com.github.AcmenXD:FrescoView:1.4'
@@ -47,4 +47,8 @@ dependencies {
      * 响应式编程库
      */
     compile 'io.reactivex:rxandroid:1.2.1'
+    /**
+     * 权限处理库
+     */
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar'
 }
