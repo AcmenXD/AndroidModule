@@ -25,6 +25,7 @@ import java.net.URLEncoder;
  * @detail 工具类
  */
 public class Utils {
+    public static final String UTF8 = "UTF-8";
 
     /**
      * 反编码
@@ -34,7 +35,7 @@ public class Utils {
             return "";
         }
         try {
-            return URLDecoder.decode(s, "UTF-8");
+            return URLDecoder.decode(s, UTF8);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -48,7 +49,7 @@ public class Utils {
             return "";
         }
         try {
-            return URLEncoder.encode(s, "UTF-8")
+            return URLEncoder.encode(s, UTF8)
                     .replace("+", "%20")
                     .replace("*", "%2A")
                     .replace("%7E", "~")
