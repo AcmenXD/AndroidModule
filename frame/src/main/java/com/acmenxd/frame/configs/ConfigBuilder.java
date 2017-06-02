@@ -27,14 +27,14 @@ import java.io.IOException;
  * @date 2016/12/15 16:01
  * @detail 构建配置
  */
-public final class FrameConfig {
+public final class ConfigBuilder {
     // 配置详细参数类
-    private static ConfigInfo sConfigInfo;
+    private static BaseConfig sConfigInfo;
 
     /**
      * 创建配置详情
      */
-    public static final void createConfig(Class<? extends ConfigInfo> pConfig, boolean isDebug, FrameNetCode.Parse pParse) {
+    public static final void createConfig(Class<? extends BaseConfig> pConfig, boolean isDebug, FrameNetCode.Parse pParse) {
         // 配置Retrofit NetCode
         FrameNetCode.setNetCode(pParse);
         try {
@@ -50,9 +50,9 @@ public final class FrameConfig {
     /**
      * 获取配置详情
      */
-    public static <T extends ConfigInfo> T getConfigInfo() {
+    public static <T extends BaseConfig> T getConfigInfo() {
         if (sConfigInfo == null) {
-            sConfigInfo = new ConfigInfo();
+            sConfigInfo = new BaseConfig();
             sConfigInfo.init(false);
         }
         return (T) sConfigInfo;

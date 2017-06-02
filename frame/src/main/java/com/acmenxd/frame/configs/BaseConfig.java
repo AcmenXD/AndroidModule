@@ -17,7 +17,7 @@ import java.util.Map;
  * @date 2017/5/25 10:02
  * @detail 配置详细参数类
  */
-public class ConfigInfo {
+public class BaseConfig {
 
     /**
      * 初始化

@@ -7,7 +7,7 @@ package com.acmenxd.frame.configs;
  * @date 2017/5/24 18:39
  * @detail Bourse项目配置文件
  */
-public class BourseConfig extends ConfigInfo {
+public class BourseConfig extends BaseConfig {
 
     public String SP_User = "spUser";
     public String SP_Config = "spConfig";

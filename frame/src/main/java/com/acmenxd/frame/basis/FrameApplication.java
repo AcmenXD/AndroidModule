@@ -3,8 +3,8 @@ package com.acmenxd.frame.basis;
 import android.app.Application;
 import android.content.res.Configuration;
 
-import com.acmenxd.frame.configs.ConfigInfo;
-import com.acmenxd.frame.configs.FrameConfig;
+import com.acmenxd.frame.configs.BaseConfig;
+import com.acmenxd.frame.configs.ConfigBuilder;
 import com.acmenxd.frame.configs.FrameNetCode;
 import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frame.utils.net.Monitor;
@@ -62,22 +62,22 @@ public class FrameApplication extends Application {
     /**
      * 初始化配置
      */
-    public void initFrameSetting(Class<? extends ConfigInfo> pConfig, boolean isDebug, FrameNetCode.Parse pParse) {
+    public void initFrameSetting(Class<? extends BaseConfig> pConfig, boolean isDebug, FrameNetCode.Parse pParse) {
         // 创建配置Info
-        FrameConfig.createConfig(pConfig, isDebug, pParse);
+        ConfigBuilder.createConfig(pConfig, isDebug, pParse);
         // 初始化File配置
         FileUtils.init();
         // 初始化网络监听配置
         Monitor.init();
         // 初始化模块配置
-        FrameConfig.init();
+        ConfigBuilder.init();
     }
 
     /**
      * 获取配置详情
      */
-    public <T extends ConfigInfo> T getConfig() {
-        return FrameConfig.getConfigInfo();
+    public <T extends BaseConfig> T getConfig() {
+        return ConfigBuilder.getConfigInfo();
     }
 
     /**
