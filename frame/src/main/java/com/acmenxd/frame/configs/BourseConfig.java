@@ -18,6 +18,7 @@ public class BourseConfig extends BaseConfig {
 
         DB_NAME = "bourse_db";
         BASE_DIR = SDCARD_DIR + "/Bourse/";
+        LOG_DIR = BASE_DIR + "Logger/";
         // 请求地址配置 -1:正式版  0->预发布  1->测试1
         URL_Type = 1;
     }

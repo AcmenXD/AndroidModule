@@ -33,8 +33,10 @@ public class DateUtils {
     public static final String a = "a"; //上下午
     public static final String yMd = yyyy + "-" + MM + "-" + dd; //yyyy-MM-dd (年-月-日)
     public static final String Hms = HH + ":" + mm + ":" + ss; //HH:mm:ss (时:分:秒)
+    public static final String Hms2 = HH + "-" + mm + "-" + ss; //HH-mm-ss (时-分-秒)
     public static final String yMdHms = yMd + " " + Hms; //yyyy-MM-dd HH:mm:ss (年-月-日 时:分:秒)
-    public static final String yMdHms2 = yyyy + MM + dd + HH + mm + ss; //yyyyMMddHHmmss (年月日时分秒)
+    public static final String yMdHms2 = yMd + "-" + Hms2; //yyyy-MM-dd-HH-mm-ss (年-月-日-时-分-秒)
+    public static final String yMdHms3 = yyyy + MM + dd + HH + mm + ss; //yyyyMMddHHmmss (年月日时分秒)
     public static final String yMdHmsEa = yMdHms + " " + EEEE + " " + a; //yyyy-MM-dd HH:mm:ss E a(年-月-日 时:分:秒 星期几 上下午)
 
     /**

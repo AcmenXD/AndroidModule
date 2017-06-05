@@ -26,7 +26,7 @@ public class RandomUtils {
      * @return
      */
     public static long getRandomByTime() {
-        return Long.parseLong(DateUtils.nowDate(DateUtils.yMdHms2) + randomByMinMax(10000, 99999));
+        return Long.parseLong(DateUtils.nowDate(DateUtils.yMdHms3) + randomByMinMax(10000, 99999));
     }
 
 }

@@ -39,11 +39,6 @@ public final class BaseApplication extends FrameApplication {
         // 初始化App配置
         AppConfig.init();
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException pE) {
-            pE.printStackTrace();
-        }
         // 初始化数据库配置
         DBManager.getInstance().init();
         // 初始化EventBus配置 -> 启用3.0加速功能
@@ -54,4 +49,17 @@ public final class BaseApplication extends FrameApplication {
         Logger.w("App初始化完成!");
     }
 
+    @Override
+    public void crashException(String projectInformation, Thread pThread, Throwable pE) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("Debug").append(" = ").append(AppConfig.DEBUG).append("\n");
+        sb.append("Imei").append(" = ").append(AppConfig.IMEI).append("\n");
+        sb.append("Market").append(" = ").append(AppConfig.MARKET).append("\n");
+        sb.append("ProjectName").append(" = ").append(AppConfig.PROJECT_NAME).append("\n");
+        sb.append("PackageName").append(" = ").append(AppConfig.PKG_NAME).append("\n");
+        sb.append("VersionCode").append(" = ").append(AppConfig.VERSION_CODE).append("\n");
+        sb.append("VersionName").append(" = ").append(AppConfig.VERSION_NAME).append("\n");
+        sb.append("ThreadName").append(" = ").append(pThread.getName()).append("\n");
+        super.crashException(sb.toString(), pThread, pE);
+    }
 }

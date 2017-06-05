@@ -6,8 +6,8 @@ import android.content.pm.PackageManager;
 import android.telephony.TelephonyManager;
 
 import com.acmenxd.bourse.BuildConfig;
+import com.acmenxd.bourse.R;
 import com.acmenxd.frame.configs.BourseConfig;
-import com.acmenxd.frame.configs.MvpConfig;
 import com.acmenxd.marketer.Marketer;
 
 /**
@@ -32,9 +32,13 @@ public final class AppConfig {
      */
     public static int VERSION_CODE;
     /**
-     * App 版本name
+     * App 版本
      */
     public static String VERSION_NAME;
+    /**
+     * App 名称
+     */
+    public static String PROJECT_NAME;
     /**
      * App 包名
      */
@@ -53,16 +57,19 @@ public final class AppConfig {
      */
     public static final synchronized void init() {
         BaseApplication app = BaseApplication.instance();
+        PackageManager pkgManager = app.getPackageManager();
         int versionCode = 1;
         String versionName = "1.0";
+        String projectName = app.getResources().getString(R.string.app_name);
         String packageName = "000000000000000";
         String market = "AcmenXD"; // 默认渠道号
         String imei = "";
         try {
-            PackageInfo info = app.getPackageManager().getPackageInfo(app.getPackageName(), 0);
+            PackageInfo info = pkgManager.getPackageInfo(app.getPackageName(), 0);
             versionCode = info.versionCode;
             versionName = info.versionName;
             packageName = app.getPackageName();
+            projectName = (String) pkgManager.getApplicationLabel(pkgManager.getApplicationInfo(packageName, 0));
             market = Marketer.getMarket(app.getApplicationContext(), market);
             imei = ((TelephonyManager) app.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
         } catch (PackageManager.NameNotFoundException pE) {
@@ -70,6 +77,7 @@ public final class AppConfig {
         }
         VERSION_CODE = versionCode;
         VERSION_NAME = versionName;
+        PROJECT_NAME = projectName;
         PKG_NAME = packageName;
         MARKET = market;
         IMEI = imei;
