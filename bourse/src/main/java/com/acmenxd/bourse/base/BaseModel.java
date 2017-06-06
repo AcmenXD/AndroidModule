@@ -1,7 +1,8 @@
 package com.acmenxd.bourse.base;
 
 import com.acmenxd.bourse.net.IAllRequest;
-import com.acmenxd.frame.basis.FrameActivity;
+import com.acmenxd.frame.basis.FrameModel;
+import com.acmenxd.frame.basis.FramePresenter;
 import com.acmenxd.retrofit.NetManager;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -10,23 +11,26 @@ import org.greenrobot.eventbus.Subscribe;
  * @author AcmenXD
  * @version v1.0
  * @github https://github.com/AcmenXD
- * @date 2017/5/24 14:35
- * @detail 顶级Activity
+ * @date 2017/5/24 14:46
+ * @detail 顶级Model
  */
-public abstract class BaseActivity extends FrameActivity {
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // EventBus事件注册
-        EventBusHelper.register(this);
+public abstract class BaseModel extends FrameModel {
+    /**
+     * 构造器,传入FramePresenter实例
+     *
+     * @param pFramePresenter
+     */
+    public BaseModel(FramePresenter pFramePresenter) {
+        super(pFramePresenter);
     }
 
-    @Override
-    protected void onDestroy() {
+    /**
+     * mView销毁时回调
+     */
+    public final void unSubscribe() {
         // EventBus事件反注册
         EventBusHelper.unregister(this);
-        super.onDestroy();
+        super.unSubscribe();
     }
 
     /**
@@ -41,7 +45,6 @@ public abstract class BaseActivity extends FrameActivity {
      * 获取IAllRequest实例
      * * 开放重写,满足不同需求
      */
-    @Override
     public IAllRequest request() {
         return NetManager.INSTANCE.commonRequest(IAllRequest.class);
     }

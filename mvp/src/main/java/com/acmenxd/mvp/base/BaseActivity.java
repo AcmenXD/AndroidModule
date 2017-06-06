@@ -12,7 +12,7 @@ import org.greenrobot.eventbus.Subscribe;
  * @date 2017/5/24 14:35
  * @detail 顶级Activity
  */
-public class BaseActivity extends FrameActivity {
+public abstract class BaseActivity extends FrameActivity {
 
     @Override
     protected void onStart() {

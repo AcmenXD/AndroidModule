@@ -51,7 +51,7 @@ public class HomePresenter extends BasePresenter<IHome.IView> implements IHome.I
 
     @Override
     public void loadData() {
-        Subscription subscription = Observable
+        addSubscriptions(Observable
                 .just("模拟测试数据")
                 .timer(1, TimeUnit.SECONDS)
                 .compose(RxUtils.<Long>applySchedulers())
@@ -63,7 +63,6 @@ public class HomePresenter extends BasePresenter<IHome.IView> implements IHome.I
                         }
                         mView.refreshRootView(mHomeEntity);
                     }
-                });
-        addSubscriptions(subscription);
+                }));
     }
 }

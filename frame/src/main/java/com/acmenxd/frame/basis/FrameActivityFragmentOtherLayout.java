@@ -12,7 +12,7 @@ import android.widget.FrameLayout;
  * @date 2017/3/17 15:47
  * @detail BaseActivity|BaseFragment 的 otherLayout布局
  */
-public class FrameActivityFragmentOtherLayout extends FrameLayout {
+public final class FrameActivityFragmentOtherLayout extends FrameLayout {
     public FrameActivityFragmentOtherLayout(Context context) {
         this(context, null);
     }

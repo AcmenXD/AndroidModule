@@ -14,7 +14,7 @@ import org.greenrobot.eventbus.Subscribe;
  * @date 2017/5/24 14:46
  * @detail 顶级Presenter
  */
-public class BasePresenter<T extends IBView> extends FramePresenter<T> {
+public abstract class BasePresenter<T extends IBView> extends FramePresenter<T> {
     /**
      * 构造器,传入BaseView实例
      *

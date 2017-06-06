@@ -13,7 +13,7 @@ import org.greenrobot.eventbus.Subscribe;
  * @date 2017/5/24 14:44
  * @detail 顶级Fragment
  */
-public class BaseFragment extends FrameFragment {
+public abstract class BaseFragment extends FrameFragment {
 
     @Override
     public void onStart() {
