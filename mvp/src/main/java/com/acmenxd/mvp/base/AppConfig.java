@@ -5,7 +5,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.telephony.TelephonyManager;
 
-import com.acmenxd.frame.configs.BourseConfig;
+import com.acmenxd.frame.configs.MvpConfig;
+import com.acmenxd.frame.configs.NjsConfig;
 import com.acmenxd.marketer.Marketer;
 import com.acmenxd.mvp.BuildConfig;
 import com.acmenxd.mvp.R;
@@ -26,7 +27,7 @@ public final class AppConfig {
     /**
      * 项目整体配置信息
      */
-    public static BourseConfig config;
+    public static MvpConfig config;
     /**
      * App 版本号
      */
