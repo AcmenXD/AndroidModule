@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.telephony.TelephonyManager;
 
 import com.acmenxd.frame.configs.MvpConfig;
-import com.acmenxd.frame.configs.NjsConfig;
 import com.acmenxd.marketer.Marketer;
 import com.acmenxd.mvp.BuildConfig;
 import com.acmenxd.mvp.R;
