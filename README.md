@@ -22,7 +22,7 @@
 ---
 **configs**
 ```java
--> BaseConfig    : 基础配置信息,项目配置必须继承此类,从而拓展其他配置!  例如:MvpConfig/BourseConfig(每个项目都有一份单独的配置清单)
+-> BaseConfig    : 基础配置信息,项目配置必须继承此类,从而拓展其他配置!  例如:MvpConfig/OtherConfit(每个项目都有一份单独的配置清单)
 -> ConfigBuilder : 框架进行初始化操作类,包括初始化第三方组件/类库
 -> FrameNetCode  : Retrofit请求状态码特殊处理回调类
 ```
