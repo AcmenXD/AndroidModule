@@ -35,14 +35,14 @@ dependencies {
     /**
      * 框架库
      */
-    compile 'com.github.AcmenXD:Marketer:1.1'
-    compile 'com.github.AcmenXD:Toaster:1.1'
-    compile 'com.github.AcmenXD:SpTool:1.1'
-    compile 'com.github.AcmenXD:Glide:1.2'
-    compile 'com.github.AcmenXD:Retrofit:1.2'
-    compile 'com.github.AcmenXD:Logger:1.5'
-    compile 'com.github.AcmenXD:FrescoView:1.4'
-    compile 'com.github.AcmenXD:RecyclerView:1.8'
+    compile 'com.github.AcmenXD:Marketer:1.2'
+    compile 'com.github.AcmenXD:SpTool:1.2'
+    compile 'com.github.AcmenXD:Glide:1.5'
+    compile 'com.github.AcmenXD:FrescoView:1.5'
+    compile 'com.github.AcmenXD:Logger:2.0'
+    compile 'com.github.AcmenXD:Toaster:2.0'
+    compile 'com.github.AcmenXD:RecyclerView:2.0'
+    compile 'com.github.AcmenXD:Retrofit:2.0'
     /**
      * 响应式编程库
      */

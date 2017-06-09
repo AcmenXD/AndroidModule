@@ -5,7 +5,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.acmenxd.toaster.ToastD;
+import com.acmenxd.toaster.ToastDuration;
 import com.acmenxd.toaster.ToastNW;
 import com.acmenxd.toaster.Toaster;
 import com.acmenxd.mvp.R;
@@ -60,14 +60,14 @@ public class ToastActivity extends BaseActivity {
      * 自定义显示时长(毫秒)
      */
     public void btnClick4(View view) {
-        Toaster.show(ToastD.d(4000), "Toast显示第1部分", "\n", "Toast显示第2部分");
+        Toaster.show(ToastDuration.mk(4000), "Toast显示第1部分", "\n", "Toast显示第2部分");
     }
 
     /**
      * 无等待 + 自定义显示时长(毫秒)
      */
     public void btnClick8(View view) {
-        Toaster.show(ToastNW.No_NEED_WAIT, ToastD.d(4000), "Toast显示第1部分", "\n", "Toast显示第2部分");
+        Toaster.show(ToastNW.No_NEED_WAIT, ToastDuration.mk(4000), "Toast显示第1部分", "\n", "Toast显示第2部分");
     }
 
     /**
@@ -81,7 +81,7 @@ public class ToastActivity extends BaseActivity {
      * 无等待 + 自定义显示时长(毫秒) + 顶部显示
      */
     public void btnClick9(View view) {
-        Toaster.show(ToastNW.No_NEED_WAIT, ToastD.d(4000), Gravity.TOP, new String[]{"Toast显示第1部分", "\n", "Toast显示第2部分"});
+        Toaster.show(ToastNW.No_NEED_WAIT, ToastDuration.mk(4000), Gravity.TOP, new String[]{"Toast显示第1部分", "\n", "Toast显示第2部分"});
     }
 
 }

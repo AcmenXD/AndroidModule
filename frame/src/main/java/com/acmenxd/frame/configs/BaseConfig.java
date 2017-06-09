@@ -4,7 +4,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.acmenxd.logger.LogType;
-import com.acmenxd.toaster.ToastD;
+import com.acmenxd.toaster.ToastDuration;
 import com.acmenxd.toaster.ToastNW;
 
 import java.util.HashMap;
@@ -69,7 +69,7 @@ public class BaseConfig {
     // Toast调试开关
     public boolean TOAST_DEBUG_OPEN = DEBUG;
     // Toast默认显示时长
-    public ToastD TOAST_DURATION = ToastD.SHORT;
+    public ToastDuration TOAST_DURATION = ToastDuration.SHORT;
     // Toast显示方式 : Toast需要等待,并逐个显示 | Toast无需等待,直接显示
     public ToastNW TOAST_NEED_WAIT = ToastNW.NEED_WAIT;
 

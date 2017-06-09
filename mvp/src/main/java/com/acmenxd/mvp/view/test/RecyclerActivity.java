@@ -367,8 +367,8 @@ public class RecyclerActivity extends BaseActivity {
         t3.setText("Footer 1\n\nFooter 1");
         TextView t4 = new TextView(this);
         t4.setText("Footer 2\n\nFooter 2");
-        mHeaderAndFooterWrapper.addFootView(t3);
-        mHeaderAndFooterWrapper.addFootView(t4);
+        mHeaderAndFooterWrapper.addFooterView(t3);
+        mHeaderAndFooterWrapper.addFooterView(t4);
         // LoadMore Adapter
         mLoadMoreWarpper = new LoadMoreWrapper(rv, mHeaderAndFooterWrapper, new OnLoadMoreListener() {
             @Override
