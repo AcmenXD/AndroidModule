@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
 
 import com.acmenxd.frame.basis.FrameApplication;
@@ -15,7 +16,7 @@ import com.acmenxd.frame.basis.FrameApplication;
  * @date 2016/11/22 14:07
  * @detail 网络状态Util
  */
-public class NetUtils {
+public final class NetUtils {
     // Wifi
     private static final int NETWORK_TYPE_WIFI = -1;
     /**
@@ -204,7 +205,7 @@ public class NetUtils {
         return getNetStatusStr(getNetStatus());
     }
 
-    public static String getNetStatusStr(NetStatus status) {
+    public static String getNetStatusStr(@NonNull NetStatus status) {
         if (status == NetStatus.Wifi) {
             return "WiFi";
         } else if (status == NetStatus.TwoG) {

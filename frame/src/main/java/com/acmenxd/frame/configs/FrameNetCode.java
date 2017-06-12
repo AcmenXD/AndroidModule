@@ -1,5 +1,7 @@
 package com.acmenxd.frame.configs;
 
+import android.support.annotation.NonNull;
+
 import com.acmenxd.retrofit.exception.NetException;
 import com.acmenxd.retrofit.exception.NetExceptionUnknownCode;
 
@@ -13,18 +15,18 @@ import com.acmenxd.retrofit.exception.NetExceptionUnknownCode;
 public abstract class FrameNetCode {
     private static Parse sParse;
 
-    static NetException frameParseNetCode(int code, String msg) {
+    protected static final NetException frameParseNetCode(int code, @NonNull String msg) {
         if (sParse == null) {
             return new NetExceptionUnknownCode(code, msg, "网络繁忙,请稍后再试!");
         }
         return sParse.parseNetCode(code, msg);
     }
 
-    public static void setNetCode(Parse pParse) {
+    protected static final void setNetCode(@NonNull Parse pParse) {
         sParse = pParse;
     }
 
     public static abstract class Parse {
-        protected abstract NetException parseNetCode(int code, String msg);
+        protected abstract NetException parseNetCode(int code, @NonNull String msg);
     }
 }

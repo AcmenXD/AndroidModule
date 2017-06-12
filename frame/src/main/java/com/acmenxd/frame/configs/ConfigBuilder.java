@@ -1,6 +1,7 @@
 package com.acmenxd.frame.configs;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.acmenxd.frame.basis.FrameApplication;
@@ -34,7 +35,7 @@ public final class ConfigBuilder {
     /**
      * 创建配置详情
      */
-    public static final void createConfig(Class<? extends BaseConfig> pConfig, boolean isDebug, FrameNetCode.Parse pParse) {
+    public static void createConfig(@NonNull Class<? extends BaseConfig> pConfig, @NonNull boolean isDebug, @NonNull FrameNetCode.Parse pParse) {
         // 配置Retrofit NetCode
         FrameNetCode.setNetCode(pParse);
         try {
@@ -62,7 +63,7 @@ public final class ConfigBuilder {
      * 初始化 -> BaseApplication中调用
      * * 基础组件配置
      */
-    public static final synchronized void init() {
+    public static synchronized void init() {
         Context context = FrameApplication.instance().getApplicationContext();
         //------------------------------------Logger配置---------------------------------
         /**

@@ -1,6 +1,7 @@
 package com.acmenxd.frame.configs;
 
 import android.os.Environment;
+import android.support.annotation.CallSuper;
 import android.util.Log;
 
 import com.acmenxd.logger.LogType;
@@ -22,7 +23,8 @@ public class BaseConfig {
     /**
      * 初始化
      */
-    public void init(boolean isDebug) {
+    @CallSuper
+    protected void init(boolean isDebug) {
         DEBUG = isDebug;
         LOG_OPEN = DEBUG;
         TOAST_DEBUG_OPEN = DEBUG;

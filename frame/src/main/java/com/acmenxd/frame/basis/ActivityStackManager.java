@@ -2,6 +2,7 @@ package com.acmenxd.frame.basis;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 
 import java.util.Stack;
 
@@ -28,7 +29,7 @@ public enum ActivityStackManager {
     /**
      * 添加一个Activity
      */
-    public void addActivity(Activity activity) {
+    public void addActivity(@NonNull Activity activity) {
         if (activityStack == null) {
             activityStack = new Stack<Activity>();
         }
@@ -38,7 +39,7 @@ public enum ActivityStackManager {
     /**
      * 移除一个Activity
      */
-    public void removeActivity(Activity activity) {
+    public void removeActivity(@NonNull Activity activity) {
         if (activityStack == null) {
             activityStack = new Stack<Activity>();
         }
@@ -56,7 +57,7 @@ public enum ActivityStackManager {
     /**
      * 结束一个Activity
      */
-    public void finishActivity(Activity activity) {
+    public void finishActivity(@NonNull Activity activity) {
         if (activity != null) {
             removeActivity(activity);
             activity.finish();
@@ -67,7 +68,7 @@ public enum ActivityStackManager {
     /**
      * 结束一个Activity,根据class
      */
-    public void finishActivity(Class<?> cls) {
+    public void finishActivity(@NonNull Class<?> cls) {
         for (Activity activity : activityStack) {
             if (activity.getClass().equals(cls)) {
                 finishActivity(activity);
@@ -105,7 +106,7 @@ public enum ActivityStackManager {
     /**
      * 重新启动App -> 杀进程,会短暂黑屏,启动慢
      */
-    public void restartApp(Class<?> splashActivityClass) {
+    public void restartApp(@NonNull Class<?> splashActivityClass) {
         Intent intent = new Intent(FrameApplication.instance(), splashActivityClass);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         FrameApplication.instance().startActivity(intent);

@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,18 +19,22 @@ import java.util.List;
  * @date 2016/11/23 16:09
  * @detail APK工具类
  */
-public class ApkUtils {
+public final class ApkUtils {
 
-    /** 安装一个apk文件 */
-    public static void install(Context context, File uriFile) {
+    /**
+     * 安装一个apk文件
+     */
+    public static void install(@NonNull Context context, @NonNull File uriFile) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.fromFile(uriFile), "application/vnd.android.package-archive");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 
-    /** 卸载一个app */
-    public static void uninstall(Context context, String packageName) {
+    /**
+     * 卸载一个app
+     */
+    public static void uninstall(@NonNull Context context, @NonNull String packageName) {
         //通过程序的包名创建URI
         Uri packageURI = Uri.parse("package:" + packageName);
         //创建Intent意图
@@ -38,8 +43,10 @@ public class ApkUtils {
         context.startActivity(intent);
     }
 
-    /** 检查手机上是否安装了指定的软件 */
-    public static boolean isAvailable(Context context, String packageName) {
+    /**
+     * 检查手机上是否安装了指定的软件
+     */
+    public static boolean isAvailable(@NonNull Context context, @NonNull String packageName) {
         // 获取packagemanager
         final PackageManager packageManager = context.getPackageManager();
         // 获取所有已安装程序的包信息
@@ -57,13 +64,17 @@ public class ApkUtils {
         return packageNames.contains(packageName);
     }
 
-    /** 检查手机上是否安装了指定的软件 */
-    public static boolean isAvailable(Context context, File file) {
+    /**
+     * 检查手机上是否安装了指定的软件
+     */
+    public static boolean isAvailable(@NonNull Context context, @NonNull File file) {
         return isAvailable(context, getPackageName(context, file.getAbsolutePath()));
     }
 
-    /** 根据文件路径获取包名 */
-    public static String getPackageName(Context context, String filePath) {
+    /**
+     * 根据文件路径获取包名
+     */
+    public static String getPackageName(@NonNull Context context, @NonNull String filePath) {
         PackageManager packageManager = context.getPackageManager();
         PackageInfo info = packageManager.getPackageArchiveInfo(filePath, PackageManager.GET_ACTIVITIES);
         if (info != null) {

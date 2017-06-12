@@ -1,5 +1,6 @@
 package com.acmenxd.frame.utils.code;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.io.File;
@@ -17,12 +18,12 @@ import java.security.NoSuchAlgorithmException;
  * @date 2017/6/2 11:38
  * @detail MD5加密
  */
-public class MD5 {
+public final class MD5 {
 
     /**
      * 计算字符串 MD5 值
      */
-    public static String md5(String str) {
+    public static String md5(@NonNull String str) {
         if (TextUtils.isEmpty(str)) {
             return "";
         }
@@ -48,7 +49,7 @@ public class MD5 {
     /**
      * 计算文件的 MD5 值
      */
-    public static String md5(File file) {
+    public static String md5(@NonNull File file) {
         if (file == null || !file.isFile() || !file.exists()) {
             return "";
         }
@@ -88,7 +89,7 @@ public class MD5 {
     /**
      * 计算文件的 MD5 值,采用nio的方式
      */
-    public static String md5_nio(File file) {
+    public static String md5_nio(@NonNull File file) {
         String result = "";
         FileInputStream in = null;
         try {

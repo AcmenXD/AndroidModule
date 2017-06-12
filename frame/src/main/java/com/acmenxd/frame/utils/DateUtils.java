@@ -1,6 +1,8 @@
 package com.acmenxd.frame.utils;
 
 
+import android.support.annotation.NonNull;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,7 +15,7 @@ import java.util.Date;
  * @date 2016/12/15 16:10
  * @detail 时间工具类
  */
-public class DateUtils {
+public final class DateUtils {
     /**
      * 计算机日期初始时间
      */
@@ -49,28 +51,28 @@ public class DateUtils {
     /**
      * 获取当前日期  : long(毫秒) -> 2016-12-15 16:10:10 (formatStr)
      */
-    public static String nowDate(String formatStr) {
+    public static String nowDate(@NonNull String formatStr) {
         return dateFormat(nowDate().getTime(), formatStr);
     }
 
     /**
      * 日期格式转换 : long(毫秒) -> 2016-12-15 16:10:10 (formatStr)
      */
-    public static String dateFormat(long date, String formatStr) {
+    public static String dateFormat(long date, @NonNull String formatStr) {
         return new SimpleDateFormat(formatStr).format(new Date(date));
     }
 
     /**
      * 日期格式转换 : 2016-12-15 16:10:10 -> long(毫秒)
      */
-    public static long timeFormat(String timeStr) {
+    public static long timeFormat(@NonNull String timeStr) {
         return timeFormat(timeStr, yMdHms);
     }
 
     /**
      * 日期格式转换 : 2016-12-15 16:10:10(formatStr) -> long(毫秒)
      */
-    public static long timeFormat(String timeStr, String formatStr) {
+    public static long timeFormat(@NonNull String timeStr, @NonNull String formatStr) {
         long time = 0;
         try {
             SimpleDateFormat sf = new SimpleDateFormat(formatStr);
@@ -84,7 +86,7 @@ public class DateUtils {
     /**
      * 日期格式转换 : 2016-12-15 16:10:10 -> int[]{year,month,day,hour,minute,second}
      */
-    public static int[] splitTime(String timeStr) {
+    public static int[] splitTime(@NonNull String timeStr) {
         return splitTime(timeFormat(timeStr));
     }
 
@@ -109,7 +111,7 @@ public class DateUtils {
      *
      * @return int[]{year,month,day,hour,minute,second}
      */
-    public static int[] gapSplitTime(String timeStr1, String timeStr2) {
+    public static int[] gapSplitTime(@NonNull String timeStr1, @NonNull String timeStr2) {
         return gapSplitTime(timeFormat(timeStr1), timeFormat(timeStr2));
     }
 
@@ -163,7 +165,7 @@ public class DateUtils {
      * 两个参数不分先后,总是时间大的-时间小的
      * 1年前/2月前/3天前/4小时前/5分钟前/刚刚
      */
-    public static String gapTimeStr(String timeStr1, String timeStr2) {
+    public static String gapTimeStr(@NonNull String timeStr1, @NonNull String timeStr2) {
         return gapTimeStr(timeFormat(timeStr1), timeFormat(timeStr2));
     }
 
@@ -200,11 +202,11 @@ public class DateUtils {
     /**
      * 判断是否润年
      */
-    public static boolean isLeapYear(Date date) {
+    public static boolean isLeapYear(@NonNull Date date) {
         return isLeapYear(date.getTime());
     }
 
-    public static boolean isLeapYear(String timeStr) {
+    public static boolean isLeapYear(@NonNull String timeStr) {
         return isLeapYear(timeFormat(timeStr, yMdHms));
     }
 

@@ -14,6 +14,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
+import android.support.annotation.NonNull;
+import android.support.annotation.RawRes;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -33,7 +35,7 @@ import java.io.InputStream;
  * @date 2016/11/23 16:09
  * @detail Bitmap工具类
  */
-public class BitmapUtils {
+public final class BitmapUtils {
 
     /**
      * 截取屏幕(全屏)并保存
@@ -42,7 +44,7 @@ public class BitmapUtils {
      * @param isSaveStatusBar 是否保留状态栏
      * @param pSavePath       保存路径
      */
-    public static void saveScreenAsImage(Activity pActivity, boolean isSaveStatusBar, File pSavePath) {
+    public static void saveScreenAsImage(@NonNull Activity pActivity, boolean isSaveStatusBar, @NonNull File pSavePath) {
         View pView = pActivity.getWindow().getDecorView();
         pView.setDrawingCacheEnabled(true);
         pView.buildDrawingCache();
@@ -71,7 +73,7 @@ public class BitmapUtils {
     /**
      * 保存图片到存储盘
      */
-    public static void saveBitmap(Bitmap pBitmap, File saveFile) {
+    public static void saveBitmap(@NonNull Bitmap pBitmap, @NonNull File saveFile) {
         saveBitmap(pBitmap, saveFile, null, 100);
     }
 
@@ -83,7 +85,7 @@ public class BitmapUtils {
      * @param format   图片格式 (默认 PNG 格式)
      * @param quality  图片质量 0 - 100,如<=0,则默认为100
      */
-    public static void saveBitmap(Bitmap pBitmap, File savePath, Bitmap.CompressFormat format, int quality) {
+    public static void saveBitmap(@NonNull Bitmap pBitmap, @NonNull File savePath, @NonNull Bitmap.CompressFormat format, int quality) {
         if (format == null) {
             format = Bitmap.CompressFormat.PNG;
         }
@@ -105,7 +107,7 @@ public class BitmapUtils {
      * 读取本地图片,如图片宽高大于指定宽高,会自动按比例缩放
      * 如width<=0 或 height <=0 则不进行缩放
      */
-    public static Bitmap readBitmap(String file, int width, int height) {
+    public static Bitmap readBitmap(@NonNull String file, int width, int height) {
         try {
             FileInputStream fis = new FileInputStream(file);
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -135,7 +137,7 @@ public class BitmapUtils {
      * 读取流图片,如图片宽高大于指定宽高,会自动按比例缩放
      * 如width<=0 或 height <=0 则不进行缩放
      */
-    public static Bitmap readBitmap(InputStream ins, int width, int height) {
+    public static Bitmap readBitmap(@NonNull InputStream ins, int width, int height) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         int inSampleSize = 1;
         if (width > 0 && height > 0) {
@@ -160,7 +162,7 @@ public class BitmapUtils {
      * 读取资源图片,如图片宽高大于指定宽高,会自动按比例缩放
      * 如width<=0 或 height <=0 则不进行缩放
      */
-    public static Bitmap readBitmap(Resources resources, int resourcesId, int width, int height) {
+    public static Bitmap readBitmap(@NonNull Resources resources, @RawRes int resourcesId, int width, int height) {
         InputStream ins = resources.openRawResource(resourcesId);
         BitmapFactory.Options options = new BitmapFactory.Options();
         int inSampleSize = 1;
@@ -187,7 +189,7 @@ public class BitmapUtils {
      * 如width<=0 或 height <=0 则不进行缩放
      * * 此方式较耗费内存,建议使用上面的函数
      */
-    public static Bitmap readBitmapFromResources(Resources resources, int resourcesId, int width, int height) {
+    public static Bitmap readBitmapFromResources(@NonNull Resources resources, @RawRes int resourcesId, int width, int height) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         int inSampleSize = 1;
         if (width > 0 && height > 0) {
@@ -212,7 +214,7 @@ public class BitmapUtils {
      * 读取二进制图片,如图片宽高大于指定宽高,会自动按比例缩放
      * 如width<=0 或 height <=0 则不进行缩放
      */
-    public static Bitmap readBitmap(byte[] data, int width, int height) {
+    public static Bitmap readBitmap(@NonNull byte[] data, int width, int height) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         int inSampleSize = 1;
         if (width > 0 && height > 0) {
@@ -236,7 +238,7 @@ public class BitmapUtils {
     /**
      * 读取assets图片
      */
-    public static Bitmap readBitmap(Context context, String file) {
+    public static Bitmap readBitmap(@NonNull Context context, @NonNull String file) {
         Bitmap bitmap = null;
         AssetManager am = context.getResources().getAssets();
         try {
@@ -252,7 +254,7 @@ public class BitmapUtils {
     /**
      * 图片压缩
      */
-    public static Bitmap compressImage(Bitmap pBitmap, Bitmap.CompressFormat format, int quality) {
+    public static Bitmap compressImage(@NonNull Bitmap pBitmap, @NonNull Bitmap.CompressFormat format, int quality) {
         if (pBitmap == null) {
             return null;
         }
@@ -285,7 +287,7 @@ public class BitmapUtils {
     /**
      * 图片等比缩放
      */
-    public static Bitmap scaleBitmap(Bitmap pBitmap, float scale) {
+    public static Bitmap scaleBitmap(@NonNull Bitmap pBitmap, float scale) {
         Matrix matrix = new Matrix();
         matrix.postScale(scale, scale);
         return Bitmap.createBitmap(pBitmap, 0, 0, pBitmap.getWidth(), pBitmap.getHeight(), matrix, true);
@@ -294,7 +296,7 @@ public class BitmapUtils {
     /**
      * 图片旋转
      */
-    private static Bitmap rotateBitmap(Bitmap pBitmap, float rotateDegree) {
+    private static Bitmap rotateBitmap(@NonNull Bitmap pBitmap, float rotateDegree) {
         if (pBitmap == null) {
             return null;
         }
@@ -306,7 +308,7 @@ public class BitmapUtils {
     /**
      * 读取图片exif信息中的旋转角度
      */
-    public static int readPictureDegree(String path) {
+    public static int readPictureDegree(@NonNull String path) {
         if (TextUtils.isEmpty(path)) {
             return 0;
         }
@@ -333,7 +335,7 @@ public class BitmapUtils {
     /**
      * Bitmap转二进制
      */
-    public static byte[] bitmapToBytes(Bitmap pBitmap, Bitmap.CompressFormat format, int quality) {
+    public static byte[] bitmapToBytes(@NonNull Bitmap pBitmap, @NonNull Bitmap.CompressFormat format, int quality) {
         if (pBitmap == null) {
             return null;
         }
@@ -351,7 +353,7 @@ public class BitmapUtils {
     /**
      * Bitmap转Drawable
      */
-    public static Drawable bitmapToDrawable(Resources resources, Bitmap pBitmap) {
+    public static Drawable bitmapToDrawable(@NonNull Resources resources, @NonNull Bitmap pBitmap) {
         Drawable drawable = new BitmapDrawable(resources, pBitmap);
         return drawable;
     }
@@ -359,7 +361,7 @@ public class BitmapUtils {
     /**
      * Drawable转Bitmap
      */
-    public static Bitmap drawableToBitmap(Drawable drawable) {
+    public static Bitmap drawableToBitmap(@NonNull Drawable drawable) {
         Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565);
         Canvas canvas = new Canvas(bitmap);
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());

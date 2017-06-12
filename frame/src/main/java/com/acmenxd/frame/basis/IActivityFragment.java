@@ -1,10 +1,15 @@
 package com.acmenxd.frame.basis;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.text.SpannableString;
 import android.view.View;
+
 import com.acmenxd.retrofit.callback.NetCallback;
 import com.acmenxd.retrofit.callback.NetSubscriber;
+
 import retrofit2.Callback;
 import rx.Subscriber;
 import rx.Subscription;
@@ -27,12 +32,12 @@ public interface IActivityFragment {
     /**
      * 添加Subscriptions
      */
-    void addSubscriptions(Subscription... pSubscriptions);
+    void addSubscriptions(@NonNull Subscription... pSubscriptions);
 
     /**
      * 添加Presenters
      */
-    void addPresenters(FramePresenter... pPresenters);
+    void addPresenters(@NonNull FramePresenter... pPresenters);
 
     /**
      * 获取CompositeSubscription实例
@@ -48,17 +53,17 @@ public interface IActivityFragment {
     /**
      * 启动Activity
      */
-    void startActivity(Class cls);
+    void startActivity(@NonNull Class cls);
 
     /**
      * 启动Activity
      */
-    void startActivity(Class cls, Bundle bundle);
+    void startActivity(@NonNull Class cls, @NonNull Bundle bundle);
 
     /**
      * 启动Activity
      */
-    void startActivity(Class cls, Bundle bundle, int flags);
+    void startActivity(@NonNull Class cls, @NonNull Bundle bundle, int flags);
 
     /**
      * 获取IAllRequest实例
@@ -68,19 +73,19 @@ public interface IActivityFragment {
     /**
      * 根据IRequest类获取Request实例
      */
-    <T> T request(Class<T> pIRequest);
+    <T> T request(@NonNull Class<T> pIRequest);
 
     /**
      * 创建新的Retrofit实例
      * 根据IRequest类获取Request实例
      */
-    <T> T newRequest(Class<T> pIRequest);
+    <T> T newRequest(@NonNull Class<T> pIRequest);
 
     /**
      * 创建新的Retrofit实例,并设置超时时间
      * 根据IRequest类获取Request实例
      */
-    <T> T newRequest(int connectTimeout, int readTimeout, int writeTimeout, Class<T> pIRequest);
+    <T> T newRequest(int connectTimeout, int readTimeout, int writeTimeout, @NonNull Class<T> pIRequest);
 
     /**
      * 统一处理因异步导致的 Activity|Fragment销毁时发生NullPointerException问题
@@ -91,7 +96,7 @@ public interface IActivityFragment {
      *                  1.isCancelable(是否可以通过点击Back键取消)(默认true)
      *                  2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
      */
-    <T> Callback<T> newCallback(final NetCallback<T> pCallback, final boolean... setting);
+    <T> Callback<T> newCallback(@NonNull final NetCallback<T> pCallback, final boolean... setting);
 
     /**
      * 统一处理因异步导致的 Activity|Fragment销毁时发生NullPointerException问题
@@ -102,7 +107,7 @@ public interface IActivityFragment {
      *                    1.isCancelable(是否可以通过点击Back键取消)(默认true)
      *                    2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
      */
-    <T> Subscriber<T> newSubscriber(final NetSubscriber<T> pSubscriber, final boolean... setting);
+    <T> Subscriber<T> newSubscriber(@NonNull final NetSubscriber<T> pSubscriber, final boolean... setting);
 
     /**
      * 根据setting,检查是否显示LoadingDialog
@@ -131,19 +136,19 @@ public interface IActivityFragment {
     /**
      * 设置内容视图
      */
-    void setContentView(int layoutResId);
+    void setContentView(@LayoutRes int layoutResId);
 
-    void setContentView(View view);
+    void setContentView(@NonNull View view);
 
     /**
      * 设置加载视图
      */
-    void setLoadingView(View view);
+    void setLoadingView(@NonNull View view);
 
     /**
      * 设置错误视图
      */
-    void setErrorView(View view);
+    void setErrorView(@NonNull View view);
 
     /**
      * 显示内容视图,隐藏其他视图
@@ -199,7 +204,7 @@ public interface IActivityFragment {
     /**
      * 根据viewId获取控件实例
      */
-    <T extends View> T getView(int viewId);
+    <T extends View> T getView(@IdRes int viewId);
 
     /**
      * 串拼接
@@ -207,7 +212,7 @@ public interface IActivityFragment {
      * @param strs 可变参数类型
      * @return 拼接后的字符串
      */
-    String appendStrs(Object... strs);
+    String appendStrs(@NonNull Object... strs);
 
     /**
      * 串变化 -> 大小&颜色
@@ -215,9 +220,9 @@ public interface IActivityFragment {
      * @param start 从0开始计数(包含start)
      * @param end   从1开始计数(包含end)
      */
-    SpannableString changeStr(String str, int start, int end, int dip, int color);
+    SpannableString changeStr(@NonNull String str, int start, int end, int dip, int color);
 
-    SpannableString changeStr(SpannableString spannableString, int start, int end, int dip, int color);
+    SpannableString changeStr(@NonNull SpannableString spannableString, int start, int end, int dip, int color);
 
     /**
      * 根据手机的分辨率从 dp 的单位转成 px(像素)

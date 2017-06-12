@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.AbsoluteSizeSpan;
@@ -24,13 +25,13 @@ import java.net.URLEncoder;
  * @date 2016/11/22 14:36
  * @detail 工具类
  */
-public class Utils {
+public final class Utils {
     public static final String UTF8 = "UTF-8";
 
     /**
      * 反编码
      */
-    public static String decode(String s) {
+    public static String decode(@NonNull String s) {
         if (s == null) {
             return "";
         }
@@ -44,7 +45,7 @@ public class Utils {
     /**
      * 编码
      */
-    public static String encode(String s) {
+    public static String encode(@NonNull String s) {
         if (s == null) {
             return "";
         }
@@ -62,7 +63,7 @@ public class Utils {
     //调用文件选择软件来选择文件 -> 返回文件路径  ---------------start
     public static final int showFileChooser_requestCode = 0x0001; //requestCode状体码
 
-    public static void showFileChooser(Activity pActivity) {
+    public static void showFileChooser(@NonNull Activity pActivity) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -73,7 +74,7 @@ public class Utils {
         }
     }
 
-    public static String showFileChooser_onActivityResult(Activity pActivity, int requestCode, int resultCode, Intent data) {
+    public static String showFileChooser_onActivityResult(@NonNull Activity pActivity, int requestCode, int resultCode, @NonNull Intent data) {
         if (requestCode == showFileChooser_requestCode && resultCode == Activity.RESULT_OK) {
             Uri uri = data.getData();
             String path = "";
@@ -107,7 +108,7 @@ public class Utils {
      * @param strs 可变参数类型
      * @return 拼接后的字符串
      */
-    public static String appendStrs(Object... strs) {
+    public static String appendStrs(@NonNull Object... strs) {
         StringBuilder sb = new StringBuilder();
         if (strs != null && strs.length > 0) {
             for (Object str : strs) {
@@ -123,12 +124,12 @@ public class Utils {
      * @param start 从0开始计数(包含start)
      * @param end   从1开始计数(包含end)
      */
-    public static SpannableString changeStr(String str, int start, int end, int dip, int color) {
+    public static SpannableString changeStr(@NonNull String str, int start, int end, int dip, int color) {
         SpannableString spannableString = new SpannableString(str);
         return changeStr(spannableString, start, end, dip, color);
     }
 
-    public static SpannableString changeStr(SpannableString spannableString, int start, int end, int dip, int color) {
+    public static SpannableString changeStr(@NonNull SpannableString spannableString, int start, int end, int dip, int color) {
         if (spannableString == null) {
             return new SpannableString("");
         }
@@ -149,11 +150,11 @@ public class Utils {
     /**
      * 根据手机的分辨率从 dp 的单位转成 px(像素)
      */
-    public static float dp2px(Context pContext, float dp) {
+    public static float dp2px(@NonNull Context pContext, float dp) {
         return dp2px(pContext.getResources(), dp);
     }
 
-    public static float dp2px(Resources resources, float dp) {
+    public static float dp2px(@NonNull Resources resources, float dp) {
         final float scale = resources.getDisplayMetrics().density;
         return dp * scale + 0.5f;
     }
@@ -161,11 +162,11 @@ public class Utils {
     /**
      * 根据手机的分辨率从 px(像素)的单位转成 dp
      */
-    public static float px2dp(Context pContext, float px) {
+    public static float px2dp(@NonNull Context pContext, float px) {
         return px2dp(pContext.getResources(), px);
     }
 
-    public static float px2dp(Resources resources, float px) {
+    public static float px2dp(@NonNull Resources resources, float px) {
         final float scale = resources.getDisplayMetrics().density;
         return px / scale + 0.5f;
     }
@@ -173,11 +174,11 @@ public class Utils {
     /**
      * 根据手机的分辨率从 sp 的单位转成 px(像素)
      */
-    public static float sp2px(Context pContext, float sp) {
+    public static float sp2px(@NonNull Context pContext, float sp) {
         return sp2px(pContext.getResources(), sp);
     }
 
-    public static float sp2px(Resources resources, float sp) {
+    public static float sp2px(@NonNull Resources resources, float sp) {
         final float scale = resources.getDisplayMetrics().scaledDensity;
         return sp * scale + 0.5f;
     }
@@ -185,11 +186,11 @@ public class Utils {
     /**
      * 根据手机的分辨率从 px(像素)的单位转成 sp
      */
-    public static float px2sp(Context pContext, float px) {
+    public static float px2sp(@NonNull Context pContext, float px) {
         return px2sp(pContext.getResources(), px);
     }
 
-    public static float px2sp(Resources resources, float px) {
+    public static float px2sp(@NonNull Resources resources, float px) {
         final float scale = resources.getDisplayMetrics().scaledDensity;
         return px / scale + 0.5f;
     }

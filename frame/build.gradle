@@ -42,11 +42,11 @@ dependencies {
     compile 'com.github.AcmenXD:Logger:2.0'
     compile 'com.github.AcmenXD:Toaster:2.0'
     compile 'com.github.AcmenXD:RecyclerView:2.0'
-    compile 'com.github.AcmenXD:Retrofit:2.0'
+    compile 'com.github.AcmenXD:Retrofit:2.1'
     /**
      * 响应式编程库
      */
-    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxandroid:1.2.0'
     /**
      * 权限处理库
      */

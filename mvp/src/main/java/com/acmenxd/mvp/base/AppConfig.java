@@ -55,7 +55,7 @@ public final class AppConfig {
     /**
      * 初始化 -> BaseApplication中调用
      */
-    public static final synchronized void init() {
+    public static synchronized void init() {
         BaseApplication app = BaseApplication.instance();
         PackageManager pkgManager = app.getPackageManager();
         int versionCode = 1;

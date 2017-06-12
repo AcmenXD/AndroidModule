@@ -1,5 +1,7 @@
 package com.acmenxd.frame.utils;
 
+import android.support.annotation.NonNull;
+
 import com.acmenxd.frame.basis.FrameApplication;
 import com.acmenxd.logger.Logger;
 
@@ -10,8 +12,8 @@ import com.acmenxd.logger.Logger;
  * @date 2017/6/2 15:35
  * @detail something
  */
-public class CrashUtils {
-    public static class CrashManager implements Thread.UncaughtExceptionHandler {
+public final class CrashUtils {
+    public final static class CrashManager implements Thread.UncaughtExceptionHandler {
         public static final String TAG = "CrashManager";
 
         private static CrashManager instance;
@@ -23,7 +25,7 @@ public class CrashUtils {
         /**
          * 获取CrashHandler实例 ,单例模式
          */
-        public static CrashManager getInstance(FrameApplication pApplication) {
+        public static CrashManager getInstance(@NonNull FrameApplication pApplication) {
             if (instance == null) {
                 synchronized (CrashManager.class) {
                     instance = new CrashManager(pApplication);
@@ -35,7 +37,7 @@ public class CrashUtils {
         /**
          * 保证只有一个CrashHandler实例
          */
-        private CrashManager(FrameApplication pApplication) {
+        private CrashManager(@NonNull FrameApplication pApplication) {
             mApplication = pApplication;
             mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
             Thread.setDefaultUncaughtExceptionHandler(this);
@@ -45,7 +47,7 @@ public class CrashUtils {
          * 当UncaughtException发生时会转入该函数来处理
          */
         @Override
-        public void uncaughtException(Thread pThread, Throwable pE) {
+        public void uncaughtException(@NonNull Thread pThread, @NonNull Throwable pE) {
             try {
                 mApplication.crashException("填入项目信息", pThread, pE);
             } catch (Exception e) {

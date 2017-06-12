@@ -7,7 +7,7 @@ package com.acmenxd.frame.configs;
  * @date 2017/5/24 18:39
  * @detail Mvp项目配置文件
  */
-public class MvpConfig extends BaseConfig {
+public final class MvpConfig extends BaseConfig {
 
     public String SP_User = "spUser";
     public String SP_Config = "spConfig";

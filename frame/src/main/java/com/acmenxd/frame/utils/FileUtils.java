@@ -1,5 +1,6 @@
 package com.acmenxd.frame.utils;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.acmenxd.frame.basis.FrameApplication;
@@ -54,7 +55,7 @@ public final class FileUtils {
     /**
      * 初始化 -> BaseApplication中调用
      */
-    public static final synchronized void init() {
+    public static synchronized void init() {
         /**
          * 创建目录
          */
@@ -82,7 +83,7 @@ public final class FileUtils {
      * @param postfix 文件后缀
      * @return
      */
-    public static File createTempFile(File dir, String suffix, String postfix) {
+    public static File createTempFile(@NonNull File dir, @NonNull String suffix, @NonNull String postfix) {
         try {
             return File.createTempFile(suffix, postfix, dir);
         } catch (IOException pE) {
@@ -94,14 +95,14 @@ public final class FileUtils {
     /**
      * 判断 文件&文件夹 是否存在
      */
-    public static boolean isExists(File path) {
+    public static boolean isExists(@NonNull File path) {
         if (path.exists()) {
             return true;
         }
         return false;
     }
 
-    public static boolean isExists(String path) {
+    public static boolean isExists(@NonNull String path) {
         if (TextUtils.isEmpty(path)) {
             return false;
         }
@@ -111,7 +112,7 @@ public final class FileUtils {
     /**
      * 列出目录中的所有目录&文件
      */
-    public static File[] getFiles(File dir) throws IOException {
+    public static File[] getFiles(@NonNull File dir) throws IOException {
         if (dir == null) {
             throw new NullPointerException("Source must not be null");
         }
@@ -133,7 +134,7 @@ public final class FileUtils {
      *
      * @return 创建成功返回true
      */
-    public static boolean createDirectorys(File dir) throws IOException {
+    public static boolean createDirectorys(@NonNull File dir) throws IOException {
         if (!dir.exists()) {
             dir.mkdirs();
             if (dir.exists()) {
@@ -145,7 +146,7 @@ public final class FileUtils {
         return false;
     }
 
-    public static boolean createDirectorys(String dir) throws IOException {
+    public static boolean createDirectorys(@NonNull String dir) throws IOException {
         if (TextUtils.isEmpty(dir)) {
             throw new NullPointerException("Source must not be null");
         }
@@ -157,11 +158,11 @@ public final class FileUtils {
      *
      * @return 创建成功返回true
      */
-    public static boolean createFile(File targetFile) throws IOException {
+    public static boolean createFile(@NonNull File targetFile) throws IOException {
         return createFile(targetFile, false);
     }
 
-    public static boolean createFile(String targetPath) throws IOException {
+    public static boolean createFile(@NonNull String targetPath) throws IOException {
         if (TextUtils.isEmpty(targetPath)) {
             throw new NullPointerException("Source must not be null");
         }
@@ -173,11 +174,11 @@ public final class FileUtils {
      *
      * @return 创建成功返回true
      */
-    public static boolean createFileWithDelete(File targetFile) throws IOException {
+    public static boolean createFileWithDelete(@NonNull File targetFile) throws IOException {
         return createFile(targetFile, true);
     }
 
-    public static boolean createFileWithDelete(String targetFile) throws IOException {
+    public static boolean createFileWithDelete(@NonNull String targetFile) throws IOException {
         if (TextUtils.isEmpty(targetFile)) {
             throw new NullPointerException("Source must not be null");
         }
@@ -194,11 +195,11 @@ public final class FileUtils {
      * @return
      * @throws IOException
      */
-    public static boolean copyFile(File srcFile, File targetFile, boolean isDeleteMoveFile) throws IOException {
+    public static boolean copyFile(@NonNull File srcFile, @NonNull File targetFile, boolean isDeleteMoveFile) throws IOException {
         return moveFile(srcFile, targetFile, false, isDeleteMoveFile, true);
     }
 
-    public static boolean copyFile(String srcFile, String targetFile, boolean isDeleteMoveFile) throws IOException {
+    public static boolean copyFile(@NonNull String srcFile, @NonNull String targetFile, boolean isDeleteMoveFile) throws IOException {
         if (TextUtils.isEmpty(srcFile)) {
             throw new NullPointerException("Source must not be null");
         }
@@ -218,7 +219,7 @@ public final class FileUtils {
      * @return
      * @throws IOException
      */
-    public static boolean copyDir(File srcDir, File targetDir, boolean isDeleteMoveFile) throws IOException {
+    public static boolean copyDir(@NonNull File srcDir, @NonNull File targetDir, boolean isDeleteMoveFile) throws IOException {
         if (srcDir.isFile()) {
             throw new RuntimeException("源目录不能为文件格式!");
         }
@@ -238,7 +239,7 @@ public final class FileUtils {
         return result;
     }
 
-    public static boolean copyDir(String srcDir, String targetDir, boolean isDeleteMoveFile) throws IOException {
+    public static boolean copyDir(@NonNull String srcDir, @NonNull String targetDir, boolean isDeleteMoveFile) throws IOException {
         if (TextUtils.isEmpty(srcDir)) {
             throw new NullPointerException("Source must not be null");
         }
@@ -258,11 +259,11 @@ public final class FileUtils {
      * @return
      * @throws IOException
      */
-    public static boolean moveFile(File srcFile, File targetFile, boolean isDeleteMoveFile) throws IOException {
+    public static boolean moveFile(@NonNull File srcFile, @NonNull File targetFile, boolean isDeleteMoveFile) throws IOException {
         return moveFile(srcFile, targetFile, true, isDeleteMoveFile, true);
     }
 
-    public static boolean moveFile(String srcFile, String targetFile, boolean isDeleteMoveFile) throws IOException {
+    public static boolean moveFile(@NonNull String srcFile, @NonNull String targetFile, boolean isDeleteMoveFile) throws IOException {
         if (TextUtils.isEmpty(srcFile)) {
             throw new NullPointerException("Source must not be null");
         }
@@ -278,7 +279,7 @@ public final class FileUtils {
      *
      * @param isDeleteSrcDir 是否删除目录本身
      */
-    public static boolean deleteDir(File srcDir, boolean isDeleteSrcDir) {
+    public static boolean deleteDir(@NonNull File srcDir, boolean isDeleteSrcDir) {
         if (srcDir.isFile()) {
             throw new RuntimeException("目录不能为文件格式!");
         }
@@ -299,7 +300,7 @@ public final class FileUtils {
         return result;
     }
 
-    public static boolean deleteDir(String srcDir, boolean isDeleteSrcDir) throws IOException {
+    public static boolean deleteDir(@NonNull String srcDir, boolean isDeleteSrcDir) throws IOException {
         if (TextUtils.isEmpty(srcDir)) {
             throw new NullPointerException("Source must not be null");
         }
@@ -313,7 +314,7 @@ public final class FileUtils {
      * @param isDelete   如果文件存在,是否删除重新创建
      * @return
      */
-    private static boolean createFile(File targetFile, boolean isDelete) throws IOException {
+    private static boolean createFile(@NonNull File targetFile, boolean isDelete) throws IOException {
         File parentFile = targetFile.getParentFile();
         if (!parentFile.exists()) {
             parentFile.mkdirs();
@@ -351,7 +352,7 @@ public final class FileUtils {
      * @param preserveFileDate 是否保存文件日期
      * @throws IOException
      */
-    private static boolean moveFile(File srcFile, File targetFile, boolean isDeleteSrcFile, boolean isDeleteMoveFile, boolean preserveFileDate) throws IOException {
+    private static boolean moveFile(@NonNull File srcFile, @NonNull File targetFile, boolean isDeleteSrcFile, boolean isDeleteMoveFile, boolean preserveFileDate) throws IOException {
         if (srcFile == null) {
             throw new NullPointerException("Source must not be null");
         }
@@ -392,7 +393,7 @@ public final class FileUtils {
      * @param outFile
      * @param preserveFileDate 是否保存文件日期
      */
-    private static boolean doCopyFile(File inFile, File outFile, boolean preserveFileDate) throws IOException {
+    private static boolean doCopyFile(@NonNull File inFile, @NonNull File outFile, boolean preserveFileDate) throws IOException {
         boolean result = false;
         BufferedInputStream bIn = null;
         BufferedOutputStream bOut = null;

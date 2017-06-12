@@ -2,6 +2,7 @@ package com.acmenxd.frame.basis;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,7 @@ public final class FrameActivityFragmentViewHelper {
     /**
      * 获取加载时显示的视图
      */
-    public static View getLoadingView(Context pContext) {
+    public static View getLoadingView(@NonNull Context pContext) {
         LinearLayout loadLayout = new LinearLayout(pContext);
         loadLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         loadLayout.setOrientation(LinearLayout.VERTICAL);
@@ -52,7 +53,7 @@ public final class FrameActivityFragmentViewHelper {
     /**
      * 获取出错时显示的视图
      */
-    public static View getErrorView(Context pContext) {
+    public static View getErrorView(@NonNull Context pContext) {
         LinearLayout errorLayout = new LinearLayout(pContext);
         errorLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         errorLayout.setOrientation(LinearLayout.VERTICAL);
@@ -71,7 +72,7 @@ public final class FrameActivityFragmentViewHelper {
     /**
      * 获取Dialog弹框
      */
-    public static View getDialogView(Context pContext) {
+    public static View getDialogView(@NonNull Context pContext) {
         int width = (int) Utils.dp2px(pContext, 130);
         int height = (int) Utils.dp2px(pContext, 90);
         LinearLayout loadLayout = new LinearLayout(pContext);
@@ -103,21 +104,21 @@ public final class FrameActivityFragmentViewHelper {
     /**
      * 获取进入动画
      */
-    public static Animation getInAnimation(Context pContext) {
+    public static Animation getInAnimation(@NonNull Context pContext) {
         return AnimationUtils.makeInAnimation(pContext, true);
     }
 
     /**
      * 获取退出动画
      */
-    public static Animation getOutAnimation(Context pContext) {
+    public static Animation getOutAnimation(@NonNull Context pContext) {
         return AnimationUtils.makeOutAnimation(pContext, true);
     }
 
     /**
      * 设置Layouts的显隐状态
      */
-    public static void layouts$setVisibility(final View pInView, final View... pViews) {
+    public static void layouts$setVisibility(@NonNull final View pInView, @NonNull final View... pViews) {
         for (int i = 0, len = pViews.length; i < len; i++) {
             if (pViews[i] == pInView) {
                 pViews[i].setVisibility(View.VISIBLE);
@@ -130,7 +131,7 @@ public final class FrameActivityFragmentViewHelper {
     /**
      * 关闭掉所有动画后,执行in&out动画
      */
-    public static void layoutCancelInOutAnimation(final Context pContext, final View pInView, final View... pViews) {
+    public static void layoutCancelInOutAnimation(@NonNull final Context pContext, @NonNull final View pInView, @NonNull final View... pViews) {
         boolean hasNoEnd = false; // 是否有动画没有执行完
         if (pViews != null && pViews.length > 0) {
             for (int i = 0, len = pViews.length; i < len; i++) {
@@ -167,7 +168,7 @@ public final class FrameActivityFragmentViewHelper {
     /**
      * 设置pInView执行in动画,其他视图全部执行out动画
      */
-    public static void layoutStartInOutAnimation(final Context pContext, final View pInView, final View... pViews) {
+    public static void layoutStartInOutAnimation(@NonNull final Context pContext, @NonNull final View pInView, @NonNull final View... pViews) {
         for (int i = 0, len = pViews.length; i < len; i++) {
             if (pViews[i] != pInView && pViews[i].getVisibility() == View.VISIBLE) {
                 pViews[i].startAnimation(FrameActivityFragmentViewHelper.getOutAnimation(pContext));

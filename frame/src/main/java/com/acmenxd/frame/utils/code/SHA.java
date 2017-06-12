@@ -1,5 +1,6 @@
 package com.acmenxd.frame.utils.code;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import java.security.MessageDigest;
@@ -12,12 +13,12 @@ import java.security.NoSuchAlgorithmException;
  * @date 2017/6/2 11:47
  * @detail SHA加密
  */
-public class SHA {
+public final class SHA {
 
     /**
      * 计算字符串 SHA-256 值
      */
-    public static String sha256(String string) {
+    public static String sha256(@NonNull String string) {
         if (TextUtils.isEmpty(string)) {
             return "";
         }

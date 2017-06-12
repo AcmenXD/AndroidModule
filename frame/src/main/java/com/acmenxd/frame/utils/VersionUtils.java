@@ -1,5 +1,7 @@
 package com.acmenxd.frame.utils;
 
+import android.support.annotation.NonNull;
+
 /**
  * @author AcmenXD
  * @version v1.0
@@ -7,7 +9,7 @@ package com.acmenxd.frame.utils;
  * @date 2016/12/15 12:03
  * @detail 版本号工具类
  */
-public class VersionUtils {
+public final class VersionUtils {
     /**
      * 版本号对比
      *
@@ -18,7 +20,7 @@ public class VersionUtils {
      * oldVersion = newVersion  return 0
      * oldVersion < newVersion  return 1
      */
-    public static int compareVersions(String oldVersion, String newVersion) {
+    public static int compareVersions(@NonNull String oldVersion, @NonNull String newVersion) {
         //返回结果: -2 ,-1 ,0 ,1
         int result = 0;
         String matchStr = "[0-9]+(\\.[0-9]+)*";

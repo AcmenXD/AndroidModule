@@ -1,5 +1,7 @@
 package com.acmenxd.frame.utils;
 
+import android.support.annotation.NonNull;
+
 import com.acmenxd.logger.Logger;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
@@ -16,13 +18,13 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
  * @date 2016/12/15 16:10
  * @detail 拼音工具类
  */
-public class PinYinUtils {
+public final class PinYinUtils {
 
     /**
      * 将inStr中的中文转化为拼音,其他字符保持不变
      * * 中文转换的拼音为 小写字母
      */
-    public static String parsePinyin(String inStr) {
+    public static String parsePinyin(@NonNull String inStr) {
         HanyuPinyinOutputFormat format = new HanyuPinyinOutputFormat();
         format.setCaseType(HanyuPinyinCaseType.LOWERCASE);
         format.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
@@ -53,7 +55,7 @@ public class PinYinUtils {
      * 将inStr的中文字符,转换为中文拼音的首字母,其他字符保持不变
      * * 中文转换的首字母为 大写字母
      */
-    public static String parsePinyinToFirst(String inStr) {
+    public static String parsePinyinToFirst(@NonNull String inStr) {
         String pinyinName = "";
         char[] nameChar = inStr.toCharArray();
         HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();

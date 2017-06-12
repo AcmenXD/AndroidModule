@@ -11,7 +11,7 @@ import rx.schedulers.Schedulers;
  * @date 2017/3/21 14:55
  * @detail Rx工具类
  */
-public class RxUtils {
+public final class RxUtils {
     private final static Observable.Transformer schedulersTransformer = new Observable.Transformer() {
         @Override
         public Object call(Object observable) {

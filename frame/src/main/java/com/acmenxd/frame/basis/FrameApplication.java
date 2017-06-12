@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Debug;
 import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
 
 import com.acmenxd.frame.configs.BaseConfig;
 import com.acmenxd.frame.configs.ConfigBuilder;
@@ -43,6 +44,7 @@ public abstract class FrameApplication extends Application {
         return sInstance;
     }
 
+    @CallSuper
     @Override
     public void onTerminate() {
         // 程序终止的时候执行
@@ -51,18 +53,21 @@ public abstract class FrameApplication extends Application {
         Monitor.release();
     }
 
+    @CallSuper
     @Override
     public void onLowMemory() {
         // 低内存的时候执行
         super.onLowMemory();
     }
 
+    @CallSuper
     @Override
     public void onTrimMemory(int level) {
         // 程序在内存清理的时候执行
         super.onTrimMemory(level);
     }
 
+    @CallSuper
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         // 应用配置变更~
@@ -72,7 +77,7 @@ public abstract class FrameApplication extends Application {
     /**
      * 初始化配置
      */
-    public void initFrameSetting(Class<? extends BaseConfig> pConfig, boolean isDebug, FrameNetCode.Parse pParse) {
+    public final void initFrameSetting(@NonNull Class<? extends BaseConfig> pConfig, @NonNull boolean isDebug, @NonNull FrameNetCode.Parse pParse) {
         // 创建配置Info
         ConfigBuilder.createConfig(pConfig, isDebug, pParse);
         // 初始化File配置
@@ -88,14 +93,14 @@ public abstract class FrameApplication extends Application {
     /**
      * 获取配置详情
      */
-    public <T extends BaseConfig> T getConfig() {
+    public final <T extends BaseConfig> T getConfig() {
         return ConfigBuilder.getConfigInfo();
     }
 
     /**
      * 退出应用程序
      */
-    public void exit() {
+    public final void exit() {
         ActivityStackManager.INSTANCE.exit();
     }
 
@@ -103,7 +108,7 @@ public abstract class FrameApplication extends Application {
      * 程序发生崩溃异常时回调
      */
     @CallSuper
-    public void crashException(String projectInformation, Thread pThread, Throwable pE) {
+    public void crashException(@NonNull String projectInformation, @NonNull Thread pThread, @NonNull Throwable pE) {
         String fileName = "crash-" + DateUtils.nowDate(DateUtils.yMdHms2) + ".txt";
         StringBuffer sb = new StringBuffer();
         sb.append("项目信息============================================\n");
@@ -120,10 +125,13 @@ public abstract class FrameApplication extends Application {
         }
         Logger.file(LogTag.mk("crashException"), fileName, pE, sb.toString());
         // 内存溢出类型崩溃,生成.hprof文件
-        crashOutOfMemory(pE, fileName.replace(".txt", ".hprof"));
+        // crashOutOfMemory(pE, fileName.replace(".txt", ".hprof"));
     }
 
-    private void crashOutOfMemory(Throwable pE, String fileName) {
+    /**
+     * 保存内存溢出日志文件 - 由于文件较大,会造成app崩溃时卡顿,所以暂时关闭此功能
+     */
+    private final void crashOutOfMemory(@NonNull Throwable pE, @NonNull String fileName) {
         boolean result = false;
         if (OutOfMemoryError.class.equals(pE.getClass())) {
             result = true;

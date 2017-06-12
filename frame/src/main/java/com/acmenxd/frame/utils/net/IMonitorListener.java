@@ -1,5 +1,7 @@
 package com.acmenxd.frame.utils.net;
 
+import android.support.annotation.NonNull;
+
 /**
  * @author AcmenXD
  * @version v1.0
@@ -13,5 +15,5 @@ public interface IMonitorListener {
      *
      * @see NetStatus
      */
-    void onConnectionChange(NetStatus status);
+    void onConnectionChange(@NonNull NetStatus status);
 }

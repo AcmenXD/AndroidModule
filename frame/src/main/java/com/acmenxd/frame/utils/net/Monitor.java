@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.support.annotation.NonNull;
 
 import com.acmenxd.frame.basis.FrameApplication;
 
@@ -17,7 +18,7 @@ import java.util.ArrayList;
  * @date 2016/11/22 14:07
  * @detail 网络状态监控组件实现类
  */
-public class Monitor {
+public final class Monitor {
     private static Monitor mInstance = null;
     private Context mContext = null;
     private ConnectionChangeReceiver mConnectionChangeReceiver = null;
@@ -36,7 +37,7 @@ public class Monitor {
     /**
      * 初始化 -> BaseApplication中调用
      */
-    public static final synchronized void init() {
+    public static synchronized void init() {
         if (mInstance == null) {
             synchronized (Monitor.class) {
                 if (mInstance == null) {
@@ -67,7 +68,7 @@ public class Monitor {
         mInstance = null;
     }
 
-    private boolean mRegistListener(IMonitorListener listener) {
+    private boolean mRegistListener(@NonNull IMonitorListener listener) {
         synchronized (mListeners) {
             if ((listener != null) && !mListeners.contains(listener)) {
                 mListeners.add(listener);
@@ -78,7 +79,7 @@ public class Monitor {
         }
     }
 
-    private boolean mUnRegistListener(IMonitorListener listener) {
+    private boolean mUnRegistListener(@NonNull IMonitorListener listener) {
         synchronized (mListeners) {
             if (listener != null) {
                 return mListeners.remove(listener);
@@ -91,14 +92,14 @@ public class Monitor {
     /**
      * 注册监听
      */
-    public static boolean registListener(IMonitorListener listener) {
+    public static boolean registListener(@NonNull IMonitorListener listener) {
         return mInstance.mRegistListener(listener);
     }
 
     /**
      * 反注册
      */
-    public static boolean unRegistListener(IMonitorListener listener) {
+    public static boolean unRegistListener(@NonNull IMonitorListener listener) {
         return mInstance.mUnRegistListener(listener);
     }
 

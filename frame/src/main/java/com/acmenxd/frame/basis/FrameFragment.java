@@ -4,6 +4,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.util.SparseArray;
@@ -70,13 +74,14 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override
-        public void onConnectionChange(NetStatus status) {
+        public void onConnectionChange(@NonNull NetStatus status) {
             onNetStatusChange(status);
         }
     };
 
+    @CallSuper
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         // 获取Activity实例
         mActivity = (FrameActivity) context;
@@ -88,7 +93,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
 
     @Deprecated
     @Override
-    public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public final View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container, @NonNull Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.activity_base, container, false);
         // 获取布局容器
         mContentLayout = getView(R.id.activity_base_contentLayout);
@@ -106,6 +111,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
         return mRootView;
     }
 
+    @CallSuper
     @Override
     public void onDetach() {
         super.onDetach();
@@ -128,6 +134,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
         hideLoadingDialog();
     }
 
+    @CallSuper
     @Override
     public void onStart() {
         super.onStart();
@@ -135,8 +142,20 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
         Monitor.registListener(mNetListener);
     }
 
+    /**
+     * 此函数返回Activity&Context实例
+     * * 由mActivity统一管理,请勿调用getActivity获取
+     */
     @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
+    public final Context getContext() {
+        return mActivity;
+    }
+
+    /**
+     * ViewPagerFragment取消预加载处理
+     */
+    @Override
+    public final void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (getUserVisibleHint()) {
             viewPagerFragmentVisible = true;
@@ -156,32 +175,23 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
     }
 
     /**
-     * 此函数返回Activity&Context实例
-     * * 由mActivity统一管理,请勿调用getActivity获取
-     */
-    @Override
-    public Context getContext() {
-        return mActivity;
-    }
-
-    /**
      * Fragment取消预加载后,获取显隐状态
      */
-    public boolean isViewPagerFragmentVisible() {
+    public final boolean isViewPagerFragmentVisible() {
         return viewPagerFragmentVisible;
     }
 
     /**
      * Fragment取消预加载后,获取首次显隐状态
      */
-    public boolean isViewPagerFragmentFirstVisible() {
+    public final boolean isViewPagerFragmentFirstVisible() {
         return viewPagerFragmentFirstVisible;
     }
 
     /**
      * Fragment取消预加载后,获取显示计数
      */
-    public int getViewPagerFragmentVisibleIndex() {
+    public final int getViewPagerFragmentVisibleIndex() {
         return viewPagerFragmentVisibleIndex;
     }
     //------------------------------------子类可重写的函数
@@ -189,32 +199,37 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
     /**
      * 子类创建视图请实现此函数, 勿使用onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
      */
-    public View onCreateView(LayoutInflater inflater, Bundle savedInstanceState) {
+    @CallSuper
+    public View onCreateView(@NonNull LayoutInflater inflater, @NonNull Bundle savedInstanceState) {
         return null;
     }
 
     /**
      * Fragment取消预加载后,首次显示时回调函数
      */
+    @CallSuper
     protected void onViewPagerFragmentFirstVisible() {
     }
 
     /**
      * Fragment取消预加载后,显示时回调函数
      */
+    @CallSuper
     protected void onViewPagerFragmentVisible(int viewPagerFragmentVisibleIndex) {
     }
 
     /**
      * Fragment取消预加载后,隐藏时回调函数
      */
+    @CallSuper
     protected void onViewPagerFragmentInVisible(int viewPagerFragmentVisibleIndex) {
     }
 
     /**
      * 网络状态变换调用
      */
-    protected void onNetStatusChange(NetStatus pNetStatus) {
+    @CallSuper
+    protected void onNetStatusChange(@NonNull NetStatus pNetStatus) {
     }
     //------------------------------------子类可使用的工具函数 & 继承自IActivityFragment接口
 
@@ -230,7 +245,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 添加Subscriptions
      */
     @Override
-    public final void addSubscriptions(Subscription... pSubscriptions) {
+    public final void addSubscriptions(@NonNull Subscription... pSubscriptions) {
         getCompositeSubscription().addAll(pSubscriptions);
     }
 
@@ -238,7 +253,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 添加Presenters
      */
     @Override
-    public final void addPresenters(FramePresenter... pPresenters) {
+    public final void addPresenters(@NonNull FramePresenter... pPresenters) {
         if (pPresenters != null && pPresenters.length > 0) {
             if (mPresenters == null) {
                 mPresenters = new ArrayList<>();
@@ -278,7 +293,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      */
     @Deprecated
     @Override
-    public final void startActivity(Intent intent) {
+    public final void startActivity(@NonNull Intent intent) {
         super.startActivity(intent);
     }
 
@@ -288,7 +303,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      */
     @Deprecated
     @Override
-    public final void startActivity(Intent intent, Bundle options) {
+    public final void startActivity(@NonNull Intent intent, @NonNull Bundle options) {
         super.startActivity(intent, options);
     }
 
@@ -296,7 +311,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 启动Activity
      */
     @Override
-    public final void startActivity(Class cls) {
+    public final void startActivity(@NonNull Class cls) {
         Intent intent = new Intent(mActivity, cls);
         super.startActivity(intent);
     }
@@ -305,7 +320,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 启动Activity
      */
     @Override
-    public final void startActivity(Class cls, Bundle bundle) {
+    public final void startActivity(@NonNull Class cls, @NonNull Bundle bundle) {
         Intent intent = new Intent(mActivity, cls);
         intent.putExtras(bundle);
         super.startActivity(intent);
@@ -315,7 +330,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 启动Activity
      */
     @Override
-    public final void startActivity(Class cls, Bundle bundle, int flags) {
+    public final void startActivity(@NonNull Class cls, @NonNull Bundle bundle, int flags) {
         Intent intent = new Intent(mActivity, cls);
         intent.putExtras(bundle);
         intent.setFlags(flags);
@@ -326,7 +341,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 根据IRequest类获取Request实例
      */
     @Override
-    public final <T> T request(Class<T> pIRequest) {
+    public final <T> T request(@NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.request(pIRequest);
     }
 
@@ -335,7 +350,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 根据IRequest类获取Request实例
      */
     @Override
-    public final <T> T newRequest(Class<T> pIRequest) {
+    public final <T> T newRequest(@NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.newRequest(pIRequest);
     }
 
@@ -344,7 +359,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 根据IRequest类获取Request实例
      */
     @Override
-    public final <T> T newRequest(int connectTimeout, int readTimeout, int writeTimeout, Class<T> pIRequest) {
+    public final <T> T newRequest(int connectTimeout, int readTimeout, int writeTimeout, @NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.newRequest(connectTimeout, readTimeout, writeTimeout, pIRequest);
     }
 
@@ -358,7 +373,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      *                  2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
      */
     @Override
-    public final <T> Callback<T> newCallback(final NetCallback<T> pCallback, final boolean... setting) {
+    public final <T> Callback<T> newCallback(@NonNull final NetCallback<T> pCallback, final boolean... setting) {
         showLoadingDialogBySetting(setting);
         return new Callback<T>() {
             @Override
@@ -389,7 +404,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      *                    2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
      */
     @Override
-    public final <T> Subscriber<T> newSubscriber(final NetSubscriber<T> pSubscriber, final boolean... setting) {
+    public final <T> Subscriber<T> newSubscriber(@NonNull final NetSubscriber<T> pSubscriber, final boolean... setting) {
         showLoadingDialogBySetting(setting);
         return new Subscriber<T>() {
             @Override
@@ -489,13 +504,13 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 设置内容视图
      */
     @Override
-    public final void setContentView(int layoutResId) {
+    public final void setContentView(@LayoutRes int layoutResId) {
         View view = LayoutInflater.from(mActivity).inflate(layoutResId, null);
         setContentView(view);
     }
 
     @Override
-    public final void setContentView(View view) {
+    public final void setContentView(@NonNull View view) {
         if (view == null) {
             return;
         }
@@ -508,7 +523,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 设置加载视图
      */
     @Override
-    public final void setLoadingView(View view) {
+    public final void setLoadingView(@NonNull View view) {
         if (view == null) {
             return;
         }
@@ -521,7 +536,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 设置错误视图
      */
     @Override
-    public final void setErrorView(View view) {
+    public final void setErrorView(@NonNull View view) {
         if (view == null) {
             return;
 
@@ -635,7 +650,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 通过viewId获取控件
      */
     @Override
-    public final <T extends View> T getView(int viewId) {
+    public final <T extends View> T getView(@IdRes int viewId) {
         View view = mChildViews.get(viewId);
         if (view == null) {
             view = mRootView.findViewById(viewId);
@@ -651,7 +666,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * @return 拼接后的字符串
      */
     @Override
-    public final String appendStrs(Object... strs) {
+    public final String appendStrs(@NonNull Object... strs) {
         return Utils.appendStrs(strs);
     }
 
@@ -662,12 +677,12 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * @param end   从1开始计数(包含end)
      */
     @Override
-    public final SpannableString changeStr(String str, int start, int end, int dip, int color) {
+    public final SpannableString changeStr(@NonNull String str, int start, int end, int dip, int color) {
         return Utils.changeStr(str, start, end, dip, color);
     }
 
     @Override
-    public final SpannableString changeStr(SpannableString spannableString, int start, int end, int dip, int color) {
+    public final SpannableString changeStr(@NonNull SpannableString spannableString, int start, int end, int dip, int color) {
         return Utils.changeStr(spannableString, start, end, dip, color);
     }
 

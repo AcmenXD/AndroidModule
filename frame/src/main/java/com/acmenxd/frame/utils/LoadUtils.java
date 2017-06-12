@@ -1,5 +1,6 @@
 package com.acmenxd.frame.utils;
 
+import android.support.annotation.NonNull;
 import android.text.format.Formatter;
 
 import com.acmenxd.frame.basis.FrameApplication;
@@ -27,20 +28,21 @@ import okhttp3.ResponseBody;
  * @date 2017/3/21 15:21
  * @detail Net工具类
  */
-public class LoadUtils {
+public final class LoadUtils {
 
     //----------------------------------下载----------------------------
+
     /**
      * 下载文件保存
      */
-    public static boolean saveDownLoadFile(final ResponseBody pResponseBody, final String savePath) {
+    public static boolean saveDownLoadFile(@NonNull final ResponseBody pResponseBody, @NonNull final String savePath) {
         return saveDownLoadFile(pResponseBody, new File(savePath));
     }
 
     /**
      * 下载文件保存
      */
-    public static boolean saveDownLoadFile(final ResponseBody pResponseBody, final File saveFile) {
+    public static boolean saveDownLoadFile(@NonNull final ResponseBody pResponseBody, @NonNull final File saveFile) {
         try {
             // 创建目录
             FileUtils.createFileWithDelete(saveFile);
@@ -72,12 +74,13 @@ public class LoadUtils {
         }
     }
     //----------------------------------上传的第一种方法----------------------------
+
     /**
      * 获取String类型RequestBody集合,多用于上传数据时的描述
      *
      * @param pDataStrs 上传的参数数据
      */
-    public static Map<String, RequestBody> getDataStrs(final HashMap<String, String> pDataStrs) {
+    public static Map<String, RequestBody> getDataStrs(@NonNull final HashMap<String, String> pDataStrs) {
         Map<String, RequestBody> result = new HashMap<>();
         if (pDataStrs != null && pDataStrs.size() > 0) {
             for (Map.Entry<String, String> entry : pDataStrs.entrySet()) {
@@ -92,7 +95,7 @@ public class LoadUtils {
      *
      * @param pDataFiles 上传的文件数据
      */
-    public static List<MultipartBody.Part> getDataFiles(final File... pDataFiles) {
+    public static List<MultipartBody.Part> getDataFiles(@NonNull final File... pDataFiles) {
         List<MultipartBody.Part> result = new ArrayList<>();
         if (pDataFiles != null && pDataFiles.length > 0) {
             for (int i = 0, len = pDataFiles.length; i < len; i++) {
@@ -104,13 +107,14 @@ public class LoadUtils {
     }
 
     //----------------------------------上传的第二种方法----------------------------
+
     /**
      * 第二种上传文件的方法 -> 不推荐:可能会与Body添加公共属性的设置冲突
      *
      * @param pDataStrs  上传的参数数据
      * @param pDataFiles 上传的文件数据
      */
-    public static RequestBody getRequestBody(final HashMap<String, String> pDataStrs, final File... pDataFiles) {
+    public static RequestBody getRequestBody(@NonNull final HashMap<String, String> pDataStrs, @NonNull final File... pDataFiles) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         if (pDataStrs != null && pDataStrs.size() > 0) {
             for (Map.Entry<String, String> entry : pDataStrs.entrySet()) {

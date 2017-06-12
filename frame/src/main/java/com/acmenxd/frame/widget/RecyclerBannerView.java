@@ -1,6 +1,8 @@
 package com.acmenxd.frame.widget;
 
 import android.content.Context;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.OrientationHelper;
@@ -26,11 +28,11 @@ import java.util.TimerTask;
  * @date 2017/5/9 11:29
  * @detail 轮播组件, 用于嵌套在RecyclerView中
  */
-public class RecyclerBannerView extends RelativeLayout implements View.OnTouchListener {
+public final class RecyclerBannerView extends RelativeLayout implements View.OnTouchListener {
     public interface OnListener<T> {
-        void onClick(int position, T pData);
+        void onClick(@IntRange(from = 0) int position, @NonNull T pData);
 
-        ViewGroup getItemView(int position, T pData);
+        ViewGroup getItemView(@IntRange(from = 0) int position, @NonNull T pData);
 
         int getIndicatorResource();
     }
@@ -124,35 +126,35 @@ public class RecyclerBannerView extends RelativeLayout implements View.OnTouchLi
     /**
      * 设置监听
      */
-    public void setOnListener(OnListener pItemClickListener) {
+    public void setOnListener(@NonNull OnListener pItemClickListener) {
         this.mOnListener = pItemClickListener;
     }
 
     /**
      * 设置自动播放时间(秒),默认3秒,设置0为不自动播放
      */
-    public void setAutoDuration(int pAutoDuration) {
+    public void setAutoDuration(@IntRange(from = 0) int pAutoDuration) {
         autoDuration = pAutoDuration;
     }
 
     /**
      * 设置指示器 圆点位置 默认:Gravity.CENTER居中
      */
-    public void setIndicatorGravity(int pIndicatorGravity) {
+    public void setIndicatorGravity(@IntRange(from = 0) int pIndicatorGravity) {
         indicatorGravity = pIndicatorGravity;
     }
 
     /**
      * 设置指示器 圆点直径(dip值) 默认:defaultSize->6
      */
-    public void setIndicatorDiameterDip(int pIndicatorDiameterDip) {
+    public void setIndicatorDiameterDip(@IntRange(from = 0) int pIndicatorDiameterDip) {
         indicatorDiameterDip = (int) Utils.dp2px(mContext, pIndicatorDiameterDip);
     }
 
     /**
      * 设置指示器 圆点间距(dip值) 默认:defaultSize->6
      */
-    public void setIndicatorSpaceDip(int pIndicatorSpaceDip) {
+    public void setIndicatorSpaceDip(@IntRange(from = 0) int pIndicatorSpaceDip) {
         indicatorSpaceDip = (int) Utils.dp2px(mContext, pIndicatorSpaceDip);
     }
 
@@ -182,7 +184,7 @@ public class RecyclerBannerView extends RelativeLayout implements View.OnTouchLi
     /**
      * 设置数据
      */
-    public void setDataCommit(List<?> pDatas) {
+    public void setDataCommit(@NonNull List<?> pDatas) {
         if (pDatas == null || pDatas.size() <= 0) {
             return;
         }
@@ -246,7 +248,7 @@ public class RecyclerBannerView extends RelativeLayout implements View.OnTouchLi
         indicatorViews.get(currPosition).setSelected(true);
     }
 
-    class BannerAdapter extends PagerAdapter {
+    final class BannerAdapter extends PagerAdapter {
         private int realCount;
         private int count;
 

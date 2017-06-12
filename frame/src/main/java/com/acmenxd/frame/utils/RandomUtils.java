@@ -9,7 +9,7 @@ import java.util.Random;
  * @date 2016/12/27 14:31
  * @detail 随机工具类
  */
-public class RandomUtils {
+public final class RandomUtils {
 
     /**
      * 获取一个随机数

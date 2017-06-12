@@ -1,6 +1,7 @@
 package com.acmenxd.frame.widget;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
@@ -15,7 +16,7 @@ import com.acmenxd.frame.R;
  * @date 2017/5/5 15:15
  * @detail 顶部标题栏
  */
-public class TitleView extends FrameLayout {
+public final class TitleView extends FrameLayout {
     private FrameLayout mBack;
     private TextView mTitle;
 
@@ -59,11 +60,11 @@ public class TitleView extends FrameLayout {
         mTitle.setVisibility(GONE);
     }
 
-    public void setTitle(String pTitleStr) {
+    public void setTitle(@NonNull String pTitleStr) {
         mTitle.setText(pTitleStr);
     }
 
-    public void setBackLisener(OnClickListener pListener) {
+    public void setBackLisener(@NonNull OnClickListener pListener) {
         mBack.setOnClickListener(pListener);
     }
 }

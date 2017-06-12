@@ -1,5 +1,8 @@
 package com.acmenxd.frame.basis;
 
+import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
+
 import com.acmenxd.frame.utils.net.IMonitorListener;
 import com.acmenxd.frame.utils.net.Monitor;
 import com.acmenxd.frame.utils.net.NetStatus;
@@ -31,7 +34,7 @@ public abstract class FrameModel {
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override
-        public void onConnectionChange(NetStatus status) {
+        public void onConnectionChange(@NonNull NetStatus status) {
             onNetStatusChange(status);
         }
     };
@@ -39,7 +42,7 @@ public abstract class FrameModel {
     /**
      * 构造器,传入FramePresenter实例
      */
-    public FrameModel(FramePresenter pFramePresenter) {
+    public FrameModel(@NonNull FramePresenter pFramePresenter) {
         mFramePresenter = pFramePresenter;
         // 初始化容器
         mSubscription = getCompositeSubscription();
@@ -50,6 +53,7 @@ public abstract class FrameModel {
     /**
      * mView销毁时回调
      */
+    @CallSuper
     public void unSubscribe() {
         // 网络监控反注册
         Monitor.unRegistListener(mNetListener);
@@ -65,7 +69,8 @@ public abstract class FrameModel {
     /**
      * 网络状态变换调用
      */
-    protected void onNetStatusChange(NetStatus pNetStatus) {
+    @CallSuper
+    protected void onNetStatusChange(@NonNull NetStatus pNetStatus) {
     }
     //------------------------------------工具函数
 
@@ -79,7 +84,7 @@ public abstract class FrameModel {
     /**
      * 添加Subscriptions
      */
-    public final void addSubscriptions(Subscription... pSubscriptions) {
+    public final void addSubscriptions(@NonNull Subscription... pSubscriptions) {
         getCompositeSubscription().addAll(pSubscriptions);
     }
 
@@ -96,7 +101,7 @@ public abstract class FrameModel {
     /**
      * 根据IRequest类获取Request实例
      */
-    public final <T> T request(Class<T> pIRequest) {
+    public final <T> T request(@NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.request(pIRequest);
     }
 
@@ -104,7 +109,7 @@ public abstract class FrameModel {
      * 创建新的Retrofit实例
      * 根据IRequest类获取Request实例
      */
-    public final <T> T newRequest(Class<T> pIRequest) {
+    public final <T> T newRequest(@NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.newRequest(pIRequest);
     }
 
@@ -112,7 +117,7 @@ public abstract class FrameModel {
      * 创建新的Retrofit实例,并设置超时时间
      * 根据IRequest类获取Request实例
      */
-    public final <T> T newRequest(int connectTimeout, int readTimeout, int writeTimeout, Class<T> pIRequest) {
+    public final <T> T newRequest(int connectTimeout, int readTimeout, int writeTimeout, @NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.newRequest(connectTimeout, readTimeout, writeTimeout, pIRequest);
     }
 
@@ -125,7 +130,7 @@ public abstract class FrameModel {
      *                  1.isCancelable(是否可以通过点击Back键取消)(默认true)
      *                  2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
      */
-    public final <T> Callback<T> newCallback(final NetCallback<T> pCallback, final boolean... setting) {
+    public final <T> Callback<T> newCallback(@NonNull final NetCallback<T> pCallback, final boolean... setting) {
         if (mFramePresenter != null) {
             mFramePresenter.mView.showLoadingDialogBySetting(setting);
         }
@@ -161,7 +166,7 @@ public abstract class FrameModel {
      *                    1.isCancelable(是否可以通过点击Back键取消)(默认true)
      *                    2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
      */
-    public final <T> Subscriber<T> newSubscriber(final NetSubscriber<T> pSubscriber, final boolean... setting) {
+    public final <T> Subscriber<T> newSubscriber(@NonNull final NetSubscriber<T> pSubscriber, final boolean... setting) {
         if (mFramePresenter != null) {
             mFramePresenter.mView.showLoadingDialogBySetting(setting);
         }

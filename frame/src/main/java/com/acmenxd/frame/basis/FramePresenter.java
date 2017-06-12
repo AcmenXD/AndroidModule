@@ -1,5 +1,8 @@
 package com.acmenxd.frame.basis;
 
+import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
+
 import com.acmenxd.frame.utils.net.IMonitorListener;
 import com.acmenxd.frame.utils.net.Monitor;
 import com.acmenxd.frame.utils.net.NetStatus;
@@ -36,7 +39,7 @@ public abstract class FramePresenter<T extends IBView> {
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override
-        public void onConnectionChange(NetStatus status) {
+        public void onConnectionChange(@NonNull NetStatus status) {
             onNetStatusChange(status);
         }
     };
@@ -44,7 +47,7 @@ public abstract class FramePresenter<T extends IBView> {
     /**
      * 构造器,传入BaseView实例
      */
-    public FramePresenter(T pView) {
+    public FramePresenter(@NonNull T pView) {
         mView = pView;
         // 初始化容器
         mSubscription = getCompositeSubscription();
@@ -56,6 +59,7 @@ public abstract class FramePresenter<T extends IBView> {
     /**
      * mView销毁时回调
      */
+    @CallSuper
     public void unSubscribe() {
         // 网络监控反注册
         Monitor.unRegistListener(mNetListener);
@@ -78,7 +82,8 @@ public abstract class FramePresenter<T extends IBView> {
     /**
      * 网络状态变换调用
      */
-    protected void onNetStatusChange(NetStatus pNetStatus) {
+    @CallSuper
+    protected void onNetStatusChange(@NonNull NetStatus pNetStatus) {
     }
     //------------------------------------工具函数
 
@@ -92,14 +97,14 @@ public abstract class FramePresenter<T extends IBView> {
     /**
      * 添加Subscriptions
      */
-    public final void addSubscriptions(Subscription... pSubscriptions) {
+    public final void addSubscriptions(@NonNull Subscription... pSubscriptions) {
         getCompositeSubscription().addAll(pSubscriptions);
     }
 
     /**
      * 添加Models
      */
-    public final void addModels(FrameModel... pModels) {
+    public final void addModels(@NonNull FrameModel... pModels) {
         if (pModels != null && pModels.length > 0) {
             if (mModels == null) {
                 mModels = new ArrayList<>();
@@ -123,7 +128,7 @@ public abstract class FramePresenter<T extends IBView> {
     /**
      * 根据IRequest类获取Request实例
      */
-    public final <E> E request(Class<E> pIRequest) {
+    public final <E> E request(@NonNull Class<E> pIRequest) {
         return NetManager.INSTANCE.request(pIRequest);
     }
 
@@ -131,7 +136,7 @@ public abstract class FramePresenter<T extends IBView> {
      * 创建新的Retrofit实例
      * 根据IRequest类获取Request实例
      */
-    public final <E> E newRequest(Class<E> pIRequest) {
+    public final <E> E newRequest(@NonNull Class<E> pIRequest) {
         return NetManager.INSTANCE.newRequest(pIRequest);
     }
 
@@ -139,7 +144,7 @@ public abstract class FramePresenter<T extends IBView> {
      * 创建新的Retrofit实例,并设置超时时间
      * 根据IRequest类获取Request实例
      */
-    public final <E> E newRequest(int connectTimeout, int readTimeout, int writeTimeout, Class<E> pIRequest) {
+    public final <E> E newRequest(int connectTimeout, int readTimeout, int writeTimeout, @NonNull Class<E> pIRequest) {
         return NetManager.INSTANCE.newRequest(connectTimeout, readTimeout, writeTimeout, pIRequest);
     }
 
@@ -152,7 +157,7 @@ public abstract class FramePresenter<T extends IBView> {
      *                  1.isCancelable(是否可以通过点击Back键取消)(默认true)
      *                  2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
      */
-    public final <E> Callback<E> newCallback(final NetCallback<E> pCallback, final boolean... setting) {
+    public final <E> Callback<E> newCallback(@NonNull final NetCallback<E> pCallback, final boolean... setting) {
         mView.showLoadingDialogBySetting(setting);
         return new Callback<E>() {
             @Override
@@ -182,7 +187,7 @@ public abstract class FramePresenter<T extends IBView> {
      *                    1.isCancelable(是否可以通过点击Back键取消)(默认true)
      *                    2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
      */
-    public final <E> Subscriber<E> newSubscriber(final NetSubscriber<E> pSubscriber, final boolean... setting) {
+    public final <E> Subscriber<E> newSubscriber(@NonNull final NetSubscriber<E> pSubscriber, final boolean... setting) {
         mView.showLoadingDialogBySetting(setting);
         return new Subscriber<E>() {
             @Override
