@@ -1,7 +1,10 @@
 package com.acmenxd.frame.basis;
 
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.FloatRange;
 import android.support.annotation.IdRes;
+import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.text.SpannableString;
@@ -85,7 +88,7 @@ public interface IActivityFragment {
      * 创建新的Retrofit实例,并设置超时时间
      * 根据IRequest类获取Request实例
      */
-    <T> T newRequest(int connectTimeout, int readTimeout, int writeTimeout, @NonNull Class<T> pIRequest);
+    <T> T newRequest(@IntRange(from = 0) int connectTimeout, @IntRange(from = 0) int readTimeout, @IntRange(from = 0) int writeTimeout, @NonNull Class<T> pIRequest);
 
     /**
      * 统一处理因异步导致的 Activity|Fragment销毁时发生NullPointerException问题
@@ -220,27 +223,27 @@ public interface IActivityFragment {
      * @param start 从0开始计数(包含start)
      * @param end   从1开始计数(包含end)
      */
-    SpannableString changeStr(@NonNull String str, int start, int end, int dip, int color);
+    SpannableString changeStr(@NonNull String str, @IntRange(from = 0) int start, @IntRange(from = 0) int end, @IntRange(from = 0) int dip, @ColorInt int color);
 
-    SpannableString changeStr(@NonNull SpannableString spannableString, int start, int end, int dip, int color);
+    SpannableString changeStr(@NonNull SpannableString spannableString, @IntRange(from = 0) int start, @IntRange(from = 0) int end, @IntRange(from = 0) int dip, @ColorInt int color);
 
     /**
      * 根据手机的分辨率从 dp 的单位转成 px(像素)
      */
-    float dp2px(float dp);
+    float dp2px(@FloatRange(from = 0) float dp);
 
     /**
      * 根据手机的分辨率从 px(像素)的单位转成 dp
      */
-    float px2dp(float px);
+    float px2dp(@FloatRange(from = 0) float px);
 
     /**
      * 根据手机的分辨率从 sp 的单位转成 px(像素)
      */
-    float sp2px(float sp);
+    float sp2px(@FloatRange(from = 0) float sp);
 
     /**
      * 根据手机的分辨率从 px(像素)的单位转成 sp
      */
-    float px2sp(float px);
+    float px2sp(@FloatRange(from = 0) float px);
 }

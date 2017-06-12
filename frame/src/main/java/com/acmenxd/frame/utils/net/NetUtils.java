@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkInfo;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
 
@@ -167,7 +168,7 @@ public final class NetUtils {
     /**
      * 根据网络基本类型, 获取当前网络状态
      */
-    private static NetStatus getNetStatus(int networkType) {
+    private static NetStatus getNetStatus(@IntRange(from = -1) int networkType) {
         switch (networkType) {
             case NETWORK_TYPE_WIFI:
                 return NetStatus.Wifi;

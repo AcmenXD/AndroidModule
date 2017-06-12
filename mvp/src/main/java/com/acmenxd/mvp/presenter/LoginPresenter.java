@@ -1,10 +1,10 @@
 package com.acmenxd.mvp.presenter;
 
+import com.acmenxd.mvp.base.BasePresenter;
+import com.acmenxd.mvp.model.response.TestEntity;
 import com.acmenxd.retrofit.NetEntity;
 import com.acmenxd.retrofit.callback.NetCallback;
 import com.acmenxd.retrofit.exception.NetException;
-import com.acmenxd.mvp.base.BasePresenter;
-import com.acmenxd.mvp.model.response.TestEntity;
 
 /**
  * @author AcmenXD

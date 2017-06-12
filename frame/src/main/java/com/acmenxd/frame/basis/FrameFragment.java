@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.ColorInt;
+import android.support.annotation.FloatRange;
 import android.support.annotation.IdRes;
+import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -215,14 +218,14 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * Fragment取消预加载后,显示时回调函数
      */
     @CallSuper
-    protected void onViewPagerFragmentVisible(int viewPagerFragmentVisibleIndex) {
+    protected void onViewPagerFragmentVisible(@IntRange(from = 0) int viewPagerFragmentVisibleIndex) {
     }
 
     /**
      * Fragment取消预加载后,隐藏时回调函数
      */
     @CallSuper
-    protected void onViewPagerFragmentInVisible(int viewPagerFragmentVisibleIndex) {
+    protected void onViewPagerFragmentInVisible(@IntRange(from = 0) int viewPagerFragmentVisibleIndex) {
     }
 
     /**
@@ -359,7 +362,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 根据IRequest类获取Request实例
      */
     @Override
-    public final <T> T newRequest(int connectTimeout, int readTimeout, int writeTimeout, @NonNull Class<T> pIRequest) {
+    public final <T> T newRequest(@IntRange(from = 0) int connectTimeout, @IntRange(from = 0) int readTimeout, @IntRange(from = 0) int writeTimeout, @NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.newRequest(connectTimeout, readTimeout, writeTimeout, pIRequest);
     }
 
@@ -677,12 +680,12 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * @param end   从1开始计数(包含end)
      */
     @Override
-    public final SpannableString changeStr(@NonNull String str, int start, int end, int dip, int color) {
+    public final SpannableString changeStr(@NonNull String str, @IntRange(from = 0) int start, @IntRange(from = 0) int end, @IntRange(from = 0) int dip, @ColorInt int color) {
         return Utils.changeStr(str, start, end, dip, color);
     }
 
     @Override
-    public final SpannableString changeStr(@NonNull SpannableString spannableString, int start, int end, int dip, int color) {
+    public final SpannableString changeStr(@NonNull SpannableString spannableString, @IntRange(from = 0) int start, @IntRange(from = 0) int end, @IntRange(from = 0) int dip, @ColorInt int color) {
         return Utils.changeStr(spannableString, start, end, dip, color);
     }
 
@@ -690,7 +693,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 根据手机的分辨率从 dp 的单位转成 px(像素)
      */
     @Override
-    public final float dp2px(float dp) {
+    public final float dp2px(@FloatRange(from = 0) float dp) {
         return Utils.dp2px(mActivity, dp);
     }
 
@@ -698,7 +701,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 根据手机的分辨率从 px(像素)的单位转成 dp
      */
     @Override
-    public final float px2dp(float px) {
+    public final float px2dp(@FloatRange(from = 0) float px) {
         return Utils.px2dp(mActivity, px);
     }
 
@@ -706,7 +709,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 根据手机的分辨率从 sp 的单位转成 px(像素)
      */
     @Override
-    public final float sp2px(float sp) {
+    public final float sp2px(@FloatRange(from = 0) float sp) {
         return Utils.sp2px(mActivity, sp);
     }
 
@@ -714,7 +717,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
      * 根据手机的分辨率从 px(像素)的单位转成 sp
      */
     @Override
-    public final float px2sp(float px) {
+    public final float px2sp(@FloatRange(from = 0) float px) {
         return Utils.px2sp(mActivity, px);
     }
 

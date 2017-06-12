@@ -14,6 +14,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
+import android.support.annotation.FloatRange;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.RawRes;
 import android.text.TextUtils;
@@ -85,7 +87,7 @@ public final class BitmapUtils {
      * @param format   图片格式 (默认 PNG 格式)
      * @param quality  图片质量 0 - 100,如<=0,则默认为100
      */
-    public static void saveBitmap(@NonNull Bitmap pBitmap, @NonNull File savePath, @NonNull Bitmap.CompressFormat format, int quality) {
+    public static void saveBitmap(@NonNull Bitmap pBitmap, @NonNull File savePath, @NonNull Bitmap.CompressFormat format, @IntRange(from = 0) int quality) {
         if (format == null) {
             format = Bitmap.CompressFormat.PNG;
         }
@@ -107,7 +109,7 @@ public final class BitmapUtils {
      * 读取本地图片,如图片宽高大于指定宽高,会自动按比例缩放
      * 如width<=0 或 height <=0 则不进行缩放
      */
-    public static Bitmap readBitmap(@NonNull String file, int width, int height) {
+    public static Bitmap readBitmap(@NonNull String file, @IntRange(from = 0) int width, @IntRange(from = 0) int height) {
         try {
             FileInputStream fis = new FileInputStream(file);
             BitmapFactory.Options options = new BitmapFactory.Options();
@@ -137,7 +139,7 @@ public final class BitmapUtils {
      * 读取流图片,如图片宽高大于指定宽高,会自动按比例缩放
      * 如width<=0 或 height <=0 则不进行缩放
      */
-    public static Bitmap readBitmap(@NonNull InputStream ins, int width, int height) {
+    public static Bitmap readBitmap(@NonNull InputStream ins, @IntRange(from = 0) int width, @IntRange(from = 0) int height) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         int inSampleSize = 1;
         if (width > 0 && height > 0) {
@@ -162,7 +164,7 @@ public final class BitmapUtils {
      * 读取资源图片,如图片宽高大于指定宽高,会自动按比例缩放
      * 如width<=0 或 height <=0 则不进行缩放
      */
-    public static Bitmap readBitmap(@NonNull Resources resources, @RawRes int resourcesId, int width, int height) {
+    public static Bitmap readBitmap(@NonNull Resources resources, @RawRes int resourcesId, @IntRange(from = 0) int width, @IntRange(from = 0) int height) {
         InputStream ins = resources.openRawResource(resourcesId);
         BitmapFactory.Options options = new BitmapFactory.Options();
         int inSampleSize = 1;
@@ -189,7 +191,7 @@ public final class BitmapUtils {
      * 如width<=0 或 height <=0 则不进行缩放
      * * 此方式较耗费内存,建议使用上面的函数
      */
-    public static Bitmap readBitmapFromResources(@NonNull Resources resources, @RawRes int resourcesId, int width, int height) {
+    public static Bitmap readBitmapFromResources(@NonNull Resources resources, @RawRes int resourcesId, @IntRange(from = 0) int width, @IntRange(from = 0) int height) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         int inSampleSize = 1;
         if (width > 0 && height > 0) {
@@ -214,7 +216,7 @@ public final class BitmapUtils {
      * 读取二进制图片,如图片宽高大于指定宽高,会自动按比例缩放
      * 如width<=0 或 height <=0 则不进行缩放
      */
-    public static Bitmap readBitmap(@NonNull byte[] data, int width, int height) {
+    public static Bitmap readBitmap(@NonNull byte[] data, @IntRange(from = 0) int width, @IntRange(from = 0) int height) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         int inSampleSize = 1;
         if (width > 0 && height > 0) {
@@ -254,7 +256,7 @@ public final class BitmapUtils {
     /**
      * 图片压缩
      */
-    public static Bitmap compressImage(@NonNull Bitmap pBitmap, @NonNull Bitmap.CompressFormat format, int quality) {
+    public static Bitmap compressImage(@NonNull Bitmap pBitmap, @NonNull Bitmap.CompressFormat format, @IntRange(from = 0) int quality) {
         if (pBitmap == null) {
             return null;
         }
@@ -287,7 +289,7 @@ public final class BitmapUtils {
     /**
      * 图片等比缩放
      */
-    public static Bitmap scaleBitmap(@NonNull Bitmap pBitmap, float scale) {
+    public static Bitmap scaleBitmap(@NonNull Bitmap pBitmap, @FloatRange(from = 0) float scale) {
         Matrix matrix = new Matrix();
         matrix.postScale(scale, scale);
         return Bitmap.createBitmap(pBitmap, 0, 0, pBitmap.getWidth(), pBitmap.getHeight(), matrix, true);
@@ -296,7 +298,7 @@ public final class BitmapUtils {
     /**
      * 图片旋转
      */
-    private static Bitmap rotateBitmap(@NonNull Bitmap pBitmap, float rotateDegree) {
+    private static Bitmap rotateBitmap(@NonNull Bitmap pBitmap, @FloatRange(from = 0) float rotateDegree) {
         if (pBitmap == null) {
             return null;
         }
@@ -335,7 +337,7 @@ public final class BitmapUtils {
     /**
      * Bitmap转二进制
      */
-    public static byte[] bitmapToBytes(@NonNull Bitmap pBitmap, @NonNull Bitmap.CompressFormat format, int quality) {
+    public static byte[] bitmapToBytes(@NonNull Bitmap pBitmap, @NonNull Bitmap.CompressFormat format, @IntRange(from = 0) int quality) {
         if (pBitmap == null) {
             return null;
         }

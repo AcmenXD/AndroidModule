@@ -1,6 +1,7 @@
 package com.acmenxd.frame.utils;
 
 
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import java.text.ParseException;
@@ -58,7 +59,7 @@ public final class DateUtils {
     /**
      * 日期格式转换 : long(毫秒) -> 2016-12-15 16:10:10 (formatStr)
      */
-    public static String dateFormat(long date, @NonNull String formatStr) {
+    public static String dateFormat(@IntRange(from = 0) long date, @NonNull String formatStr) {
         return new SimpleDateFormat(formatStr).format(new Date(date));
     }
 
@@ -93,7 +94,7 @@ public final class DateUtils {
     /**
      * 日期格式转换 : long(毫秒) -> int[]{year,month,day,hour,minute,second}
      */
-    public static int[] splitTime(long pTime) {
+    public static int[] splitTime(@IntRange(from = 0) long pTime) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date(pTime));
         int second = calendar.get(Calendar.SECOND);
@@ -121,7 +122,7 @@ public final class DateUtils {
      *
      * @return int[]{year,month,day,hour,minute,second}
      */
-    public static int[] gapSplitTime(long pTime1, long pTime2) {
+    public static int[] gapSplitTime(@IntRange(from = 0) long pTime1, @IntRange(from = 0) long pTime2) {
         int[] time = splitTime(pTime1);
         int[] time2 = splitTime(pTime2);
         int year = time[0] - time2[0];
@@ -174,7 +175,7 @@ public final class DateUtils {
      * 两个参数不分先后,总是时间大的-时间小的
      * 1年前/2月前/3天前/4小时前/5分钟前/刚刚
      */
-    public static String gapTimeStr(long pTime1, long pTime2) {
+    public static String gapTimeStr(@IntRange(from = 0) long pTime1, @IntRange(from = 0) long pTime2) {
         StringBuilder sb = new StringBuilder();
         int[] time = gapSplitTime(pTime1, pTime2);
         int year = time[0];
@@ -210,11 +211,11 @@ public final class DateUtils {
         return isLeapYear(timeFormat(timeStr, yMdHms));
     }
 
-    public static boolean isLeapYear(long date) {
+    public static boolean isLeapYear(@IntRange(from = 0) long date) {
         return isLeapYear(Integer.parseInt(dateFormat(date, DateUtils.yyyy)));
     }
 
-    public static boolean isLeapYear(int year) {
+    public static boolean isLeapYear(@IntRange(from = 1970) int year) {
         if ((year % 400) == 0) {
             return true;
         } else if ((year % 100) != 0 && (year % 4) == 0) {

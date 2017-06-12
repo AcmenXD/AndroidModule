@@ -1,6 +1,7 @@
 package com.acmenxd.frame.basis;
 
 import android.support.annotation.CallSuper;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import com.acmenxd.frame.utils.net.IMonitorListener;
@@ -144,7 +145,7 @@ public abstract class FramePresenter<T extends IBView> {
      * 创建新的Retrofit实例,并设置超时时间
      * 根据IRequest类获取Request实例
      */
-    public final <E> E newRequest(int connectTimeout, int readTimeout, int writeTimeout, @NonNull Class<E> pIRequest) {
+    public final <E> E newRequest(@IntRange(from = 0) int connectTimeout, @IntRange(from = 0) int readTimeout, @IntRange(from = 0) int writeTimeout, @NonNull Class<E> pIRequest) {
         return NetManager.INSTANCE.newRequest(connectTimeout, readTimeout, writeTimeout, pIRequest);
     }
 

@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.ColorInt;
+import android.support.annotation.FloatRange;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -124,12 +127,12 @@ public final class Utils {
      * @param start 从0开始计数(包含start)
      * @param end   从1开始计数(包含end)
      */
-    public static SpannableString changeStr(@NonNull String str, int start, int end, int dip, int color) {
+    public static SpannableString changeStr(@NonNull String str, @IntRange(from = 0) int start, @IntRange(from = 0) int end, @IntRange(from = 0) int dip, @ColorInt int color) {
         SpannableString spannableString = new SpannableString(str);
         return changeStr(spannableString, start, end, dip, color);
     }
 
-    public static SpannableString changeStr(@NonNull SpannableString spannableString, int start, int end, int dip, int color) {
+    public static SpannableString changeStr(@NonNull SpannableString spannableString, @IntRange(from = 0) int start, @IntRange(from = 0) int end, @IntRange(from = 0) int dip, @ColorInt int color) {
         if (spannableString == null) {
             return new SpannableString("");
         }
@@ -150,11 +153,11 @@ public final class Utils {
     /**
      * 根据手机的分辨率从 dp 的单位转成 px(像素)
      */
-    public static float dp2px(@NonNull Context pContext, float dp) {
+    public static float dp2px(@NonNull Context pContext, @FloatRange(from = 0) float dp) {
         return dp2px(pContext.getResources(), dp);
     }
 
-    public static float dp2px(@NonNull Resources resources, float dp) {
+    public static float dp2px(@NonNull Resources resources, @FloatRange(from = 0) float dp) {
         final float scale = resources.getDisplayMetrics().density;
         return dp * scale + 0.5f;
     }
@@ -162,11 +165,11 @@ public final class Utils {
     /**
      * 根据手机的分辨率从 px(像素)的单位转成 dp
      */
-    public static float px2dp(@NonNull Context pContext, float px) {
+    public static float px2dp(@NonNull Context pContext, @FloatRange(from = 0) float px) {
         return px2dp(pContext.getResources(), px);
     }
 
-    public static float px2dp(@NonNull Resources resources, float px) {
+    public static float px2dp(@NonNull Resources resources, @FloatRange(from = 0) float px) {
         final float scale = resources.getDisplayMetrics().density;
         return px / scale + 0.5f;
     }
@@ -174,11 +177,11 @@ public final class Utils {
     /**
      * 根据手机的分辨率从 sp 的单位转成 px(像素)
      */
-    public static float sp2px(@NonNull Context pContext, float sp) {
+    public static float sp2px(@NonNull Context pContext, @FloatRange(from = 0) float sp) {
         return sp2px(pContext.getResources(), sp);
     }
 
-    public static float sp2px(@NonNull Resources resources, float sp) {
+    public static float sp2px(@NonNull Resources resources, @FloatRange(from = 0) float sp) {
         final float scale = resources.getDisplayMetrics().scaledDensity;
         return sp * scale + 0.5f;
     }
@@ -186,11 +189,11 @@ public final class Utils {
     /**
      * 根据手机的分辨率从 px(像素)的单位转成 sp
      */
-    public static float px2sp(@NonNull Context pContext, float px) {
+    public static float px2sp(@NonNull Context pContext, @FloatRange(from = 0) float px) {
         return px2sp(pContext.getResources(), px);
     }
 
-    public static float px2sp(@NonNull Resources resources, float px) {
+    public static float px2sp(@NonNull Resources resources, @FloatRange(from = 0) float px) {
         final float scale = resources.getDisplayMetrics().scaledDensity;
         return px / scale + 0.5f;
     }
