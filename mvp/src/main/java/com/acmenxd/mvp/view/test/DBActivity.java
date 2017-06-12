@@ -3,6 +3,7 @@ package com.acmenxd.mvp.view.test;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acmenxd.mvp.R;
+import com.acmenxd.mvp.base.BaseActivity;
 import com.acmenxd.mvp.db.StudentDB;
 import com.acmenxd.mvp.db.dao.StudentDao;
 import com.acmenxd.mvp.model.db.Student;
-import com.acmenxd.mvp.base.BaseActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,7 +44,7 @@ public class DBActivity extends BaseActivity {
     private Cursor mCursor;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(getBundle().getString("title"));
         setContentView(R.layout.activity_db);

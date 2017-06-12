@@ -2,6 +2,7 @@ package com.acmenxd.mvp.view.test;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ import java.util.Set;
  */
 public class SPActivity extends BaseActivity {
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(getBundle().getString("title"));
         setContentView(R.layout.activity_sp);

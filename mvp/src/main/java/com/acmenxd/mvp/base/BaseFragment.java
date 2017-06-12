@@ -1,5 +1,7 @@
 package com.acmenxd.mvp.base;
 
+import android.support.annotation.CallSuper;
+
 import com.acmenxd.frame.basis.FrameFragment;
 import com.acmenxd.mvp.net.IAllRequest;
 import com.acmenxd.retrofit.NetManager;
@@ -15,6 +17,7 @@ import org.greenrobot.eventbus.Subscribe;
  */
 public abstract class BaseFragment extends FrameFragment {
 
+    @CallSuper
     @Override
     public void onStart() {
         super.onStart();
@@ -22,6 +25,7 @@ public abstract class BaseFragment extends FrameFragment {
         EventBusHelper.register(this);
     }
 
+    @CallSuper
     @Override
     public void onDetach() {
         // EventBus事件反注册
@@ -34,7 +38,7 @@ public abstract class BaseFragment extends FrameFragment {
      * * EventBus注册时,类中必须有@Subscribe注解的函数
      */
     @Subscribe
-    public final void eventBusDefault(Object object) {
+    private final void eventBusDefault(Object object) {
     }
 
     /**
@@ -42,7 +46,7 @@ public abstract class BaseFragment extends FrameFragment {
      * * 开放重写,满足不同需求
      */
     @Override
-    public IAllRequest request() {
+    public final IAllRequest request() {
         return NetManager.INSTANCE.commonRequest(IAllRequest.class);
     }
 

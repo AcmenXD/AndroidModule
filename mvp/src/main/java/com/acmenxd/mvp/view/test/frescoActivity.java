@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Animatable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -11,13 +12,13 @@ import com.acmenxd.frame.utils.Utils;
 import com.acmenxd.frescoview.FrescoCallback;
 import com.acmenxd.frescoview.FrescoView;
 import com.acmenxd.logger.Logger;
+import com.acmenxd.mvp.R;
+import com.acmenxd.mvp.base.BaseActivity;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.image.QualityInfo;
 import com.facebook.imagepipeline.request.BasePostprocessor;
 import com.facebook.imagepipeline.request.Postprocessor;
-import com.acmenxd.mvp.R;
-import com.acmenxd.mvp.base.BaseActivity;
 
 /**
  * @author AcmenXD
@@ -32,7 +33,7 @@ public class frescoActivity extends BaseActivity {
     private FrescoView iv3;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(getBundle().getString("title"));
         setContentView(R.layout.activity_fresco);

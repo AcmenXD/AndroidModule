@@ -15,7 +15,7 @@ import com.acmenxd.mvp.db.dao.DaoSession;
  * @date 2017/2/28 10:00
  * @detail 数据库管理
  */
-public class DBManager {
+public final class DBManager {
     private final String TAG = this.getClass().getSimpleName();
     private static final String DB_NAME = AppConfig.config.DB_NAME; //数据库名字
     private static DBManager instance;
@@ -43,7 +43,7 @@ public class DBManager {
     /**
      * 初始化数据库
      */
-    public final void init() {
+    public void init() {
         if (!mInited || mContext == null) {
             this.mContext = BaseApplication.instance().getApplicationContext();
             mOpenHelper = new DBOpenHelper(mContext, DB_NAME, null);

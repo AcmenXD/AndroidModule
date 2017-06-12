@@ -13,7 +13,7 @@ import com.acmenxd.retrofit.exception.NetExceptionUnknownCode;
  * @date 2017/3/10 9:50
  * @detail 统一处理服务器响应的code和msg
  */
-public final class NetCode extends FrameNetCode.Parse{
+public final class NetCode extends FrameNetCode.Parse {
     /**
      * 默认ToastMsg提示消息
      */
@@ -31,7 +31,7 @@ public final class NetCode extends FrameNetCode.Parse{
      * @param msg  服务器返回的msg消息
      * @return 返回生成的Exception
      */
-    public final synchronized NetException parseNetCode(final int code, final String msg) {
+    public synchronized NetException parseNetCode(final int code, final String msg) {
         NetException netException = null;
         switch (code) {
             /**

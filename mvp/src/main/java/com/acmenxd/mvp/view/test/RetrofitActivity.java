@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -12,6 +13,12 @@ import com.acmenxd.frame.utils.LoadUtils;
 import com.acmenxd.frame.utils.RxUtils;
 import com.acmenxd.frame.utils.Utils;
 import com.acmenxd.logger.Logger;
+import com.acmenxd.mvp.R;
+import com.acmenxd.mvp.base.BaseActivity;
+import com.acmenxd.mvp.model.response.TestEntity;
+import com.acmenxd.mvp.net.IDownloadRequest;
+import com.acmenxd.mvp.net.IUploadRequest;
+import com.acmenxd.mvp.net.NetCode;
 import com.acmenxd.retrofit.NetCodeUtils;
 import com.acmenxd.retrofit.NetEntity;
 import com.acmenxd.retrofit.callback.NetCallback;
@@ -20,12 +27,6 @@ import com.acmenxd.retrofit.exception.NetException;
 import com.acmenxd.retrofit.exception.NetExceptionFail;
 import com.acmenxd.retrofit.exception.NetExceptionSuccess;
 import com.acmenxd.retrofit.exception.NetExceptionUnknownCode;
-import com.acmenxd.mvp.R;
-import com.acmenxd.mvp.base.BaseActivity;
-import com.acmenxd.mvp.model.response.TestEntity;
-import com.acmenxd.mvp.net.IDownloadRequest;
-import com.acmenxd.mvp.net.IUploadRequest;
-import com.acmenxd.mvp.net.NetCode;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +50,7 @@ public class RetrofitActivity extends BaseActivity {
     private TestEntity mTestResponse;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(getBundle().getString("title"));
         setContentView(R.layout.activity_retrofit);

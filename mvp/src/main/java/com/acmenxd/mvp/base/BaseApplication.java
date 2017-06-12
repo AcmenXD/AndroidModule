@@ -1,5 +1,7 @@
 package com.acmenxd.mvp.base;
 
+import android.support.annotation.NonNull;
+
 import com.acmenxd.frame.basis.FrameApplication;
 import com.acmenxd.frame.configs.MvpConfig;
 import com.acmenxd.logger.Logger;
@@ -50,7 +52,7 @@ public final class BaseApplication extends FrameApplication {
     }
 
     @Override
-    public void crashException(String projectInformation, Thread pThread, Throwable pE) {
+    public void crashException(@NonNull String projectInformation, @NonNull Thread pThread, @NonNull Throwable pE) {
         StringBuffer sb = new StringBuffer();
         sb.append("Debug").append(" = ").append(AppConfig.DEBUG).append("\n");
         sb.append("Imei").append(" = ").append(AppConfig.IMEI).append("\n");

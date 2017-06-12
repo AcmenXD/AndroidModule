@@ -1,5 +1,7 @@
 package com.acmenxd.mvp.db.migrator;
 
+import android.support.annotation.NonNull;
+
 /**
  * @author AcmenXD
  * @version v1.0
@@ -15,7 +17,7 @@ public interface DefaultCallback {
      * @param tablename  表名
      * @param columnName 要设置的字段名
      */
-    String onText(String tablename, String columnName);
+    String onText(@NonNull String tablename, @NonNull String columnName);
 
     /**
      * 更新整形类型的数据库字段
@@ -24,7 +26,7 @@ public interface DefaultCallback {
      * @param tablename  表名
      * @param columnName 要设置的字段名
      */
-    Long onInteger(String tablename, String columnName);
+    Long onInteger(@NonNull String tablename, @NonNull String columnName);
 
     /**
      * 更新浮点类型的数据库字段
@@ -33,7 +35,7 @@ public interface DefaultCallback {
      * @param tablename  表名
      * @param columnName 要设置的字段名
      */
-    Double onReal(String tablename, String columnName);
+    Double onReal(@NonNull String tablename, @NonNull String columnName);
 
     /**
      * 更新布尔类型的数据库字段
@@ -42,6 +44,6 @@ public interface DefaultCallback {
      * @param tablename  表名
      * @param columnName 要设置的字段名
      */
-    Boolean onBoolean(String tablename, String columnName);
+    Boolean onBoolean(@NonNull String tablename, @NonNull String columnName);
 
 }

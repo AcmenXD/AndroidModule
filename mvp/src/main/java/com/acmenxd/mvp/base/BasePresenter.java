@@ -1,5 +1,8 @@
 package com.acmenxd.mvp.base;
 
+import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
+
 import com.acmenxd.frame.basis.FramePresenter;
 import com.acmenxd.frame.basis.IBView;
 import com.acmenxd.mvp.net.IAllRequest;
@@ -20,7 +23,7 @@ public abstract class BasePresenter<T extends IBView> extends FramePresenter<T> 
      *
      * @param pView
      */
-    public BasePresenter(T pView) {
+    public BasePresenter(@NonNull T pView) {
         super(pView);
         // EventBus事件注册
         EventBusHelper.register(this);
@@ -29,6 +32,7 @@ public abstract class BasePresenter<T extends IBView> extends FramePresenter<T> 
     /**
      * mView销毁时回调
      */
+    @CallSuper
     public final void unSubscribe() {
         // EventBus事件反注册
         EventBusHelper.unregister(this);
@@ -40,14 +44,14 @@ public abstract class BasePresenter<T extends IBView> extends FramePresenter<T> 
      * * EventBus注册时,类中必须有@Subscribe注解的函数
      */
     @Subscribe
-    public final void eventBusDefault(Object object) {
+    private final void eventBusDefault(Object object) {
     }
 
     /**
      * 获取IAllRequest实例
      * * 开放重写,满足不同需求
      */
-    public IAllRequest request() {
+    public final IAllRequest request() {
         return NetManager.INSTANCE.commonRequest(IAllRequest.class);
     }
 

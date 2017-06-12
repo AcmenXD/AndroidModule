@@ -2,6 +2,7 @@ package com.acmenxd.mvp.view.test;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
@@ -61,7 +62,7 @@ public class RecyclerActivity extends BaseActivity {
     private MultiItemTypeAdapter mAdapter;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(getBundle().getString("title"));
         setContentView(R.layout.activity_recycler);

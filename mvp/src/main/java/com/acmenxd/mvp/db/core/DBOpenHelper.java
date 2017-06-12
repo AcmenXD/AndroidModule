@@ -2,11 +2,12 @@ package com.acmenxd.mvp.db.core;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.db.dao.DaoMaster;
 import com.acmenxd.mvp.db.migrator.BaseMigratorHelper;
-import com.acmenxd.mvp.db.migrator.MigratorHelper1;
 
 import org.greenrobot.greendao.database.Database;
 
@@ -17,10 +18,10 @@ import org.greenrobot.greendao.database.Database;
  * @date 2017/2/28 10:00
  * @detail 数据库升级
  */
-public class DBOpenHelper extends DaoMaster.OpenHelper {
+public final class DBOpenHelper extends DaoMaster.OpenHelper {
     private final String TAG = this.getClass().getSimpleName();
 
-    public DBOpenHelper(Context context, String dbName, SQLiteDatabase.CursorFactory factory) {
+    public DBOpenHelper(@NonNull Context context, @NonNull String dbName, @Nullable SQLiteDatabase.CursorFactory factory) {
         super(context, dbName, factory);
     }
 
@@ -44,8 +45,6 @@ public class DBOpenHelper extends DaoMaster.OpenHelper {
                     Logger.e(pE);
                 }
             }
-            MigratorHelper1 helper1 = new MigratorHelper1();
-            helper1.toString();
         }
     }
 }

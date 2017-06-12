@@ -2,6 +2,7 @@ package com.acmenxd.mvp.view.test;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,7 +24,7 @@ import java.io.IOException;
  */
 public class FileActivity extends BaseActivity {
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(getBundle().getString("title"));
         setContentView(R.layout.activity_file);
@@ -54,7 +55,7 @@ public class FileActivity extends BaseActivity {
             // 移动文件
             FileUtils.moveFile(new File(FileUtils.apkSaveDirPath + "move.txt"), new File(FileUtils.apkSaveDirPath + "move/move_finish.txt"), true);
             // 拷贝文件
-            FileUtils.copyFile(new File(FileUtils.apkSaveDirPath + "copy.txt"),new File(FileUtils.apkSaveDirPath + "copy/copy_finish.txt"),true);
+            FileUtils.copyFile(new File(FileUtils.apkSaveDirPath + "copy.txt"), new File(FileUtils.apkSaveDirPath + "copy/copy_finish.txt"), true);
         } catch (IOException pE) {
             Logger.e(pE);
         }

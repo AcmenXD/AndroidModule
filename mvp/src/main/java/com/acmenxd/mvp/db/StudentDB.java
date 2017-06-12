@@ -2,11 +2,15 @@ package com.acmenxd.mvp.db;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.FloatRange;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 
+import com.acmenxd.mvp.db.core.DBManager;
 import com.acmenxd.mvp.db.dao.DaoSession;
 import com.acmenxd.mvp.db.dao.StudentDao;
 import com.acmenxd.mvp.model.db.Student;
-import com.acmenxd.mvp.db.core.DBManager;
+
 import org.greenrobot.greendao.query.Query;
 
 import java.util.Date;
@@ -19,7 +23,7 @@ import java.util.List;
  * @date 2017/2/28 10:00
  * @detail 数据库操作工具类
  */
-public class StudentDB {
+public final class StudentDB {
     private static StudentDB instance;
     private SQLiteDatabase db;
     private DaoSession ds;
@@ -53,7 +57,7 @@ public class StudentDB {
     /**
      * 添加学生
      */
-    public void addStudent(String name, int age, double score) {
+    public void addStudent(@NonNull String name, @IntRange(from = 0) int age, @FloatRange(from = 0) double score) {
         Student entity = new Student(null, name, age, score, new Date());
         //面向对象添加表数据
         mStudentDao.insert(entity);
@@ -64,14 +68,14 @@ public class StudentDB {
      *
      * @param id
      */
-    public void deleteStudent(long id) {
+    public void deleteStudent(@IntRange(from = 0) long id) {
         mStudentDao.deleteByKey(id);
     }
 
     /**
      * 更新
      */
-    public void updateStudent(Long id, String name, int age, double score) {
+    public void updateStudent(@NonNull Long id, @NonNull String name, @IntRange(from = 0) int age, @FloatRange(from = 0) double score) {
         Student entity = new Student(id, name, age, score, new Date());
         mStudentDao.update(entity);
     }
@@ -81,7 +85,7 @@ public class StudentDB {
      *
      * @param name
      */
-    public List queryStudent(String name) {
+    public List queryStudent(@NonNull String name) {
         // Query 类代表了一个可以被重复执行的查询
         Query query = mStudentDao.queryBuilder()
                 .where(StudentDao.Properties.Name.eq(name))

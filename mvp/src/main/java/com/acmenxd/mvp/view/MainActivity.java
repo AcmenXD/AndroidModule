@@ -1,6 +1,7 @@
 package com.acmenxd.mvp.view;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -42,7 +43,7 @@ public class MainActivity extends BaseActivity {
     private MyMainAdapter mMyMainAdapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.w("App进入MainActivity!");
         setTitle(getBundle().getString("title", "Android框架设计"));

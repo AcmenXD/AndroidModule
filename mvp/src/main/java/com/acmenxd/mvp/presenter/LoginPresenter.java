@@ -1,5 +1,7 @@
 package com.acmenxd.mvp.presenter;
 
+import android.support.annotation.NonNull;
+
 import com.acmenxd.mvp.base.BasePresenter;
 import com.acmenxd.mvp.model.response.TestEntity;
 import com.acmenxd.retrofit.NetEntity;
@@ -14,7 +16,13 @@ import com.acmenxd.retrofit.exception.NetException;
  * @detail 模拟登陆的Presenter实现
  */
 public class LoginPresenter extends BasePresenter<ILogin.IView> implements ILogin.IPresenter {
-    public LoginPresenter(ILogin.IView pView) {
+
+    /**
+     * 构造器,传入BaseView实例
+     *
+     * @param pView
+     */
+    public LoginPresenter(@NonNull ILogin.IView pView) {
         super(pView);
     }
 

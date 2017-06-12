@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import com.acmenxd.frame.utils.PermissionsUtils;
@@ -18,7 +19,7 @@ import com.acmenxd.mvp.base.BaseApplication;
  * @date 2017/3/31 14:02
  * @detail 启动页
  */
-public class SplashActivity extends AppCompatActivity {
+public final class SplashActivity extends AppCompatActivity {
     private Handler mHandler;
     private int duration = 2000; // 启动屏时间
     private boolean permissionsOrStartResult = false; // 获取完权限后在启动下个Activity
@@ -30,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
             Manifest.permission.INTERNET};
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         Logger.w("App进入SplashActivity!");

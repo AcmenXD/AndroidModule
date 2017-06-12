@@ -1,6 +1,7 @@
 package com.acmenxd.mvp.db.core;
 
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.acmenxd.logger.Logger;
@@ -24,7 +25,7 @@ import java.util.List;
  * @date 2017/2/28 10:00
  * @detail 数据库更新
  */
-public class MigrationHelperUtil {
+public final class MigrationHelperUtil {
     private final String TAG = this.getClass().getSimpleName();
     /**
      * 数据库中对应Java类型 -> String,不支持char类型
@@ -62,7 +63,7 @@ public class MigrationHelperUtil {
      * @param pCallback  新增字段在更新数据库时回调, 设置其默认值, 如为null,字段会自动设置默认值
      * @param daoClasses 需要更新或新建表的Dao Class类
      */
-    public void migrate(Database db, DefaultCallback pCallback, Class<? extends AbstractDao<?, ?>>... daoClasses) {
+    public void migrate(@NonNull Database db, @NonNull DefaultCallback pCallback, @NonNull Class<? extends AbstractDao<?, ?>>... daoClasses) {
         // 检查表是否存在,如果不存在则创建
         for (int i = 0; i < daoClasses.length; i++) {
             try {
@@ -94,7 +95,7 @@ public class MigrationHelperUtil {
      * @param db
      * @param daoClasses
      */
-    private void generateTempTables(Database db, Class<? extends AbstractDao<?, ?>>... daoClasses) {
+    private void generateTempTables(@NonNull Database db, @NonNull Class<? extends AbstractDao<?, ?>>... daoClasses) {
         for (int i = 0; i < daoClasses.length; i++) {
             DaoConfig daoConfig = new DaoConfig(db, daoClasses[i]);
             String divider = "";
@@ -130,7 +131,7 @@ public class MigrationHelperUtil {
     /**
      * 删除表 & 新建表
      */
-    private void invokeMethod(String methodName, boolean param, Database db, Class<? extends AbstractDao<?, ?>>... daoClasses) {
+    private void invokeMethod(@NonNull String methodName, boolean param, @NonNull Database db, @NonNull Class<? extends AbstractDao<?, ?>>... daoClasses) {
         try {
             for (int i = 0; i < daoClasses.length; i++) {
                 Method method = daoClasses[i].getDeclaredMethod(methodName, Database.class, boolean.class);
@@ -151,7 +152,7 @@ public class MigrationHelperUtil {
      * @param db
      * @param daoClasses
      */
-    private void restoreData(Database db, DefaultCallback pCallback, Class<? extends AbstractDao<?, ?>>... daoClasses) {
+    private void restoreData(@NonNull Database db, @NonNull DefaultCallback pCallback, @NonNull Class<? extends AbstractDao<?, ?>>... daoClasses) {
         for (int i = 0, len = daoClasses.length; i < len; i++) {
             DaoConfig daoConfig = new DaoConfig(db, daoClasses[i]);
             String tableName = daoConfig.tablename;
@@ -221,7 +222,7 @@ public class MigrationHelperUtil {
         }
     }
 
-    private String getTypeByClass(Class<?> type) {
+    private String getTypeByClass(@NonNull Class<?> type) {
         // 对应Java的基本数据类型,不支持char类型字段
         if (type.equals(String.class)) {
             return TYPE_TEXT;
@@ -240,7 +241,7 @@ public class MigrationHelperUtil {
         return null;
     }
 
-    private static List<String> getColumns(Database db, String tableName) {
+    private static List<String> getColumns(@NonNull Database db, @NonNull String tableName) {
         List<String> columns = new ArrayList<>();
         Cursor cursor = null;
         try {

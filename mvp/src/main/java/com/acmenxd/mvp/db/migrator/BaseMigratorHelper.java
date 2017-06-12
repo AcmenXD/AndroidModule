@@ -1,5 +1,7 @@
 package com.acmenxd.mvp.db.migrator;
 
+import android.support.annotation.NonNull;
+
 import com.acmenxd.frame.utils.proguard.IKeepClass;
 
 import org.greenrobot.greendao.database.Database;
@@ -12,5 +14,5 @@ import org.greenrobot.greendao.database.Database;
  * @detail 更新数据库版本基类
  */
 public abstract class BaseMigratorHelper implements IKeepClass {
-    public abstract void onUpgrade(Database db);
+    public abstract void onUpgrade(@NonNull Database db);
 }

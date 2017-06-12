@@ -1,15 +1,16 @@
 package com.acmenxd.mvp.view.test;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.acmenxd.mvp.R;
+import com.acmenxd.mvp.base.BaseActivity;
 import com.acmenxd.toaster.ToastDuration;
 import com.acmenxd.toaster.ToastNW;
 import com.acmenxd.toaster.Toaster;
-import com.acmenxd.mvp.R;
-import com.acmenxd.mvp.base.BaseActivity;
 
 /**
  * @author AcmenXD
@@ -21,7 +22,7 @@ import com.acmenxd.mvp.base.BaseActivity;
 public class ToastActivity extends BaseActivity {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(getBundle().getString("title"));
         setContentView(R.layout.activity_toast);
