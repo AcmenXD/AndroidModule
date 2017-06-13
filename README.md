@@ -33,6 +33,7 @@
 -> FrameActivity        : 框架层Activity,实现Subscription | Presenter支持,内容 | 加载 | 错误视图,网络状态监控,Net支持,以及销毁等
 -> FrameFragment        : 框架层Fragment,实现Subscription | Presenter支持,内容 | 加载 | 错误视图,网络状态监控,Net支持,以及销毁等
 -> FramePresenter       : 框架层Presenter,实现Subscription支持,网络状态监控,Net支持,以及销毁等
+-> FrameModel           : 框架层Model,实现Subscription支持,网络状态监控,Net支持,以及销毁等
 -> ActivityStackManager : Activity堆栈管理器,提供exit | restartApp支持
 -> IActivityFragment    : FrameActivity & FrameFragment 提供的公共函数接口
 -> IBView               : MVP V层的实现接口类
@@ -49,7 +50,6 @@
 ---
 **widget**
 ```java
--> frame          : 框架所需要的一些布局文件
 -> CircleProgress : 圆形进度条
 -> ...            : 各种自定义组件 & 自定义View 等
 ```
@@ -62,6 +62,7 @@
 -> BaseActivity    : 继承自FrameActivity,拓展项目功能
 -> BaseFragment    : 继承自FrameFragment,拓展项目功能
 -> BasePresenter   : 继承自FramePresenter,拓展项目功能
+-> BaseModel       : 继承自FrameModel,拓展项目功能
 -> AppConfig       : debug开关,config配置及项目用到的其他参数等
 -> EventBusHelper  : EventBus帮助类
 ```
