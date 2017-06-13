@@ -10,8 +10,10 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
 
@@ -119,6 +121,22 @@ public final class Utils {
             }
         }
         return sb.toString();
+    }
+
+    /**
+     * 字符串是否为空
+     */
+    public static boolean isEmpty(@Nullable CharSequence str) {
+        if (TextUtils.isEmpty(str)) {
+            return true;
+        }
+        for (int i = 0, len = str.length(); i < len; i++) {
+            char c = str.charAt(i);
+            if (c != ' ' && c != '\t' && c != '\r' && c != '\n') {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

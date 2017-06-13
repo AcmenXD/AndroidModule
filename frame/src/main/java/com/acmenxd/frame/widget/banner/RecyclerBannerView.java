@@ -1,4 +1,4 @@
-package com.acmenxd.frame.widget;
+package com.acmenxd.frame.widget.banner;
 
 import android.content.Context;
 import android.support.annotation.IntRange;
@@ -26,9 +26,9 @@ import java.util.TimerTask;
  * @version v1.0
  * @github https://github.com/AcmenXD
  * @date 2017/5/9 11:29
- * @detail 轮播组件, 不能嵌套在RecyclerView中
+ * @detail 轮播组件, 用于嵌套在RecyclerView中
  */
-public final class BannerView extends RelativeLayout implements View.OnTouchListener {
+public final class RecyclerBannerView extends RelativeLayout implements View.OnTouchListener {
     public interface OnListener<T> {
         void onClick(@IntRange(from = 0) int position, @NonNull T pData);
 
@@ -51,24 +51,20 @@ public final class BannerView extends RelativeLayout implements View.OnTouchList
     private int indicatorSpaceDip; // 指示器 圆点间距
     private int autoDuration; // 自动播放时间(秒)
     private int currPosition; // 当前选中项
-    private boolean isNeedChange;
-    private int needChangePosition;
 
     private int time;
-    private boolean isDragging;
     private boolean isDown;
     private long lastDownTime;
-    private int previousPosition = -1;
 
-    public BannerView(Context context) {
+    public RecyclerBannerView(Context context) {
         this(context, null);
     }
 
-    public BannerView(Context context, AttributeSet attrs) {
+    public RecyclerBannerView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public BannerView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public RecyclerBannerView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mContext = context;
         mViewPager = new ViewPager(mContext);
@@ -88,7 +84,7 @@ public final class BannerView extends RelativeLayout implements View.OnTouchList
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                if (autoDuration > 0 && mAdapter != null && mAdapter.isCirculation) {
+                if (autoDuration > 0 && mAdapter != null && mAdapter.getCount() > 1) {
                     if (lastDownTime != 0) {
                         return;
                     }
@@ -99,16 +95,14 @@ public final class BannerView extends RelativeLayout implements View.OnTouchList
                         }
                         isDown = false;
                     }
-                    if (!isDragging) {
-                        time += 1;
-                        if (time >= autoDuration) {
-                            mViewPager.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-                                }
-                            });
-                        }
+                    time += 1;
+                    if (time >= autoDuration) {
+                        mViewPager.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
+                            }
+                        });
                     }
                 }
             }
@@ -137,14 +131,14 @@ public final class BannerView extends RelativeLayout implements View.OnTouchList
     }
 
     /**
-     * 设置自动播放时间(秒)设置0为不自动播放
+     * 设置自动播放时间(秒),默认3秒,设置0为不自动播放
      */
     public void setAutoDuration(@IntRange(from = 0) int pAutoDuration) {
         autoDuration = pAutoDuration;
     }
 
     /**
-     * 设置指示器 圆点位置 默认:Gravity.CENTER
+     * 设置指示器 圆点位置 默认:Gravity.CENTER居中
      */
     public void setIndicatorGravity(@IntRange(from = 0) int pIndicatorGravity) {
         indicatorGravity = pIndicatorGravity;
@@ -195,13 +189,9 @@ public final class BannerView extends RelativeLayout implements View.OnTouchList
             return;
         }
         // 重置参数
-        isNeedChange = false;
-        needChangePosition = 0;
         time = 0;
-        isDragging = false;
         isDown = false;
         lastDownTime = 0;
-        previousPosition = -1;
         mViewPager.clearOnPageChangeListeners();
 
         this.datas = pDatas;
@@ -216,10 +206,13 @@ public final class BannerView extends RelativeLayout implements View.OnTouchList
             params.leftMargin = indicatorSpaceDip;
             view.setLayoutParams(params);
             if (indicatorResource > 0) {
-                view.setBackgroundResource(indicatorResource);
+                view.setBackgroundResource(mOnListener.getIndicatorResource());
             }
             mIndicatorLayout.addView(view);
             indicatorViews.add(view);
+        }
+        if (mAdapter != null) {
+            mViewPager.setCurrentItem(currPosition, false);
         }
         mAdapter = new BannerAdapter();
         mViewPager.setAdapter(mAdapter);
@@ -230,24 +223,11 @@ public final class BannerView extends RelativeLayout implements View.OnTouchList
 
             @Override
             public void onPageSelected(int position) {
-                if (mAdapter.isCirculation) {
-                    if (position == 0) {
-                        isNeedChange = true;
-                        needChangePosition = mAdapter.getCount() - 2;
-                    } else if (position == mAdapter.getCount() - 1) {
-                        isNeedChange = true;
-                        needChangePosition = 1;
-                    }
-                    currPosition = position - 1;
-                    if (currPosition < 0) {
-                        currPosition = datas.size() - 1;
-                    } else if (currPosition >= datas.size()) {
-                        currPosition = 0;
-                    }
-                } else {
-                    isNeedChange = false;
-                    currPosition = position;
+                int tempPosition = position % datas.size();
+                if (tempPosition != currPosition) {
+                    time = 0;
                 }
+                currPosition = tempPosition;
                 for (int i = 0, len = indicatorViews.size(); i < len; i++) {
                     if (i == currPosition) {
                         indicatorViews.get(i).setSelected(true);
@@ -255,72 +235,41 @@ public final class BannerView extends RelativeLayout implements View.OnTouchList
                         indicatorViews.get(i).setSelected(false);
                     }
                 }
-                if (position != previousPosition) {
-                    previousPosition = position;
-                    time = 0;
-                }
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                if (state == ViewPager.SCROLL_STATE_DRAGGING) {
-                    isDragging = true;
-                } else {
-                    isDragging = false;
-                }
-                if (state == ViewPager.SCROLL_STATE_IDLE) {
-                    if (isNeedChange) {
-                        isNeedChange = false;
-                        mViewPager.setCurrentItem(needChangePosition, false);
-                    }
-                }
             }
         });
-        if (mAdapter.isCirculation) {
-            int position = currPosition + 1;
-            if (position > datas.size()) {
-                position = datas.size();
-            }
-            currPosition = position - 1;
-            mViewPager.setCurrentItem(position);
-            indicatorViews.get(currPosition).setSelected(true);
-        } else {
-            currPosition = 0;
-            mViewPager.setCurrentItem(currPosition);
-            indicatorViews.get(currPosition).setSelected(true);
+        if (currPosition >= datas.size()) {
+            currPosition = datas.size() - 1;
         }
+        mViewPager.setCurrentItem(datas.size() + currPosition);
+        indicatorViews.get(currPosition).setSelected(true);
     }
 
     final class BannerAdapter extends PagerAdapter {
-        private boolean isCirculation;
         private int realCount;
         private int count;
 
         public BannerAdapter() {
-            realCount = datas.size();
+            this.realCount = datas.size();
             if (realCount > 1) {
-                count = realCount + 2;
-                isCirculation = true;
+                count = 10000;
             } else {
                 count = realCount;
-                isCirculation = false;
             }
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            int index = position;
-            if (isCirculation) {
-                if (index == 0) {
-                    index = realCount - 1;
-                } else if (index == count - 1) {
-                    index = 0;
-                } else {
-                    index -= 1;
-                }
-            }
+            int index = position % realCount;
             ViewGroup item = mOnListener.getItemView(index, datas.get(index));
-            item.setOnTouchListener(BannerView.this);
+            item.setOnTouchListener(RecyclerBannerView.this);
+            ViewGroup parent = (ViewGroup) item.getParent();
+            if (parent != null) {
+                parent.removeView(item);
+            }
             container.addView(item);
             return item;
         }
@@ -338,6 +287,18 @@ public final class BannerView extends RelativeLayout implements View.OnTouchList
         @Override
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
+        }
+
+        @Override
+        public void finishUpdate(ViewGroup container) {
+            super.finishUpdate(container);
+            if (realCount > 1) {
+                if (mViewPager.getCurrentItem() == 0) {
+                    mViewPager.setCurrentItem(realCount, false);
+                } else if (mViewPager.getCurrentItem() == count - 1) {
+                    mViewPager.setCurrentItem(realCount - 1, false);
+                }
+            }
         }
     }
 }
