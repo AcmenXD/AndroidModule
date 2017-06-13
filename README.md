@@ -18,7 +18,7 @@
 - 框架已集成并添加<a href="https://github.com/ReactiveX/RxJava">RxJava</a> | <a href="https://github.com/ReactiveX/RxAndroid">RxAndroid</a> | <a href="https://github.com/greenrobot/greenDAO">greenDAO</a> | <a href="https://github.com/greenrobot/EventBus">EventBus</a>支持
 - 特别说明 -> 框架支持库请移步对应的github查看使用方法及源码
 
-### 结构说明 -> frame
+### 结构说明 -> frame 框架Module
 ---
 **configs**
 ```java
@@ -54,7 +54,7 @@
 -> ...            : 各种自定义组件 & 自定义View 等
 ```
 ---
-### 结构说明 -> mvp工程
+### 结构说明 -> mvp 示例Module
 ---
 **base**
 ```java
