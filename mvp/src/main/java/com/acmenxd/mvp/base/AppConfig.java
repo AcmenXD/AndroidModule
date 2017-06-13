@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.telephony.TelephonyManager;
 
 import com.acmenxd.frame.configs.MvpConfig;
+import com.acmenxd.logger.Logger;
 import com.acmenxd.marketer.Marketer;
 import com.acmenxd.mvp.BuildConfig;
 import com.acmenxd.mvp.R;
@@ -58,23 +59,31 @@ public final class AppConfig {
     public static synchronized void init() {
         BaseApplication app = BaseApplication.instance();
         PackageManager pkgManager = app.getPackageManager();
+        /**
+         * 提取
+         */
         int versionCode = 1;
         String versionName = "1.0";
         String projectName = app.getResources().getString(R.string.app_name);
         String packageName = "000000000000000";
         String market = "AcmenXD"; // 默认渠道号
         String imei = "";
+        PackageInfo info = null;
         try {
-            PackageInfo info = pkgManager.getPackageInfo(app.getPackageName(), 0);
-            versionCode = info.versionCode;
-            versionName = info.versionName;
+            info = pkgManager.getPackageInfo(app.getPackageName(), 0);
             packageName = app.getPackageName();
             projectName = (String) pkgManager.getApplicationLabel(pkgManager.getApplicationInfo(packageName, 0));
-            market = Marketer.getMarket(app.getApplicationContext(), market);
-            imei = ((TelephonyManager) app.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
         } catch (PackageManager.NameNotFoundException pE) {
-            pE.printStackTrace();
+            Logger.e(pE);
         }
+        versionCode = info.versionCode;
+        versionName = info.versionName;
+        market = Marketer.getMarket(app.getApplicationContext(), market);
+        imei = ((TelephonyManager) app.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+
+        /**
+         * 赋值
+         */
         VERSION_CODE = versionCode;
         VERSION_NAME = versionName;
         PROJECT_NAME = projectName;
