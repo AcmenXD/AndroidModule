@@ -81,9 +81,9 @@ android {
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
                         def fileName
                         if (variant.buildType.name.equals('debug')) {
-                            fileName = "AndroidProject_v${defaultConfig.versionName}_${defaultConfig.versionCode}_${releaseTime()}_debug.apk"
+                            fileName = "MvpProject_v${defaultConfig.versionName}_${defaultConfig.versionCode}_${releaseTime()}_debug.apk"
                         } else if (variant.buildType.name.equals('release')) {
-                            fileName = "AndroidProject_v${defaultConfig.versionName}_${defaultConfig.versionCode}_${releaseTime()}_release.apk"
+                            fileName = "MvpProject_v${defaultConfig.versionName}_${defaultConfig.versionCode}_${releaseTime()}_release.apk"
                         }
                         output.outputFile = new File(outputFile.parent, fileName)
                     }
