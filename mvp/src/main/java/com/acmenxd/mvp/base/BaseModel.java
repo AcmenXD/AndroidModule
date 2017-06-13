@@ -1,10 +1,9 @@
 package com.acmenxd.mvp.base;
 
 import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
 
+import com.acmenxd.frame.basis.FrameModel;
 import com.acmenxd.frame.basis.FramePresenter;
-import com.acmenxd.frame.basis.IBView;
 import com.acmenxd.mvp.net.IAllRequest;
 import com.acmenxd.retrofit.NetManager;
 
@@ -15,18 +14,16 @@ import org.greenrobot.eventbus.Subscribe;
  * @version v1.0
  * @github https://github.com/AcmenXD
  * @date 2017/5/24 14:46
- * @detail 顶级Presenter
+ * @detail 顶级Model
  */
-public abstract class BasePresenter<T extends IBView> extends FramePresenter<T> {
+public abstract class BaseModel extends FrameModel {
     /**
-     * 构造器,传入BaseView实例
+     * 构造器,传入FramePresenter实例
      *
-     * @param pView
+     * @param pFramePresenter
      */
-    public BasePresenter(@NonNull T pView) {
-        super(pView);
-        // EventBus事件注册
-        EventBusHelper.register(this);
+    public BaseModel(FramePresenter pFramePresenter) {
+        super(pFramePresenter);
     }
 
     /**

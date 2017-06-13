@@ -38,12 +38,11 @@ public abstract class BaseActivity extends FrameActivity {
      * * EventBus注册时,类中必须有@Subscribe注解的函数
      */
     @Subscribe
-    private final void eventBusDefault(Object object) {
+    public final void eventBusDefault(Object object) {
     }
 
     /**
      * 获取IAllRequest实例
-     * * 开放重写,满足不同需求
      */
     @Override
     public final IAllRequest request() {
