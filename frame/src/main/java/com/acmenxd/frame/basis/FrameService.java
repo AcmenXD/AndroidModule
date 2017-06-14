@@ -1,23 +1,15 @@
 package com.acmenxd.frame.basis;
 
-import android.app.Dialog;
+import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
-import android.support.annotation.IdRes;
 import android.support.annotation.IntRange;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
-import android.util.SparseArray;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.FrameLayout;
 
-import com.acmenxd.frame.R;
 import com.acmenxd.frame.utils.Utils;
 import com.acmenxd.frame.utils.net.IMonitorListener;
 import com.acmenxd.frame.utils.net.Monitor;
@@ -40,28 +32,16 @@ import rx.subscriptions.CompositeSubscription;
  * @author AcmenXD
  * @version v1.0
  * @github https://github.com/AcmenXD
- * @date 2016/12/16 16:01
- * @detail Activity基类
+ * @date 2017/6/14 9:53
+ * @detail something
  */
-public abstract class FrameActivity extends AppCompatActivity implements IActivityFragment {
+public abstract class FrameService extends Service {
     protected final String TAG = this.getClass().getSimpleName();
 
     // 统一持有Subscription
     private CompositeSubscription mSubscription;
     // 统一管理Presenters
     private List<FramePresenter> mPresenters;
-    // 存储子控件
-    private SparseArray<View> mChildViews;
-    // 布局容器
-    private FrameLayout mContentLayout;
-    private FrameLayout mLoadingLayout;
-    private FrameLayout mErrorLayout;
-    private FrameActivityFragmentOtherLayout mOtherLayout;
-    private Dialog mLoadingDialog;
-    // 视图view
-    private View mContentView;
-    private View mLoadingView;
-    private View mErrorView;
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override
@@ -72,34 +52,18 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
 
     @CallSuper
     @Override
-    protected void onCreate(@NonNull Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // 子类onCreate之前调用
-        onCreateBefore(savedInstanceState);
-        // 设置base视图
-        super.setContentView(R.layout.activity_base);
+    public void onCreate() {
+        super.onCreate();
         // 初始化容器
         mSubscription = getCompositeSubscription();
         mPresenters = new ArrayList<>();
-        mChildViews = new SparseArray<>();
-        // 获取布局容器
-        mContentLayout = getView(R.id.activity_base_contentLayout);
-        mLoadingLayout = getView(R.id.activity_base_loadingLayout);
-        mErrorLayout = getView(R.id.activity_base_errorLayout);
-        mOtherLayout = getView(R.id.activity_base_otherLayout);
-        // 设置默认的加载视图
-        setLoadingView(FrameActivityFragmentViewHelper.getLoadingView(this));
-        // 设置默认的错误视图
-        setErrorView(FrameActivityFragmentViewHelper.getErrorView(this));
-        // 默认显示加载视图
-        showContentView();
-        // 将此Activity添加到ActivityStackManager中管理
-        ActivityStackManager.INSTANCE.addActivity(this);
+        // 网络监控注册
+        Monitor.registListener(mNetListener);
     }
 
     @CallSuper
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         // 网络监控反注册
         Monitor.unRegistListener(mNetListener);
@@ -114,30 +78,9 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
             }
             mPresenters.clear();
         }
-        //移除 ChildViews
-        mChildViews.clear();
-        //关闭 Dialog
-        hideLoadingDialog();
-        // 将此Activity在ActivityStackManager中移除
-        ActivityStackManager.INSTANCE.removeActivity(this);
-    }
-
-    @CallSuper
-    @Override
-    protected void onStart() {
-        super.onStart();
-        // 网络监控注册
-        Monitor.registListener(mNetListener);
     }
 
     //------------------------------------子类可重写的函数
-
-    /**
-     * 子类onCreate之前调用,用来设置横竖屏等需要在setContentView之前做的操作
-     */
-    @CallSuper
-    protected void onCreateBefore(@NonNull Bundle savedInstanceState) {
-    }
 
     /**
      * 网络状态变换调用
@@ -150,7 +93,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     /**
      * 退出应用程序
      */
-    @Override
     public final void exit() {
         ActivityStackManager.INSTANCE.exit();
     }
@@ -158,7 +100,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     /**
      * 添加Subscriptions
      */
-    @Override
     public final void addSubscriptions(@NonNull Subscription... pSubscriptions) {
         getCompositeSubscription().addAll(pSubscriptions);
     }
@@ -166,7 +107,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     /**
      * 添加Presenters
      */
-    @Override
     public final void addPresenters(@NonNull FramePresenter... pPresenters) {
         if (pPresenters != null && pPresenters.length > 0) {
             if (mPresenters == null) {
@@ -181,7 +121,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     /**
      * 获取CompositeSubscription实例
      */
-    @Override
     public final CompositeSubscription getCompositeSubscription() {
         if (mSubscription == null) {
             mSubscription = new CompositeSubscription();
@@ -192,9 +131,8 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     /**
      * 获取Intent中数据参数
      */
-    @Override
-    public final Bundle getBundle() {
-        Bundle bundle = getIntent().getExtras();
+    public final Bundle getBundle(Intent pIntent) {
+        Bundle bundle = pIntent.getExtras();
         if (bundle == null) {
             bundle = new Bundle();
         }
@@ -224,7 +162,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     /**
      * 启动Activity
      */
-    @Override
     public final void startActivity(@NonNull Class cls) {
         Intent intent = new Intent(this, cls);
         super.startActivity(intent);
@@ -233,7 +170,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     /**
      * 启动Activity
      */
-    @Override
     public final void startActivity(@NonNull Class cls, @NonNull Bundle bundle) {
         Intent intent = new Intent(this, cls);
         intent.putExtras(bundle);
@@ -243,7 +179,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     /**
      * 启动Activity
      */
-    @Override
     public final void startActivity(@NonNull Class cls, @NonNull Bundle bundle, int flags) {
         Intent intent = new Intent(this, cls);
         intent.putExtras(bundle);
@@ -254,7 +189,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     /**
      * 根据IRequest类获取Request实例
      */
-    @Override
     public final <T> T request(@NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.request(pIRequest);
     }
@@ -263,7 +197,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
      * 创建新的Retrofit实例
      * 根据IRequest类获取Request实例
      */
-    @Override
     public final <T> T newRequest(@NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.newRequest(pIRequest);
     }
@@ -272,7 +205,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
      * 创建新的Retrofit实例,并设置超时时间
      * 根据IRequest类获取Request实例
      */
-    @Override
     public final <T> T newRequest(@IntRange(from = 0) int connectTimeout, @IntRange(from = 0) int readTimeout, @IntRange(from = 0) int writeTimeout, @NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.newRequest(connectTimeout, readTimeout, writeTimeout, pIRequest);
     }
@@ -286,16 +218,13 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
      *                  1.isCancelable(是否可以通过点击Back键取消)(默认true)
      *                  2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
      */
-    @Override
     public final <T> Callback<T> newCallback(@NonNull final NetCallback<T> pCallback, final boolean... setting) {
-        showLoadingDialogBySetting(setting);
         return new Callback<T>() {
             @Override
             public void onResponse(Call<T> call, Response<T> response) {
                 if (!mSubscription.isUnsubscribed()) {
                     pCallback.onResponse(call, response);
                 }
-                hideLoadingDialog();
             }
 
             @Override
@@ -303,7 +232,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
                 if (!mSubscription.isUnsubscribed()) {
                     pCallback.onFailure(call, t);
                 }
-                hideLoadingDialog();
             }
         };
     }
@@ -317,16 +245,13 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
      *                    1.isCancelable(是否可以通过点击Back键取消)(默认true)
      *                    2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
      */
-    @Override
     public final <T> Subscriber<T> newSubscriber(@NonNull final NetSubscriber<T> pSubscriber, final boolean... setting) {
-        showLoadingDialogBySetting(setting);
         return new Subscriber<T>() {
             @Override
             public void onCompleted() {
                 if (!mSubscription.isUnsubscribed()) {
                     pSubscriber.onCompleted();
                 }
-                hideLoadingDialog();
             }
 
             @Override
@@ -334,7 +259,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
                 if (!mSubscription.isUnsubscribed()) {
                     pSubscriber.onError(e);
                 }
-                hideLoadingDialog();
             }
 
             @Override
@@ -345,233 +269,7 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
             }
         };
     }
-
-    /**
-     * 根据setting,检查是否显示LoadingDialog
-     *
-     * @param setting 数组下标 ->
-     *                0.是否显示LoadingDialog(默认false)
-     *                1.isCancelable(是否可以通过点击Back键取消)(默认true)
-     *                2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
-     */
-    @Override
-    public final void showLoadingDialogBySetting(final boolean... setting) {
-        boolean isShow = false;
-        boolean isCancelable = true;
-        boolean isCanceledOnTouchOutside = false;
-        if (setting != null) {
-            if (setting.length >= 1) {
-                isShow = setting[0];
-            }
-            if (setting.length >= 2) {
-                isCancelable = setting[1];
-            }
-            if (setting.length >= 3) {
-                isCanceledOnTouchOutside = setting[2];
-            }
-        }
-        if (isShow == true) {
-            showLoadingDialog(isCancelable, isCanceledOnTouchOutside);
-        }
-    }
-
-    /**
-     * 显示LoadingDialog
-     *
-     * @param setting 数组下标 ->
-     *                0.isCancelable(是否可以通过点击Back键取消)(默认true)
-     *                1.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
-     */
-    @Override
-    public final void showLoadingDialog(final boolean... setting) {
-        boolean isCancelable = true;
-        boolean isCanceledOnTouchOutside = false;
-        if (setting != null) {
-            if (setting.length >= 1) {
-                isCancelable = setting[0];
-            }
-            if (setting.length >= 2) {
-                isCanceledOnTouchOutside = setting[1];
-            }
-        }
-        if (mLoadingDialog == null) {
-            mLoadingDialog = new Dialog(this);
-        }
-        mLoadingDialog.setContentView(FrameActivityFragmentViewHelper.getDialogView(this));
-        mLoadingDialog.setCancelable(isCancelable);
-        mLoadingDialog.setCanceledOnTouchOutside(isCanceledOnTouchOutside);
-        mLoadingDialog.show();
-    }
-
-    /**
-     * 隐藏LoadingDialog
-     */
-    @Override
-    public final void hideLoadingDialog() {
-        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
-            mLoadingDialog.dismiss();
-        }
-    }
-    //------------------------------------ContentView|LoadingView|ErrorView相关操作 & 继承自IActivityFragment接口
-
-    /**
-     * 设置内容视图
-     */
-    @Override
-    public final void setContentView(@LayoutRes int layoutResId) {
-        View view = LayoutInflater.from(this).inflate(layoutResId, null);
-        setContentView(view);
-    }
-
-    @Override
-    public final void setContentView(@NonNull View view) {
-        if (view == null) {
-            return;
-        }
-        mContentView = view;
-        mContentLayout.removeAllViews();
-        mContentLayout.addView(mContentView);
-    }
-
-    /**
-     * 设置加载视图
-     */
-    @Override
-    public final void setLoadingView(@NonNull View view) {
-        if (view == null) {
-            return;
-        }
-        mLoadingView = view;
-        mLoadingLayout.removeAllViews();
-        mLoadingLayout.addView(mLoadingView);
-    }
-
-    /**
-     * 设置错误视图
-     */
-    @Override
-    public final void setErrorView(@NonNull View view) {
-        if (view == null) {
-            return;
-
-        }
-        mErrorView = view;
-        mErrorLayout.removeAllViews();
-        mErrorLayout.addView(mErrorView);
-    }
-
-    /**
-     * 显示内容视图,隐藏其他视图
-     */
-    @Override
-    public final void showContentView() {
-        showContentView(false);
-    }
-
-    @Override
-    public final void showContentView(boolean animat) {
-        if (animat) {
-            FrameActivityFragmentViewHelper.layoutCancelInOutAnimation(this, mContentLayout, mContentLayout, mLoadingLayout, mErrorLayout);
-        } else {
-            FrameActivityFragmentViewHelper.layouts$setVisibility(mContentLayout, mContentLayout, mLoadingLayout, mErrorLayout);
-        }
-    }
-
-    /**
-     * 显示加载视图,隐藏其他视图
-     */
-    @Override
-    public final void showLoadingView() {
-        showLoadingView(false);
-    }
-
-    @Override
-    public final void showLoadingView(boolean animat) {
-        if (animat) {
-            FrameActivityFragmentViewHelper.layoutCancelInOutAnimation(this, mLoadingLayout, mContentLayout, mLoadingLayout, mErrorLayout);
-        } else {
-            FrameActivityFragmentViewHelper.layouts$setVisibility(mLoadingLayout, mContentLayout, mLoadingLayout, mErrorLayout);
-        }
-    }
-
-    /**
-     * 显示错误视图,隐藏其他视图
-     */
-    @Override
-    public final void showErrorView() {
-        showErrorView(false);
-    }
-
-    @Override
-    public final void showErrorView(boolean animat) {
-        if (animat) {
-            FrameActivityFragmentViewHelper.layoutCancelInOutAnimation(this, mErrorLayout, mContentLayout, mLoadingLayout, mErrorLayout);
-        } else {
-            FrameActivityFragmentViewHelper.layouts$setVisibility(mErrorLayout, mContentLayout, mLoadingLayout, mErrorLayout);
-        }
-    }
-
-    /**
-     * 隐藏内容视图
-     */
-    @Override
-    public final void hideContentView() {
-        mContentLayout.setVisibility(View.GONE);
-    }
-
-    /**
-     * 隐藏加载视图
-     */
-    @Override
-    public final void hideLoadingView() {
-        mLoadingLayout.setVisibility(View.GONE);
-    }
-
-    /**
-     * 隐藏错误视图
-     */
-    @Override
-    public final void hideErrorView() {
-        mErrorLayout.setVisibility(View.GONE);
-    }
-
-    /**
-     * 获取内容视图实例
-     */
-    @Override
-    public final View getContentView() {
-        return mContentView;
-    }
-
-    /**
-     * 获取加载视图实例
-     */
-    @Override
-    public final View getLoadingView() {
-        return mLoadingView;
-    }
-
-    /**
-     * 获取错误视图实例
-     */
-    @Override
-    public final View getErrorView() {
-        return mErrorView;
-    }
     //------------------------------------子类可使用的工具函数 & 继承自IActivityFragment接口
-
-    /**
-     * 通过viewId获取控件
-     */
-    @Override
-    public final <T extends View> T getView(@IdRes int viewId) {
-        View view = mChildViews.get(viewId);
-        if (view == null) {
-            view = this.findViewById(viewId);
-            mChildViews.put(viewId, view);
-        }
-        return (T) view;
-    }
 
     /**
      * 串拼接
@@ -579,7 +277,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
      * @param strs 可变参数类型
      * @return 拼接后的字符串
      */
-    @Override
     public final String appendStrs(@NonNull Object... strs) {
         return Utils.appendStrs(strs);
     }
@@ -590,12 +287,10 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
      * @param start 从0开始计数(包含start)
      * @param end   从1开始计数(包含end)
      */
-    @Override
     public final SpannableString changeStr(@NonNull String str, @IntRange(from = 0) int start, @IntRange(from = 0) int end, @IntRange(from = 0) int dip, @ColorInt int color) {
         return Utils.changeStr(str, start, end, dip, color);
     }
 
-    @Override
     public final SpannableString changeStr(@NonNull SpannableString spannableString, @IntRange(from = 0) int start, @IntRange(from = 0) int end, @IntRange(from = 0) int dip, @ColorInt int color) {
         return Utils.changeStr(spannableString, start, end, dip, color);
     }
@@ -603,7 +298,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     /**
      * 根据手机的分辨率从 dp 的单位转成 px(像素)
      */
-    @Override
     public final float dp2px(@FloatRange(from = 0) float dp) {
         return Utils.dp2px(this, dp);
     }
@@ -611,7 +305,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     /**
      * 根据手机的分辨率从 px(像素)的单位转成 dp
      */
-    @Override
     public final float px2dp(@FloatRange(from = 0) float px) {
         return Utils.px2dp(this, px);
     }
@@ -619,7 +312,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     /**
      * 根据手机的分辨率从 sp 的单位转成 px(像素)
      */
-    @Override
     public final float sp2px(@FloatRange(from = 0) float sp) {
         return Utils.sp2px(this, sp);
     }
@@ -627,7 +319,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     /**
      * 根据手机的分辨率从 px(像素)的单位转成 sp
      */
-    @Override
     public final float px2sp(@FloatRange(from = 0) float px) {
         return Utils.px2sp(this, px);
     }

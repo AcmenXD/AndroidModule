@@ -291,7 +291,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
     }
 
     /**
-     * 为了统一起启动方式,所以暂作过时处理
+     * 为了统一启动方式,所以暂作过时处理
      * * 尽量不要使用此函数启动Activity
      */
     @Deprecated
@@ -301,7 +301,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
     }
 
     /**
-     * 为了统一起启动方式,所以暂作过时处理
+     * 为了统一启动方式,所以暂作过时处理
      * * 尽量不要使用此函数启动Activity
      */
     @Deprecated
