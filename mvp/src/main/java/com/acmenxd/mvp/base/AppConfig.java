@@ -11,6 +11,9 @@ import com.acmenxd.marketer.Marketer;
 import com.acmenxd.mvp.BuildConfig;
 import com.acmenxd.mvp.R;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author AcmenXD
  * @version v1.0
@@ -53,6 +56,15 @@ public final class AppConfig {
      */
     public static String IMEI;
 
+    // 公共请求参数
+    protected static Map<String, String> ParameterMaps = new HashMap<>();
+    // 公共Header(不允许相同Key值存在)
+    protected static Map<String, String> HeaderMaps = new HashMap<>();
+    // 公共Header(允许相同Key值存在)
+    protected static Map<String, String> HeaderMaps2 = new HashMap<>();
+    // 公共Body
+    protected static Map<String, String> BodyMaps = new HashMap<>();
+
     /**
      * 初始化 -> BaseApplication中调用
      */
@@ -80,7 +92,6 @@ public final class AppConfig {
         versionName = info.versionName;
         market = Marketer.getMarket(app.getApplicationContext(), market);
         imei = ((TelephonyManager) app.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-
         /**
          * 赋值
          */
@@ -90,5 +101,16 @@ public final class AppConfig {
         PKG_NAME = packageName;
         MARKET = market;
         IMEI = imei;
+        /**
+         * 设置Net请求参数
+         */
+        ParameterMaps.put("parameter_key_1", "parameter_value_1");
+        ParameterMaps.put("parameter_key_2", "parameter_value_2");
+        HeaderMaps.put("header_key_1", "header_value_1");
+        HeaderMaps.put("header_key_2", "header_value_2");
+        HeaderMaps2.put("header_key_2", "header_value_2");
+        HeaderMaps2.put("header_key_3", "header_value_3");
+        BodyMaps.put("body_key_1", "body_value_1");
+        BodyMaps.put("body_key_2", "body_value_2");
     }
 }

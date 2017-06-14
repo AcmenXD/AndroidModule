@@ -48,17 +48,4 @@ public final class MvpConfig extends BaseConfig {
                 break;
         }
     }
-
-    @Override
-    protected void initNetParams() {
-        ParameterMaps.clear();
-        HeaderMaps.clear();
-        HeaderMaps2.clear();
-        BodyMaps.clear();
-        ParameterMaps.put("parameter_key_1", "parameter_value_1");
-        HeaderMaps.put("header_key_1", "header_value_1");
-        HeaderMaps2.put("header_key_1", "header_value_1");
-        HeaderMaps2.put("header_key_2", "header_value_2");
-        BodyMaps.put("body_key_1", "body_value_1");
-    }
 }

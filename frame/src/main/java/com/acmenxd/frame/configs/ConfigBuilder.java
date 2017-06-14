@@ -2,6 +2,7 @@ package com.acmenxd.frame.configs;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.acmenxd.frame.basis.FrameApplication;
@@ -20,6 +21,7 @@ import com.bumptech.glide.load.DecodeFormat;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * @author AcmenXD
@@ -35,12 +37,19 @@ public final class ConfigBuilder {
     /**
      * 创建配置详情
      */
-    public static void createConfig(@NonNull Class<? extends BaseConfig> pConfig, @NonNull boolean isDebug, @NonNull FrameNetCode.Parse pParse) {
+    public static void createConfig(@NonNull Class<? extends BaseConfig> pConfig,
+                                    @NonNull boolean isDebug,
+                                    @NonNull FrameNetCode.Parse pParse,
+                                    @Nullable Map<String, String> ParameterMaps,
+                                    @Nullable Map<String, String> HeaderMaps,
+                                    @Nullable Map<String, String> HeaderMaps2,
+                                    @Nullable Map<String, String> BodyMaps) {
         // 配置Retrofit NetCode
         FrameNetCode.setNetCode(pParse);
         try {
             sConfigInfo = pConfig.newInstance();
             sConfigInfo.init(isDebug);
+            sConfigInfo.setNetMaps(ParameterMaps, HeaderMaps, HeaderMaps2, BodyMaps);
         } catch (InstantiationException pE) {
             pE.printStackTrace();
         } catch (IllegalAccessException pE) {
@@ -52,11 +61,10 @@ public final class ConfigBuilder {
      * 获取配置详情
      */
     public static <T extends BaseConfig> T getConfigInfo() {
-        if (sConfigInfo == null) {
-            sConfigInfo = new BaseConfig();
-            sConfigInfo.init(false);
+        if (sConfigInfo != null) {
+            return (T) sConfigInfo;
         }
-        return (T) sConfigInfo;
+        return null;
     }
 
     /**
@@ -64,6 +72,9 @@ public final class ConfigBuilder {
      * * 基础组件配置
      */
     public static synchronized void init() {
+        if (sConfigInfo == null) {
+            throw new NullPointerException("ConfigInfo is null");
+        }
         Context context = FrameApplication.instance().getApplicationContext();
         //------------------------------------Logger配置---------------------------------
         /**

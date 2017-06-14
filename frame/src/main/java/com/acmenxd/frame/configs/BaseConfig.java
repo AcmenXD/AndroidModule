@@ -2,6 +2,7 @@ package com.acmenxd.frame.configs;
 
 import android.os.Environment;
 import android.support.annotation.CallSuper;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.acmenxd.logger.LogType;
@@ -18,7 +19,7 @@ import java.util.Map;
  * @date 2017/5/25 10:02
  * @detail 配置详细参数类
  */
-public class BaseConfig {
+public abstract class BaseConfig {
 
     /**
      * 初始化
@@ -31,7 +32,6 @@ public class BaseConfig {
         NET_LOG_OPEN = DEBUG;
         initSpData();
         initNetURL();
-        initNetParams();
     }
 
     /**
@@ -146,19 +146,24 @@ public class BaseConfig {
     // 公共Body
     public Map<String, String> BodyMaps = new HashMap<>();
 
-    // 配置请求公共需求
-    protected void initNetParams() {
-        ParameterMaps.clear();
-        HeaderMaps.clear();
-        HeaderMaps2.clear();
-        BodyMaps.clear();
-        ParameterMaps.put("parameter_key_1", "parameter_value_1");
-        ParameterMaps.put("parameter_key_2", "parameter_value_2");
-        HeaderMaps.put("header_key_1", "header_value_1");
-        HeaderMaps.put("header_key_2", "header_value_2");
-        HeaderMaps2.put("header_key_2", "header_value_2");
-        HeaderMaps2.put("header_key_3", "header_value_3");
-        BodyMaps.put("body_key_1", "body_value_1");
-        BodyMaps.put("body_key_2", "body_value_2");
+    /**
+     * 设置Net请求参数
+     */
+    protected final void setNetMaps(@Nullable Map<String, String> ParameterMaps,
+                                    @Nullable Map<String, String> HeaderMaps,
+                                    @Nullable Map<String, String> HeaderMaps2,
+                                    @Nullable Map<String, String> BodyMaps) {
+        if (ParameterMaps != null) {
+            this.ParameterMaps.putAll(ParameterMaps);
+        }
+        if (HeaderMaps != null) {
+            this.HeaderMaps.putAll(HeaderMaps);
+        }
+        if (HeaderMaps2 != null) {
+            this.HeaderMaps2.putAll(HeaderMaps2);
+        }
+        if (BodyMaps != null) {
+            this.BodyMaps.putAll(BodyMaps);
+        }
     }
 }
