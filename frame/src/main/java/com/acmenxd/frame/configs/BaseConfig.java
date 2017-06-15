@@ -2,14 +2,14 @@ package com.acmenxd.frame.configs;
 
 import android.os.Environment;
 import android.support.annotation.CallSuper;
-import android.support.annotation.Nullable;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.acmenxd.logger.LogType;
+import com.acmenxd.retrofit.NetManager;
 import com.acmenxd.toaster.ToastDuration;
 import com.acmenxd.toaster.ToastNW;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -137,33 +137,14 @@ public abstract class BaseConfig {
     public int WRITE_TIMEOUT = 30;
     // 非Form表单形式的请求体,是否加入公共Body
     public boolean NOFORMBODY_CANADDBODY = false;
-    // 公共请求参数
-    public Map<String, String> ParameterMaps = new HashMap<>();
-    // 公共Header(不允许相同Key值存在)
-    public Map<String, String> HeaderMaps = new HashMap<>();
-    // 公共Header(允许相同Key值存在)
-    public Map<String, String> HeaderMaps2 = new HashMap<>();
-    // 公共Body
-    public Map<String, String> BodyMaps = new HashMap<>();
 
     /**
      * 设置Net请求参数
      */
-    protected final void setNetMaps(@Nullable Map<String, String> ParameterMaps,
-                                    @Nullable Map<String, String> HeaderMaps,
-                                    @Nullable Map<String, String> HeaderMaps2,
-                                    @Nullable Map<String, String> BodyMaps) {
-        if (ParameterMaps != null) {
-            this.ParameterMaps.putAll(ParameterMaps);
-        }
-        if (HeaderMaps != null) {
-            this.HeaderMaps.putAll(HeaderMaps);
-        }
-        if (HeaderMaps2 != null) {
-            this.HeaderMaps2.putAll(HeaderMaps2);
-        }
-        if (BodyMaps != null) {
-            this.BodyMaps.putAll(BodyMaps);
-        }
+    public final void setNetMaps(@NonNull Map<String, String> ParameterMaps,
+                                 @NonNull Map<String, String> HeaderMaps,
+                                 @NonNull Map<String, String> HeaderMaps2,
+                                 @NonNull Map<String, String> BodyMaps) {
+        ConfigBuilder.setNetMaps(ParameterMaps,HeaderMaps,HeaderMaps2,BodyMaps);
     }
 }

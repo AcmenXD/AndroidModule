@@ -2,7 +2,6 @@ package com.acmenxd.frame.configs;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.acmenxd.frame.basis.FrameApplication;
@@ -37,19 +36,12 @@ public final class ConfigBuilder {
     /**
      * 创建配置详情
      */
-    public static void createConfig(@NonNull Class<? extends BaseConfig> pConfig,
-                                    @NonNull boolean isDebug,
-                                    @NonNull FrameNetCode.Parse pParse,
-                                    @Nullable Map<String, String> ParameterMaps,
-                                    @Nullable Map<String, String> HeaderMaps,
-                                    @Nullable Map<String, String> HeaderMaps2,
-                                    @Nullable Map<String, String> BodyMaps) {
+    public static void createConfig(@NonNull Class<? extends BaseConfig> pConfig, @NonNull boolean isDebug, @NonNull FrameNetCode.Parse pParse) {
         // 配置Retrofit NetCode
         FrameNetCode.setNetCode(pParse);
         try {
             sConfigInfo = pConfig.newInstance();
             sConfigInfo.init(isDebug);
-            sConfigInfo.setNetMaps(ParameterMaps, HeaderMaps, HeaderMaps2, BodyMaps);
         } catch (InstantiationException pE) {
             pE.printStackTrace();
         } catch (IllegalAccessException pE) {
@@ -65,6 +57,19 @@ public final class ConfigBuilder {
             return (T) sConfigInfo;
         }
         return null;
+    }
+
+    /**
+     * 设置Net公共参数 -> 为动态配置而设置的此函数
+     */
+    protected static void setNetMaps(@NonNull Map<String, String> ParameterMaps,
+                                     @NonNull Map<String, String> HeaderMaps,
+                                     @NonNull Map<String, String> HeaderMaps2,
+                                     @NonNull Map<String, String> BodyMaps) {
+        NetManager.INSTANCE.getBuilder().setParameterMaps(ParameterMaps);
+        NetManager.INSTANCE.getBuilder().setHeaderMaps(HeaderMaps);
+        NetManager.INSTANCE.getBuilder().setHeaderMaps2(HeaderMaps2);
+        NetManager.INSTANCE.getBuilder().setBodyMaps(BodyMaps);
     }
 
     /**
@@ -242,11 +247,6 @@ public final class ConfigBuilder {
                 .setRead_timeout(sConfigInfo.READ_TIMEOUT) // 读取超时时间(秒)
                 .setWrite_timeout(sConfigInfo.WRITE_TIMEOUT)  // 写入超时时间(秒)
                 .setNoformbody_canaddbody(sConfigInfo.NOFORMBODY_CANADDBODY) // 非Form表单形式的请求体,是否加入公共Body
-                .setParameterMaps(sConfigInfo.ParameterMaps) // 公共请求参数
-                .setHeaderMaps(sConfigInfo.HeaderMaps)  // 公共Header(不允许相同Key值存在)
-                .setHeaderMaps2(sConfigInfo.HeaderMaps2)  // 公共Header(允许相同Key值存在)
-                .setBodyMaps(sConfigInfo.BodyMaps)// 公共Body
                 .build();
     }
-
 }

@@ -54,7 +54,7 @@ public final class AppConfig {
     /**
      * IMEI号
      */
-    public static String IMEI;
+    public static String IMEI = "000000000000000";
 
     // 公共请求参数
     protected static Map<String, String> ParameterMaps = new HashMap<>();
@@ -71,46 +71,42 @@ public final class AppConfig {
     public static synchronized void init() {
         BaseApplication app = BaseApplication.instance();
         PackageManager pkgManager = app.getPackageManager();
+        // 设置默认值
+        VERSION_CODE = 1;
+        VERSION_NAME = "1.0";
+        PROJECT_NAME = app.getResources().getString(R.string.app_name);
+        PKG_NAME = "";
+        MARKET = "AcmenXD";
         /**
-         * 提取
+         * 初始化值
          */
-        int versionCode = 1;
-        String versionName = "1.0";
-        String projectName = app.getResources().getString(R.string.app_name);
-        String packageName = "000000000000000";
-        String market = "AcmenXD"; // 默认渠道号
-        String imei = "";
         PackageInfo info = null;
         try {
             info = pkgManager.getPackageInfo(app.getPackageName(), 0);
-            packageName = app.getPackageName();
-            projectName = (String) pkgManager.getApplicationLabel(pkgManager.getApplicationInfo(packageName, 0));
+            PKG_NAME = app.getPackageName();
+            PROJECT_NAME = (String) pkgManager.getApplicationLabel(pkgManager.getApplicationInfo(PKG_NAME, 0));
         } catch (PackageManager.NameNotFoundException pE) {
             Logger.e(pE);
         }
-        versionCode = info.versionCode;
-        versionName = info.versionName;
-        market = Marketer.getMarket(app.getApplicationContext(), market);
-        imei = ((TelephonyManager) app.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+        VERSION_CODE = info.versionCode;
+        VERSION_NAME = info.versionName;
+        MARKET = Marketer.getMarket(app.getApplicationContext(), MARKET);
+    }
+
+    /**
+     * 获取到手机权限后回调
+     */
+    public static synchronized void permissionsAfterInit() {
+        BaseApplication app = BaseApplication.instance();
+        IMEI = ((TelephonyManager) app.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
         /**
-         * 赋值
-         */
-        VERSION_CODE = versionCode;
-        VERSION_NAME = versionName;
-        PROJECT_NAME = projectName;
-        PKG_NAME = packageName;
-        MARKET = market;
-        IMEI = imei;
-        /**
-         * 设置Net请求参数
+         * 设置Net公共参数
          */
         ParameterMaps.put("parameter_key_1", "parameter_value_1");
-        ParameterMaps.put("parameter_key_2", "parameter_value_2");
         HeaderMaps.put("header_key_1", "header_value_1");
-        HeaderMaps.put("header_key_2", "header_value_2");
-        HeaderMaps2.put("header_key_2", "header_value_2");
-        HeaderMaps2.put("header_key_3", "header_value_3");
+        HeaderMaps2.put("header_key_1", "header_value_1");
         BodyMaps.put("body_key_1", "body_value_1");
-        BodyMaps.put("body_key_2", "body_value_2");
+        HeaderMaps.put("IMEI", IMEI);
+        config.setNetMaps(ParameterMaps, HeaderMaps, HeaderMaps2, BodyMaps);
     }
 }

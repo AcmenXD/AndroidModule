@@ -13,7 +13,7 @@ public final class MvpConfig extends BaseConfig {
     public String SP_Config = "spConfig";
 
     @Override
-    public void init(boolean isDebug) {
+    protected void init(boolean isDebug) {
         super.init(isDebug);
 
         DB_NAME = "mvp_db";

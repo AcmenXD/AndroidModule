@@ -34,12 +34,12 @@ public final class BaseApplication extends FrameApplication {
         Logger.w("App已启动!");
         startTime = System.currentTimeMillis();
 
-        // 初始化App配置
-        AppConfig.init();
         // 配置框架设置
-        initFrameSetting(MvpConfig.class, AppConfig.DEBUG, new NetCode(), AppConfig.ParameterMaps, AppConfig.HeaderMaps, AppConfig.HeaderMaps2, AppConfig.BodyMaps);
+        initFrameSetting(MvpConfig.class, AppConfig.DEBUG, new NetCode());
         // 存储项目整体配置信息
         AppConfig.config = getConfig();
+        // 初始化App配置
+        AppConfig.init();
 
         // 初始化数据库配置
         DBManager.getInstance().init();

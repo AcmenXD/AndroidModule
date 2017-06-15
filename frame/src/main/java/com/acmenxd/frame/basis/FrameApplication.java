@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Debug;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.acmenxd.frame.configs.BaseConfig;
 import com.acmenxd.frame.configs.ConfigBuilder;
@@ -20,7 +19,6 @@ import com.acmenxd.logger.Logger;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.Map;
 
 /**
  * @author AcmenXD
@@ -79,21 +77,15 @@ public abstract class FrameApplication extends Application {
     /**
      * 初始化配置
      */
-    public final void initFrameSetting(@NonNull Class<? extends BaseConfig> pConfig,
-                                       @NonNull boolean isDebug,
-                                       @NonNull FrameNetCode.Parse pParse,
-                                       @Nullable Map<String, String> ParameterMaps,
-                                       @Nullable Map<String, String> HeaderMaps,
-                                       @Nullable Map<String, String> HeaderMaps2,
-                                       @Nullable Map<String, String> BodyMaps) {
+    public final void initFrameSetting(@NonNull Class<? extends BaseConfig> pConfig, @NonNull boolean isDebug, @NonNull FrameNetCode.Parse pParse) {
         // 创建配置Info
-        ConfigBuilder.createConfig(pConfig, isDebug, pParse, ParameterMaps, HeaderMaps, HeaderMaps2, BodyMaps);
+        ConfigBuilder.createConfig(pConfig, isDebug, pParse);
+        // 初始化模块配置
+        ConfigBuilder.init();
         // 初始化File配置
         FileUtils.init();
         // 初始化网络监听配置
         Monitor.init();
-        // 初始化模块配置
-        ConfigBuilder.init();
         // 崩溃异常捕获
         CrashUtils.CrashManager.getInstance(instance());
     }

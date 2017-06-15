@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.acmenxd.frame.utils.PermissionsUtils;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.R;
+import com.acmenxd.mvp.base.AppConfig;
 import com.acmenxd.mvp.base.BaseApplication;
 
 /**
@@ -56,6 +57,7 @@ public final class SplashActivity extends AppCompatActivity {
         PermissionsUtils.requestPermissions(this, new PermissionsUtils.CallbackGroup() {
             @Override
             public void result(boolean result) {
+                AppConfig.permissionsAfterInit();
                 if (permissionsOrStartResult) {
                     startNextActivity();
                 } else {
