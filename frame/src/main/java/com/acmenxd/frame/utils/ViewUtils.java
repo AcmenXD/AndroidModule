@@ -1,7 +1,7 @@
 package com.acmenxd.frame.utils;
 
+import android.content.Context;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 /**
@@ -15,11 +15,11 @@ public final class ViewUtils {
     /**
      * 设置SwipeRefreshLayout样式
      */
-    public static void setSwipeRefreshLayoutStyle(@NonNull SwipeRefreshLayout srl, @NonNull SwipeRefreshLayout.OnRefreshListener pOnRefreshListener) {
+    public static void setSwipeRefreshLayoutStyle(Context context, SwipeRefreshLayout srl, SwipeRefreshLayout.OnRefreshListener pOnRefreshListener) {
         srl.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
         srl.setProgressBackgroundColorSchemeColor(Color.WHITE);
         srl.setSize(SwipeRefreshLayout.DEFAULT);//SwipeRefreshLayout.LARGE
-        srl.setProgressViewEndTarget(true, 130);
+        srl.setProgressViewEndTarget(true, (int) Utils.dp2px(context, 70));
         srl.setOnRefreshListener(pOnRefreshListener);
     }
 

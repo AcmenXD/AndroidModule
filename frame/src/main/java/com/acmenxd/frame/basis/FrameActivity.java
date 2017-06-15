@@ -3,6 +3,7 @@ package com.acmenxd.frame.basis;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
@@ -10,6 +11,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.util.SparseArray;
@@ -69,6 +71,12 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
             onNetStatusChange(status);
         }
     };
+
+    @Deprecated
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+    }
 
     @CallSuper
     @Override
