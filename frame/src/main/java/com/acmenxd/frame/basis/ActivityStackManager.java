@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -24,6 +26,26 @@ public enum ActivityStackManager {
     public Activity currentActivity() {
         Activity activity = activityStack.lastElement();
         return activity;
+    }
+
+    /**
+     * 判断Activity是否在栈顶
+     */
+    public boolean isCurrentActivity(@NonNull Activity activity) {
+        return activity == currentActivity();
+    }
+
+    /**
+     * 根据class,获取Activity实例
+     */
+    public List<Activity> getActivitys(@NonNull Class<?> cls) {
+        List<Activity> activities = new ArrayList<>();
+        for (Activity activity : activityStack) {
+            if (activity.getClass().equals(cls)) {
+                activities.add(activity);
+            }
+        }
+        return activities;
     }
 
     /**
