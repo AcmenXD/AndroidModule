@@ -2,6 +2,7 @@ package com.acmenxd.frame.widget;
 
 import android.content.Context;
 import android.support.annotation.IntRange;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -37,6 +38,8 @@ public class Dialog extends android.app.Dialog {
         private int mTitleResId;
         private CharSequence mMessage;
         private int mMessageResId;
+        private View mCustomView;
+        private int mCustomResId;
         private int mBtnOrientation;
         private boolean mBtn1Bool;
         private CharSequence mBtn1Str;
@@ -124,6 +127,16 @@ public class Dialog extends android.app.Dialog {
             return this;
         }
 
+        public Builder setCustomView(@NonNull View pCustomView) {
+            this.mCustomView = pCustomView;
+            return this;
+        }
+
+        public Builder setCustomView(@LayoutRes int pCustomResId) {
+            this.mCustomResId = pCustomResId;
+            return this;
+        }
+
         public Builder setBtnOrientation(@IntRange(from = OrientationHelper.HORIZONTAL, to = OrientationHelper.VERTICAL) int pBtnOrientation) {
             this.mBtnOrientation = pBtnOrientation;
             return this;
@@ -185,12 +198,18 @@ public class Dialog extends android.app.Dialog {
                 tvTitle.setText(title);
                 tvTitle.setVisibility(View.VISIBLE);
             }
-            CharSequence message = mMessageResId != 0 ? mContext.getString(mMessageResId) : mMessage;
-            if (Utils.isEmpty(message)) {
+            View customView = mCustomResId != 0 ? LayoutInflater.from(mContext).inflate(mCustomResId, null) : mCustomView;
+            if (customView != null) {
                 tvMessage.setVisibility(View.GONE);
+                contentLayout.addView(customView);
             } else {
-                tvMessage.setText(message);
-                tvMessage.setVisibility(View.VISIBLE);
+                CharSequence message = mMessageResId != 0 ? mContext.getString(mMessageResId) : mMessage;
+                if (Utils.isEmpty(message)) {
+                    tvMessage.setVisibility(View.GONE);
+                } else {
+                    tvMessage.setText(message);
+                    tvMessage.setVisibility(View.VISIBLE);
+                }
             }
             int btnNumber = 0;
             int btnWidth = LinearLayout.LayoutParams.MATCH_PARENT;
