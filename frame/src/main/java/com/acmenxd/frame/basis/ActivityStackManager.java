@@ -1,6 +1,5 @@
 package com.acmenxd.frame.basis;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 
@@ -18,29 +17,48 @@ import java.util.Stack;
 public enum ActivityStackManager {
     INSTANCE;
 
-    private static Stack<Activity> activityStack;
+    private static Stack<FrameActivity> activityStack = new Stack<>();
 
     /**
      * 获取当前Activity
      */
-    public Activity currentActivity() {
-        Activity activity = activityStack.lastElement();
-        return activity;
+    public FrameActivity currentActivity() {
+        return activityStack.lastElement();
     }
 
     /**
      * 判断Activity是否在栈顶
      */
-    public boolean isCurrentActivity(@NonNull Activity activity) {
+    public boolean isCurrentActivity(@NonNull FrameActivity activity) {
         return activity == currentActivity();
+    }
+
+    /**
+     * 获取前一个Activity
+     */
+    public FrameActivity prevActivity(@NonNull FrameActivity activity) {
+        if (activity != null && activityStack.firstElement() != activity) {
+            return activityStack.get(activityStack.lastIndexOf(activity) - 1);
+        }
+        return null;
+    }
+
+    /**
+     * 获取下一个Activity
+     */
+    public FrameActivity nextActivity(@NonNull FrameActivity activity) {
+        if (activity != null && activityStack.lastElement() != activity) {
+            return activityStack.get(activityStack.lastIndexOf(activity) + 1);
+        }
+        return null;
     }
 
     /**
      * 根据class,获取Activity实例
      */
-    public List<Activity> getActivitys(@NonNull Class<?> cls) {
-        List<Activity> activities = new ArrayList<>();
-        for (Activity activity : activityStack) {
+    public List<FrameActivity> getActivitys(@NonNull Class<? extends FrameActivity> cls) {
+        List<FrameActivity> activities = new ArrayList<>();
+        for (FrameActivity activity : activityStack) {
             if (activity.getClass().equals(cls)) {
                 activities.add(activity);
             }
@@ -49,37 +67,17 @@ public enum ActivityStackManager {
     }
 
     /**
-     * 添加一个Activity
-     */
-    public void addActivity(@NonNull Activity activity) {
-        if (activityStack == null) {
-            activityStack = new Stack<Activity>();
-        }
-        activityStack.add(activity);
-    }
-
-    /**
-     * 移除一个Activity
-     */
-    public void removeActivity(@NonNull Activity activity) {
-        if (activityStack == null) {
-            activityStack = new Stack<Activity>();
-        }
-        activityStack.remove(activity);
-    }
-
-    /**
      * 结束当前Activity
      */
     public void finishActivity() {
-        Activity activity = activityStack.lastElement();
+        FrameActivity activity = activityStack.lastElement();
         finishActivity(activity);
     }
 
     /**
      * 结束一个Activity
      */
-    public void finishActivity(@NonNull Activity activity) {
+    public void finishActivity(@NonNull FrameActivity activity) {
         if (activity != null) {
             removeActivity(activity);
             activity.finish();
@@ -90,8 +88,8 @@ public enum ActivityStackManager {
     /**
      * 结束一个Activity,根据class
      */
-    public void finishActivity(@NonNull Class<?> cls) {
-        for (Activity activity : activityStack) {
+    public void finishActivity(@NonNull Class<? extends FrameActivity> cls) {
+        for (FrameActivity activity : activityStack) {
             if (activity.getClass().equals(cls)) {
                 finishActivity(activity);
             }
@@ -102,12 +100,30 @@ public enum ActivityStackManager {
      * 结束所有Activity
      */
     public void finishAllActivity() {
-        for (Activity activity : activityStack) {
+        for (FrameActivity activity : activityStack) {
             if (null != activity) {
                 activity.finish();
             }
         }
         activityStack.clear();
+    }
+
+    /**
+     * 添加一个Activity
+     */
+    protected void addActivity(@NonNull FrameActivity activity) {
+        if (activity != null) {
+            activityStack.add(activity);
+        }
+    }
+
+    /**
+     * 移除一个Activity
+     */
+    protected void removeActivity(@NonNull FrameActivity activity) {
+        if (activity != null) {
+            activityStack.remove(activity);
+        }
     }
 
     /**
