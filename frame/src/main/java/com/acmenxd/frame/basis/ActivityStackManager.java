@@ -114,6 +114,7 @@ public enum ActivityStackManager {
     protected void addActivity(@NonNull FrameActivity activity) {
         if (activity != null) {
             activityStack.add(activity);
+            ActivityNodeManager.INSTANCE.addChild(activity.getClass(), activity.getBundle());
         }
     }
 

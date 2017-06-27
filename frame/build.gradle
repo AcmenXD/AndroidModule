@@ -36,7 +36,7 @@ dependencies {
      * 框架库
      */
     compile 'com.github.AcmenXD:Marketer:1.2'
-    compile 'com.github.AcmenXD:SpTool:1.3'
+    compile 'com.github.AcmenXD:SpTool:1.4'
     compile 'com.github.AcmenXD:Glide:1.5'
     compile 'com.github.AcmenXD:FrescoView:1.5'
     compile 'com.github.AcmenXD:Logger:2.0'
