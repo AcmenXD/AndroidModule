@@ -28,7 +28,7 @@ import rx.subscriptions.CompositeSubscription;
  * @date 2016/12/16 16:01
  * @detail Presenter基类
  */
-public abstract class FramePresenter<T extends IBView> {
+public abstract class FramePresenter<T extends IBView> implements INet {
     protected final String TAG = this.getClass().getSimpleName();
 
     // Activity|Fragment实例
@@ -37,6 +37,8 @@ public abstract class FramePresenter<T extends IBView> {
     private CompositeSubscription mSubscription;
     // 统一管理Models
     private List<FrameModel> mModels;
+    // 页面是否关闭(包含正在关闭)
+    public boolean isFinish = false;
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override
@@ -49,6 +51,7 @@ public abstract class FramePresenter<T extends IBView> {
      * 构造器,传入BaseView实例
      */
     public FramePresenter(@NonNull T pView) {
+        isFinish = false;
         mView = pView;
         // 初始化容器
         mSubscription = getCompositeSubscription();
@@ -62,6 +65,7 @@ public abstract class FramePresenter<T extends IBView> {
      */
     @CallSuper
     public void unSubscribe() {
+        isFinish = true;
         // 网络监控反注册
         Monitor.unRegistListener(mNetListener);
         //解绑 Subscriptions
@@ -129,6 +133,7 @@ public abstract class FramePresenter<T extends IBView> {
     /**
      * 根据IRequest类获取Request实例
      */
+    @Override
     public final <E> E request(@NonNull Class<E> pIRequest) {
         return NetManager.INSTANCE.request(pIRequest);
     }
@@ -137,6 +142,7 @@ public abstract class FramePresenter<T extends IBView> {
      * 创建新的Retrofit实例
      * 根据IRequest类获取Request实例
      */
+    @Override
     public final <E> E newRequest(@NonNull Class<E> pIRequest) {
         return NetManager.INSTANCE.newRequest(pIRequest);
     }
@@ -145,6 +151,7 @@ public abstract class FramePresenter<T extends IBView> {
      * 创建新的Retrofit实例,并设置超时时间
      * 根据IRequest类获取Request实例
      */
+    @Override
     public final <E> E newRequest(@IntRange(from = 0) int connectTimeout, @IntRange(from = 0) int readTimeout, @IntRange(from = 0) int writeTimeout, @NonNull Class<E> pIRequest) {
         return NetManager.INSTANCE.newRequest(connectTimeout, readTimeout, writeTimeout, pIRequest);
     }
@@ -158,15 +165,20 @@ public abstract class FramePresenter<T extends IBView> {
      *                  1.isCancelable(是否可以通过点击Back键取消)(默认true)
      *                  2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
      */
+    @Override
     public final <E> Callback<E> newCallback(@NonNull final NetCallback<E> pCallback, final boolean... setting) {
-        mView.showLoadingDialogBySetting(setting);
+        if (mView != null) {
+            mView.showLoadingDialogBySetting(setting);
+        }
         return new Callback<E>() {
             @Override
             public void onResponse(Call<E> call, Response<E> response) {
                 if (!mSubscription.isUnsubscribed()) {
                     pCallback.onResponse(call, response);
                 }
-                mView.hideLoadingDialog();
+                if (mView != null) {
+                    mView.hideLoadingDialog();
+                }
             }
 
             @Override
@@ -174,7 +186,9 @@ public abstract class FramePresenter<T extends IBView> {
                 if (!mSubscription.isUnsubscribed()) {
                     pCallback.onFailure(call, t);
                 }
-                mView.hideLoadingDialog();
+                if (mView != null) {
+                    mView.hideLoadingDialog();
+                }
             }
         };
     }
@@ -188,15 +202,20 @@ public abstract class FramePresenter<T extends IBView> {
      *                    1.isCancelable(是否可以通过点击Back键取消)(默认true)
      *                    2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
      */
+    @Override
     public final <E> Subscriber<E> newSubscriber(@NonNull final NetSubscriber<E> pSubscriber, final boolean... setting) {
-        mView.showLoadingDialogBySetting(setting);
+        if (mView != null) {
+            mView.showLoadingDialogBySetting(setting);
+        }
         return new Subscriber<E>() {
             @Override
             public void onCompleted() {
                 if (!mSubscription.isUnsubscribed()) {
                     pSubscriber.onCompleted();
                 }
-                mView.hideLoadingDialog();
+                if (mView != null) {
+                    mView.hideLoadingDialog();
+                }
             }
 
             @Override
@@ -204,7 +223,9 @@ public abstract class FramePresenter<T extends IBView> {
                 if (!mSubscription.isUnsubscribed()) {
                     pSubscriber.onError(e);
                 }
-                mView.hideLoadingDialog();
+                if (mView != null) {
+                    mView.hideLoadingDialog();
+                }
             }
 
             @Override

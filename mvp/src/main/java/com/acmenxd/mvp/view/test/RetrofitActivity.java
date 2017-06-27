@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.acmenxd.frame.utils.FileUtils;
-import com.acmenxd.frame.utils.LoadUtils;
+import com.acmenxd.mvp.utils.LoadUtils;
 import com.acmenxd.frame.utils.RxUtils;
 import com.acmenxd.frame.utils.Utils;
 import com.acmenxd.logger.Logger;

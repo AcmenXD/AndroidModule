@@ -1,8 +1,10 @@
-package com.acmenxd.frame.utils;
+package com.acmenxd.mvp.utils;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v4.widget.SwipeRefreshLayout;
+
+import com.acmenxd.frame.utils.*;
 
 /**
  * @author AcmenXD
@@ -19,7 +21,7 @@ public final class ViewUtils {
         srl.setColorSchemeColors(Color.RED, Color.GREEN, Color.BLUE, Color.CYAN);
         srl.setProgressBackgroundColorSchemeColor(Color.WHITE);
         srl.setSize(SwipeRefreshLayout.DEFAULT);//SwipeRefreshLayout.LARGE
-        srl.setProgressViewEndTarget(true, (int) Utils.dp2px(context, 70));
+        srl.setProgressViewEndTarget(true, (int) com.acmenxd.frame.utils.Utils.dp2px(context, 70));
         srl.setOnRefreshListener(pOnRefreshListener);
     }
 

@@ -1,6 +1,7 @@
 package com.acmenxd.frame.basis;
 
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
@@ -35,13 +36,15 @@ import rx.subscriptions.CompositeSubscription;
  * @date 2017/6/14 9:53
  * @detail something
  */
-public abstract class FrameService extends Service {
+public abstract class FrameService extends Service implements INet {
     protected final String TAG = this.getClass().getSimpleName();
 
     // 统一持有Subscription
     private CompositeSubscription mSubscription;
     // 统一管理Presenters
     private List<FramePresenter> mPresenters;
+    // 页面是否关闭(包含正在关闭)
+    public boolean isFinish = false;
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override
@@ -65,6 +68,7 @@ public abstract class FrameService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        isFinish = true;
         // 网络监控反注册
         Monitor.unRegistListener(mNetListener);
         //解绑 Subscriptions
@@ -80,6 +84,12 @@ public abstract class FrameService extends Service {
         }
     }
 
+    /**
+     * 为了统一Activity&Fragment 在 Presenter&Model中获取上下文对象
+     */
+    public Context getContext() {
+        return this;
+    }
     //------------------------------------子类可重写的函数
 
     /**
@@ -189,6 +199,7 @@ public abstract class FrameService extends Service {
     /**
      * 根据IRequest类获取Request实例
      */
+    @Override
     public final <T> T request(@NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.request(pIRequest);
     }
@@ -197,6 +208,7 @@ public abstract class FrameService extends Service {
      * 创建新的Retrofit实例
      * 根据IRequest类获取Request实例
      */
+    @Override
     public final <T> T newRequest(@NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.newRequest(pIRequest);
     }
@@ -205,6 +217,7 @@ public abstract class FrameService extends Service {
      * 创建新的Retrofit实例,并设置超时时间
      * 根据IRequest类获取Request实例
      */
+    @Override
     public final <T> T newRequest(@IntRange(from = 0) int connectTimeout, @IntRange(from = 0) int readTimeout, @IntRange(from = 0) int writeTimeout, @NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.newRequest(connectTimeout, readTimeout, writeTimeout, pIRequest);
     }
@@ -218,6 +231,7 @@ public abstract class FrameService extends Service {
      *                  1.isCancelable(是否可以通过点击Back键取消)(默认true)
      *                  2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
      */
+    @Override
     public final <T> Callback<T> newCallback(@NonNull final NetCallback<T> pCallback, final boolean... setting) {
         return new Callback<T>() {
             @Override

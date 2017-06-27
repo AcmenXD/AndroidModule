@@ -45,7 +45,7 @@ import rx.subscriptions.CompositeSubscription;
  * @date 2017/3/14 15:32
  * @detail Fragmeng基类
  */
-public abstract class FrameFragment extends Fragment implements IActivityFragment {
+public abstract class FrameFragment extends Fragment implements IActivityFragment,INet {
     protected final String TAG = this.getClass().getSimpleName();
 
     // Activity实例
@@ -74,6 +74,8 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
     private boolean viewPagerFragmentFirstVisible;
     // Fragment取消预加载后的显示计数(第一次显示计数为1)
     private int viewPagerFragmentVisibleIndex;
+    // 页面是否关闭(包含正在关闭)
+    public boolean isFinish = false;
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override
@@ -118,6 +120,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
     @Override
     public void onDetach() {
         super.onDetach();
+        isFinish = true;
         // 网络监控反注册
         Monitor.unRegistListener(mNetListener);
         //解绑 Subscriptions
@@ -141,6 +144,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
     @Override
     public void onStart() {
         super.onStart();
+        isFinish = false;
         // 网络监控注册
         Monitor.registListener(mNetListener);
     }

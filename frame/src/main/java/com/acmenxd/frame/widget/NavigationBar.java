@@ -2,9 +2,6 @@ package com.acmenxd.frame.widget;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,11 +22,11 @@ import java.util.List;
  * @date 2017/5/5 16:20
  * @detail 底部导航栏, 支持红点显示
  */
-public final class NavigationBar extends FrameLayout implements View.OnClickListener {
+public class NavigationBar extends FrameLayout implements View.OnClickListener {
     public interface OnNavigationListener {
-        void onTabChange(@IntRange(from = 0) int position);
+        void onTabChange(int position);
 
-        void onClick(@IntRange(from = 0) int position);
+        void onClick(int position);
     }
 
     private Context mContext;
@@ -52,22 +49,23 @@ public final class NavigationBar extends FrameLayout implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        int position = -1;
         if (mItems.contains(v)) {
-            int position = mItems.indexOf(v);
-            if (position >= 0) {
-                changeTab(position);
-                if (mListener != null) {
-                    mListener.onClick(position);
-                }
+            position = mItems.indexOf(v);
+        }
+        if (position >= 0) {
+            changeTab(position);
+            if (mListener != null) {
+                mListener.onClick(position);
             }
         }
     }
 
-    public void addItem(@NonNull String name, @DrawableRes int resId) {
+    public void addItem(String name, int resId) {
         addItem(name, mContext.getResources().getDrawable(resId));
     }
 
-    public void addItem(@NonNull String name, @NonNull Drawable drawable) {
+    public void addItem(String name, Drawable drawable) {
         LinearLayout layout = (LinearLayout) findViewById(R.id.navigation_bar_ll);
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.widget_navigation_bar_item, null);
         itemView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
@@ -80,7 +78,7 @@ public final class NavigationBar extends FrameLayout implements View.OnClickList
         setRedPoint(0, -1);
     }
 
-    private void changeTab(@IntRange(from = 0) int position) {
+    private void changeTab(int position) {
         if (mItems.size() > position) {
             for (int i = 0, len = mItems.size(); i < len; i++) {
                 View view = mItems.get(i);
@@ -96,18 +94,18 @@ public final class NavigationBar extends FrameLayout implements View.OnClickList
         }
     }
 
-    public void setSelectTab(@IntRange(from = 0) int position) {
+    public void setSelectTab(int position) {
         changeTab(position);
         if (mListener != null) {
             mListener.onTabChange(position);
         }
     }
 
-    public void setListener(@NonNull OnNavigationListener pListener) {
+    public void setListener(OnNavigationListener pListener) {
         this.mListener = pListener;
     }
 
-    public void setRedPoint(@IntRange(from = 0) int position, @IntRange(from = -1) int number) {
+    public void setRedPoint(int position, int number) {
         TextView tv = null;
         if (mItems.size() > position) {
             tv = (TextView) mItems.get(position).findViewById(R.id.navigation_bar_item_tv_red);

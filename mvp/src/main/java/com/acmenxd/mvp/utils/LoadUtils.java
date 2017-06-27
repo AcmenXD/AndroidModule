@@ -1,9 +1,11 @@
-package com.acmenxd.frame.utils;
+package com.acmenxd.mvp.utils;
 
 import android.support.annotation.NonNull;
 import android.text.format.Formatter;
 
 import com.acmenxd.frame.basis.FrameApplication;
+import com.acmenxd.frame.utils.FileUtils;
+import com.acmenxd.frame.utils.IOUtils;
 import com.acmenxd.retrofit.NetLog;
 
 import java.io.File;

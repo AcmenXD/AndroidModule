@@ -1,6 +1,7 @@
 package com.acmenxd.frame.basis;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -45,7 +46,7 @@ import rx.subscriptions.CompositeSubscription;
  * @date 2016/12/16 16:01
  * @detail Activity基类
  */
-public abstract class FrameActivity extends AppCompatActivity implements IActivityFragment {
+public abstract class FrameActivity extends AppCompatActivity implements IActivityFragment ,INet{
     protected final String TAG = this.getClass().getSimpleName();
 
     // 统一持有Subscription
@@ -64,6 +65,8 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     private View mContentView;
     private View mLoadingView;
     private View mErrorView;
+    // 页面是否关闭(包含正在关闭)
+    public boolean isFinish = false;
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override
@@ -109,6 +112,7 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        isFinish = true;
         // 网络监控反注册
         Monitor.unRegistListener(mNetListener);
         //解绑 Subscriptions
@@ -134,10 +138,17 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     @Override
     protected void onStart() {
         super.onStart();
+        isFinish = false;
         // 网络监控注册
         Monitor.registListener(mNetListener);
     }
 
+    /**
+     * 为了统一Activity&Fragment 在 Presenter&Model中获取上下文对象
+     */
+    public Context getContext() {
+        return this;
+    }
     //------------------------------------子类可重写的函数
 
     /**

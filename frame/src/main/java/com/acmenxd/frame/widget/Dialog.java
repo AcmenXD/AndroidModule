@@ -11,6 +11,8 @@ import android.support.v7.widget.OrientationHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,12 +30,14 @@ public class Dialog extends android.app.Dialog {
     public static class Builder {
         private Context mContext;
         private int mThemeResId;
-        private int mWidth; //默认250dip
-        private int mHeight; //默认180dip
+        private int mWidth; //默认320dip
+        private int mHeight; //默认250dip
         private int mPadding; //默认10dip
         private int mContentPadding; //默认10dip
         private boolean isCancelable = false; //是否可以通过点击Back键取消,默认false
         private boolean isCanceledOnTouchOutside = false; //是否在点击Dialog外部时取消Dialog,默认false
+        private boolean isCloseVisible = true; //右上角叉是否显示
+        private View.OnClickListener mCloseListener; //点击右上角叉时回调
         private CharSequence mTitle;
         private int mTitleResId;
         private CharSequence mMessage;
@@ -58,8 +62,8 @@ public class Dialog extends android.app.Dialog {
         public Builder(@NonNull Context pContext, @StyleRes int pThemeResId) {
             this.mContext = pContext;
             this.mThemeResId = pThemeResId;
-            this.mWidth = (int) Utils.dp2px(mContext, 250);
-            this.mHeight = (int) Utils.dp2px(mContext, 180);
+            this.mWidth = (int) Utils.dp2px(mContext, 320);
+            this.mHeight = (int) Utils.dp2px(mContext, 250);
             this.mPadding = (int) Utils.dp2px(mContext, 10);
             this.mContentPadding = (int) Utils.dp2px(mContext, 10);
             this.mBtnOrientation = OrientationHelper.HORIZONTAL;
@@ -104,6 +108,22 @@ public class Dialog extends android.app.Dialog {
          */
         public Builder setCanceledOnTouchOutside(boolean isCanceledOnTouchOutside) {
             this.isCanceledOnTouchOutside = isCanceledOnTouchOutside;
+            return this;
+        }
+
+        /**
+         * 右上角叉是否显示,默认显示
+         */
+        public Builder setCloseVisible(boolean pIsCloseVisible) {
+            this.isCloseVisible = pIsCloseVisible;
+            return this;
+        }
+
+        /**
+         * 点击右上角叉时回调
+         */
+        public Builder setCloseListener(@Nullable View.OnClickListener pCloseListener) {
+            this.mCloseListener = pCloseListener;
             return this;
         }
 
@@ -176,12 +196,13 @@ public class Dialog extends android.app.Dialog {
         }
 
         public Dialog build() {
-            final Dialog dialog = new Dialog(mContext, mThemeResId);
             View view = LayoutInflater.from(mContext).inflate(R.layout.widget_dialog, null);
+            final Dialog dialog = new Dialog(mContext, mThemeResId, view);
             // 初始化控件
             LinearLayout dialogLayout = (LinearLayout) view.findViewById(R.id.dialog_layout);
             LinearLayout contentLayout = (LinearLayout) view.findViewById(R.id.dialog_layout_content);
             LinearLayout btnLayout = (LinearLayout) view.findViewById(R.id.dialog_layout_btn);
+            ImageView ibClose = (ImageView) view.findViewById(R.id.dialog_close);
             TextView tvTitle = (TextView) view.findViewById(R.id.dialog_tv_title);
             TextView tvMessage = (TextView) view.findViewById(R.id.dialog_tv_message);
             Button btn1 = (Button) view.findViewById(R.id.dialog_btn1);
@@ -189,8 +210,23 @@ public class Dialog extends android.app.Dialog {
             Button btn3 = (Button) view.findViewById(R.id.dialog_btn3);
             // 填充视图
             dialogLayout.setPadding(mPadding, mPadding, mPadding, mPadding);
-            dialogLayout.setLayoutParams(new LinearLayout.LayoutParams(mWidth, mHeight));
+            dialogLayout.setLayoutParams(new FrameLayout.LayoutParams(mWidth, mHeight));
             contentLayout.setPadding(mContentPadding, mContentPadding, mContentPadding, mContentPadding);
+            if (isCloseVisible) {
+                ibClose.setVisibility(View.VISIBLE);
+            } else {
+                ibClose.setVisibility(View.GONE);
+            }
+            if (mCloseListener == null) {
+                ibClose.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                    }
+                });
+            } else {
+                ibClose.setOnClickListener(mCloseListener);
+            }
             CharSequence title = mTitleResId != 0 ? mContext.getString(mTitleResId) : mTitle;
             if (Utils.isEmpty(title)) {
                 tvTitle.setVisibility(View.GONE);
@@ -285,11 +321,40 @@ public class Dialog extends android.app.Dialog {
         }
     }
 
-    public Dialog(@NonNull Context pContext) {
-        super(pContext);
+    private View contentView;
+
+    public Dialog(@NonNull Context pContext, @StyleRes int pThemeResId, View pContentView) {
+        super(pContext, pThemeResId);
+        this.contentView = pContentView;
     }
 
-    public Dialog(@NonNull Context pContext, @StyleRes int pThemeResId) {
-        super(pContext, pThemeResId);
+    /**
+     * 右上角叉是否显示,默认显示
+     */
+    public void setCloseVisible(boolean pIsCloseVisible) {
+        ImageView ibClose = (ImageView) contentView.findViewById(R.id.dialog_close);
+        if (pIsCloseVisible) {
+            ibClose.setVisibility(View.VISIBLE);
+        } else {
+            ibClose.setVisibility(View.GONE);
+        }
     }
+
+    /**
+     * 点击右上角叉时回调
+     */
+    public void setCloseListener(@Nullable View.OnClickListener pCloseListener) {
+        ImageView ibClose = (ImageView) contentView.findViewById(R.id.dialog_close);
+        if (pCloseListener == null) {
+            ibClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Dialog.this.dismiss();
+                }
+            });
+        } else {
+            ibClose.setOnClickListener(pCloseListener);
+        }
+    }
+
 }

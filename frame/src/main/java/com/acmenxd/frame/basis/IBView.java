@@ -1,5 +1,7 @@
 package com.acmenxd.frame.basis;
 
+import android.content.Context;
+
 /**
  * @author AcmenXD
  * @version v1.0
@@ -31,4 +33,9 @@ public interface IBView {
      * 隐藏LoadingDialog
      */
     void hideLoadingDialog();
+
+    /**
+     * 为了统一Activity&Fragment 在 Presenter&Model中获取上下文对象
+     */
+    Context getContext();
 }

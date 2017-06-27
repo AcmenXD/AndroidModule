@@ -34,6 +34,22 @@ public final class Utils {
     public static final String UTF8 = "UTF-8";
 
     /**
+     * 编码
+     */
+    public static String encode(@NonNull String s) {
+        if (s == null) {
+            return "";
+        }
+        try {
+            return URLEncoder.encode(s, UTF8).replace("+", "%20")
+                    .replace("*", "%2A").replace("%7E", "~")
+                    .replace("#", "%23");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    /**
      * 反编码
      */
     public static String decode(@NonNull String s) {
@@ -42,24 +58,6 @@ public final class Utils {
         }
         try {
             return URLDecoder.decode(s, UTF8);
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    }
-
-    /**
-     * 编码
-     */
-    public static String encode(@NonNull String s) {
-        if (s == null) {
-            return "";
-        }
-        try {
-            return URLEncoder.encode(s, UTF8)
-                    .replace("+", "%20")
-                    .replace("*", "%2A")
-                    .replace("%7E", "~")
-                    .replace("#", "%23");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e.getMessage(), e);
         }

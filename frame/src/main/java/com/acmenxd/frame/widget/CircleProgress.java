@@ -34,7 +34,7 @@ import java.util.ArrayList;
  * @detail 该类完全拷贝自v4包下MaterialProgressDrawable, 只做了小幅初始化修改
  * * 用法同Drawable一样,如ImageView.setImageDrawable(CircleProgress)
  */
-public final class CircleProgress extends Drawable implements Animatable {
+public class CircleProgress extends Drawable implements Animatable {
     private static final Interpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
     static final Interpolator MATERIAL_INTERPOLATOR = new FastOutSlowInInterpolator();
 

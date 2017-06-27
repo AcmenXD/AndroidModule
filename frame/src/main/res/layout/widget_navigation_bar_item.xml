@@ -4,26 +4,44 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_weight="1"
+    android:background="#fff"
     android:gravity="center">
 
-    <TextView
-        android:id="@+id/navigation_bar_item_tv_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTop="@drawable/widget_navigation_bar_home"
-        android:gravity="center"
-        android:text="首页"
-        android:textColor="#000"
-        android:textSize="14sp"/>
+    <View
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="#E4E7F0"/>
 
-    <TextView
-        android:id="@+id/navigation_bar_item_tv_red"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_marginLeft="-8dp"
-        android:layout_toRightOf="@id/navigation_bar_item_tv_name"
-        android:background="@mipmap/navigation_bar_red_point"
-        android:gravity="center"
-        android:textColor="#fff"
-        android:textSize="10sp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/navigation_bar_item_tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="首页"
+            android:textColor="#2563E7"
+            android:textSize="9sp"/>
+
+        <TextView
+            android:id="@+id/navigation_bar_item_tv_red"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginLeft="-8dp"
+            android:layout_toRightOf="@id/navigation_bar_item_tv_name"
+            android:background="@mipmap/navigation_bar_red_point"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:textSize="10sp"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="#E4E7F0"/>
 </RelativeLayout>

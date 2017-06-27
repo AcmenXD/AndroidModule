@@ -25,13 +25,15 @@ import rx.subscriptions.CompositeSubscription;
  * @date 2016/12/16 16:01
  * @detail Model基类
  */
-public abstract class FrameModel {
+public abstract class FrameModel implements INet {
     protected final String TAG = this.getClass().getSimpleName();
 
     // Activity|Fragment实例
     protected FramePresenter mFramePresenter;
     // 统一持有Subscription
     private CompositeSubscription mSubscription;
+    // 页面是否关闭(包含正在关闭)
+    public boolean isFinish = false;
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override
@@ -44,6 +46,7 @@ public abstract class FrameModel {
      * 构造器,传入FramePresenter实例
      */
     public FrameModel(@NonNull FramePresenter pFramePresenter) {
+        isFinish = false;
         mFramePresenter = pFramePresenter;
         // 初始化容器
         mSubscription = getCompositeSubscription();
@@ -56,13 +59,13 @@ public abstract class FrameModel {
      */
     @CallSuper
     public void unSubscribe() {
+        isFinish = true;
         // 网络监控反注册
         Monitor.unRegistListener(mNetListener);
         //解绑 Subscriptions
         if (mSubscription != null) {
             mSubscription.unsubscribe();
         }
-        mFramePresenter = null;
     }
 
     //------------------------------------子类可重写的函数
@@ -102,6 +105,7 @@ public abstract class FrameModel {
     /**
      * 根据IRequest类获取Request实例
      */
+    @Override
     public final <T> T request(@NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.request(pIRequest);
     }
@@ -110,6 +114,7 @@ public abstract class FrameModel {
      * 创建新的Retrofit实例
      * 根据IRequest类获取Request实例
      */
+    @Override
     public final <T> T newRequest(@NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.newRequest(pIRequest);
     }
@@ -118,6 +123,7 @@ public abstract class FrameModel {
      * 创建新的Retrofit实例,并设置超时时间
      * 根据IRequest类获取Request实例
      */
+    @Override
     public final <T> T newRequest(@IntRange(from = 0) int connectTimeout, @IntRange(from = 0) int readTimeout, @IntRange(from = 0) int writeTimeout, @NonNull Class<T> pIRequest) {
         return NetManager.INSTANCE.newRequest(connectTimeout, readTimeout, writeTimeout, pIRequest);
     }
@@ -131,8 +137,9 @@ public abstract class FrameModel {
      *                  1.isCancelable(是否可以通过点击Back键取消)(默认true)
      *                  2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
      */
+    @Override
     public final <T> Callback<T> newCallback(@NonNull final NetCallback<T> pCallback, final boolean... setting) {
-        if (mFramePresenter != null) {
+        if (mFramePresenter != null && mFramePresenter.mView != null) {
             mFramePresenter.mView.showLoadingDialogBySetting(setting);
         }
         return new Callback<T>() {
@@ -141,7 +148,7 @@ public abstract class FrameModel {
                 if (!mSubscription.isUnsubscribed()) {
                     pCallback.onResponse(call, response);
                 }
-                if (mFramePresenter != null) {
+                if (mFramePresenter != null && mFramePresenter.mView != null) {
                     mFramePresenter.mView.hideLoadingDialog();
                 }
             }
@@ -151,7 +158,7 @@ public abstract class FrameModel {
                 if (!mSubscription.isUnsubscribed()) {
                     pCallback.onFailure(call, t);
                 }
-                if (mFramePresenter != null) {
+                if (mFramePresenter != null && mFramePresenter.mView != null) {
                     mFramePresenter.mView.hideLoadingDialog();
                 }
             }
@@ -167,8 +174,9 @@ public abstract class FrameModel {
      *                    1.isCancelable(是否可以通过点击Back键取消)(默认true)
      *                    2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
      */
+    @Override
     public final <T> Subscriber<T> newSubscriber(@NonNull final NetSubscriber<T> pSubscriber, final boolean... setting) {
-        if (mFramePresenter != null) {
+        if (mFramePresenter != null && mFramePresenter.mView != null) {
             mFramePresenter.mView.showLoadingDialogBySetting(setting);
         }
         return new Subscriber<T>() {
@@ -177,7 +185,7 @@ public abstract class FrameModel {
                 if (!mSubscription.isUnsubscribed()) {
                     pSubscriber.onCompleted();
                 }
-                if (mFramePresenter != null) {
+                if (mFramePresenter != null && mFramePresenter.mView != null) {
                     mFramePresenter.mView.hideLoadingDialog();
                 }
             }
@@ -187,7 +195,7 @@ public abstract class FrameModel {
                 if (!mSubscription.isUnsubscribed()) {
                     pSubscriber.onError(e);
                 }
-                if (mFramePresenter != null) {
+                if (mFramePresenter != null && mFramePresenter.mView != null) {
                     mFramePresenter.mView.hideLoadingDialog();
                 }
             }
