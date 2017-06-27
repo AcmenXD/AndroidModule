@@ -15,7 +15,7 @@ import org.greenrobot.eventbus.Subscribe;
  * @date 2017/5/24 14:35
  * @detail 顶级Activity
  */
-public abstract class BaseActivity extends FrameActivity {
+public abstract class BaseActivity extends FrameActivity implements INetBase{
 
     @CallSuper
     @Override

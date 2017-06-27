@@ -15,7 +15,7 @@ import org.greenrobot.eventbus.Subscribe;
  * @date 2017/5/24 14:35
  * @detail 顶级Activity
  */
-public abstract class BaseService extends FrameService {
+public abstract class BaseService extends FrameService implements INetBase{
 
     @CallSuper
     @Override
@@ -44,6 +44,7 @@ public abstract class BaseService extends FrameService {
     /**
      * 获取IAllRequest实例
      */
+    @Override
     public final IAllRequest request() {
         return NetManager.INSTANCE.commonRequest(IAllRequest.class);
     }

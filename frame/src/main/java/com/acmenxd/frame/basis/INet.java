@@ -14,7 +14,7 @@ import rx.Subscriber;
  * @version v1.0
  * @github https://github.com/AcmenXD
  * @date 2017/6/26 11:19
- * @detail something
+ * @detail 支持Retrofit的接口类
  */
 public interface INet {
     /**

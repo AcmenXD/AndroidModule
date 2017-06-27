@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.Subscribe;
  * @date 2017/5/24 14:46
  * @detail 顶级Presenter
  */
-public abstract class BasePresenter<T extends IBView> extends FramePresenter<T> {
+public abstract class BasePresenter<T extends IBView> extends FramePresenter<T> implements INetBase{
     /**
      * 构造器,传入BaseView实例
      *
@@ -51,6 +51,7 @@ public abstract class BasePresenter<T extends IBView> extends FramePresenter<T> 
     /**
      * 获取IAllRequest实例
      */
+    @Override
     public final IAllRequest request() {
         return NetManager.INSTANCE.commonRequest(IAllRequest.class);
     }

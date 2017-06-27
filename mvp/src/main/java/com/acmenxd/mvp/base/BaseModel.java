@@ -16,7 +16,7 @@ import org.greenrobot.eventbus.Subscribe;
  * @date 2017/5/24 14:46
  * @detail 顶级Model
  */
-public abstract class BaseModel extends FrameModel {
+public abstract class BaseModel extends FrameModel implements INetBase{
     /**
      * 构造器,传入FramePresenter实例
      *
@@ -48,6 +48,7 @@ public abstract class BaseModel extends FrameModel {
     /**
      * 获取IAllRequest实例
      */
+    @Override
     public final IAllRequest request() {
         return NetManager.INSTANCE.commonRequest(IAllRequest.class);
     }
