@@ -171,27 +171,35 @@ public final class FrameActivityFragmentViewHelper {
     public static void layoutStartInOutAnimation(@NonNull final Context pContext, @NonNull final View pInView, @NonNull final View... pViews) {
         for (int i = 0, len = pViews.length; i < len; i++) {
             if (pViews[i] != pInView && pViews[i].getVisibility() == View.VISIBLE) {
-                pViews[i].startAnimation(FrameActivityFragmentViewHelper.getOutAnimation(pContext));
+                Animation outAnimation = FrameActivityFragmentViewHelper.getOutAnimation(pContext);
+                if (outAnimation != null) {
+                    pViews[i].startAnimation(outAnimation);
+                }
             }
         }
         Animation animation = FrameActivityFragmentViewHelper.getInAnimation(pContext);
-        pInView.startAnimation(animation);
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation pAnimation) {
-                pInView.setVisibility(View.VISIBLE);
-            }
+        if (animation == null) {
+            pInView.setVisibility(View.VISIBLE);
+            layouts$setVisibility(pInView, pViews);
+        } else {
+            pInView.startAnimation(animation);
+            animation.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation pAnimation) {
+                    pInView.setVisibility(View.VISIBLE);
+                }
 
-            @Override
-            public void onAnimationEnd(Animation pAnimation) {
-                layouts$setVisibility(pInView, pViews);
-            }
+                @Override
+                public void onAnimationEnd(Animation pAnimation) {
+                    layouts$setVisibility(pInView, pViews);
+                }
 
-            @Override
-            public void onAnimationRepeat(Animation pAnimation) {
+                @Override
+                public void onAnimationRepeat(Animation pAnimation) {
 
-            }
-        });
+                }
+            });
+        }
     }
 
 }
