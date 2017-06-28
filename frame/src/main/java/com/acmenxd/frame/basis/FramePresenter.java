@@ -38,7 +38,7 @@ public abstract class FramePresenter<T extends IBView> implements INet {
     // 统一管理Models
     private List<FrameModel> mModels;
     // 页面是否关闭(包含正在关闭)
-    public boolean isFinish = false;
+    private boolean isFinish = false;
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override

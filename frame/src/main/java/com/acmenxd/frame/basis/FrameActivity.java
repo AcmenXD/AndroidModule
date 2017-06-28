@@ -66,7 +66,7 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     private View mLoadingView;
     private View mErrorView;
     // 页面是否关闭(包含正在关闭)
-    public boolean isFinish = false;
+    private boolean isFinish = false;
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override

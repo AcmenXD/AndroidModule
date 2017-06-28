@@ -25,34 +25,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.MainActivity"/>
+            android:name=".view.MainActivity"
+            android:theme="@style/MainTheme"/>
         <activity
-            android:name=".view.test.LogActivity"
-            android:theme="@style/ActivityTheme"/>
+            android:name=".view.test.LogActivity"/>
         <activity
-            android:name=".view.test.ToastActivity"
-            android:theme="@style/ActivityTheme"/>
+            android:name=".view.test.ToastActivity"/>
         <activity
-            android:name=".view.test.SPActivity"
-            android:theme="@style/ActivityTheme"/>
+            android:name=".view.test.SPActivity"/>
         <activity
-            android:name=".view.test.FileActivity"
-            android:theme="@style/ActivityTheme"/>
+            android:name=".view.test.FileActivity"/>
         <activity
-            android:name=".view.test.GlideActivity"
-            android:theme="@style/ActivityTheme"/>
+            android:name=".view.test.GlideActivity"/>
         <activity
-            android:name=".view.test.frescoActivity"
-            android:theme="@style/ActivityTheme"/>
+            android:name=".view.test.frescoActivity"/>
         <activity
-            android:name=".view.test.RetrofitActivity"
-            android:theme="@style/ActivityTheme"/>
+            android:name=".view.test.RetrofitActivity"/>
         <activity
-            android:name=".view.test.RecyclerActivity"
-            android:theme="@style/ActivityTheme"/>
+            android:name=".view.test.RecyclerActivity"/>
         <activity
-            android:name=".view.test.DBActivity"
-            android:theme="@style/ActivityTheme"/>
+            android:name=".view.test.DBActivity"/>
 
         <meta-data
             android:name="com.acmenxd.glide.GlideManager"

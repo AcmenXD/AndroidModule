@@ -33,7 +33,7 @@ public abstract class FrameModel implements INet {
     // 统一持有Subscription
     private CompositeSubscription mSubscription;
     // 页面是否关闭(包含正在关闭)
-    public boolean isFinish = false;
+    private boolean isFinish = false;
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override

@@ -44,7 +44,7 @@ public abstract class FrameService extends Service implements INet {
     // 统一管理Presenters
     private List<FramePresenter> mPresenters;
     // 页面是否关闭(包含正在关闭)
-    public boolean isFinish = false;
+    private boolean isFinish = false;
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override

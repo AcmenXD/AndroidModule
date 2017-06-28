@@ -75,7 +75,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
     // Fragment取消预加载后的显示计数(第一次显示计数为1)
     private int viewPagerFragmentVisibleIndex;
     // 页面是否关闭(包含正在关闭)
-    public boolean isFinish = false;
+    private boolean isFinish = false;
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override
