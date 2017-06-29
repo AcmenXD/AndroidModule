@@ -94,11 +94,13 @@ public enum ActivityNodeManager {
         if (pBundle == null) {
             pBundle = new Bundle();
         }
-        Stack<Map<Class<? extends FrameActivity>, Bundle>> stack = activityNode.lastElement();
-        if (stack != null && stack.size() > 0 && !stack.firstElement().containsKey(child)) {
-            Map<Class<? extends FrameActivity>, Bundle> map = new ConcurrentHashMap<>();
-            map.put(child, pBundle);
-            stack.add(map);
+        if(activityNode != null && activityNode.size() > 0) {
+            Stack<Map<Class<? extends FrameActivity>, Bundle>> stack = activityNode.lastElement();
+            if (stack != null && stack.size() > 0 && !stack.firstElement().containsKey(child)) {
+                Map<Class<? extends FrameActivity>, Bundle> map = new ConcurrentHashMap<>();
+                map.put(child, pBundle);
+                stack.add(map);
+            }
         }
     }
 
