@@ -4,7 +4,6 @@ import android.support.annotation.CallSuper;
 
 import com.acmenxd.frame.basis.FrameActivity;
 import com.acmenxd.mvp.net.IAllRequest;
-import com.acmenxd.retrofit.NetManager;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -15,7 +14,7 @@ import org.greenrobot.eventbus.Subscribe;
  * @date 2017/5/24 14:35
  * @detail 顶级Activity
  */
-public abstract class BaseActivity extends FrameActivity implements INetBase{
+public abstract class BaseActivity extends FrameActivity implements INetBase {
 
     @CallSuper
     @Override
@@ -46,7 +45,7 @@ public abstract class BaseActivity extends FrameActivity implements INetBase{
      */
     @Override
     public final IAllRequest request() {
-        return NetManager.INSTANCE.commonRequest(IAllRequest.class);
+        return request(IAllRequest.class);
     }
 
 }

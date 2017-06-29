@@ -53,7 +53,7 @@ public abstract class BasePresenter<T extends IBView> extends FramePresenter<T> 
      */
     @Override
     public final IAllRequest request() {
-        return NetManager.INSTANCE.commonRequest(IAllRequest.class);
+        return request(IAllRequest.class);
     }
 
 }

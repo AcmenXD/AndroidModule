@@ -50,7 +50,7 @@ public abstract class BaseModel extends FrameModel implements INetBase{
      */
     @Override
     public final IAllRequest request() {
-        return NetManager.INSTANCE.commonRequest(IAllRequest.class);
+        return request(IAllRequest.class);
     }
 
 }

@@ -46,7 +46,7 @@ public abstract class BaseService extends FrameService implements INetBase{
      */
     @Override
     public final IAllRequest request() {
-        return NetManager.INSTANCE.commonRequest(IAllRequest.class);
+        return request(IAllRequest.class);
     }
 
 }
