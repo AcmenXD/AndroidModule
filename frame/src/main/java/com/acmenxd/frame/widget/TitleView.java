@@ -32,7 +32,6 @@ public class TitleView extends FrameLayout {
         addView(LayoutInflater.from(context).inflate(R.layout.widget_title, null));
         mBack = (FrameLayout) findViewById(R.id.title_fl_back);
         mTitle = (TextView) findViewById(R.id.title_tv_title);
-        hideBack();
     }
 
     public void showThis() {

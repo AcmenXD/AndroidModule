@@ -45,7 +45,7 @@ import rx.subscriptions.CompositeSubscription;
  * @date 2017/3/14 15:32
  * @detail Fragmeng基类
  */
-public abstract class FrameFragment extends Fragment implements IActivityFragment,INet {
+public abstract class FrameFragment extends Fragment implements IActivityFragment, INet {
     protected final String TAG = this.getClass().getSimpleName();
 
     // Activity实例
@@ -488,7 +488,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
             }
         }
         if (mLoadingDialog == null) {
-            mLoadingDialog = new Dialog(mActivity);
+            mLoadingDialog = new Dialog(mActivity, R.style.Translucent_Dialog);
         }
         mLoadingDialog.setContentView(FrameActivityFragmentViewHelper.getDialogView(mActivity));
         mLoadingDialog.setCancelable(isCancelable);

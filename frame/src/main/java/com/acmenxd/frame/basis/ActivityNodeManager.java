@@ -2,7 +2,6 @@ package com.acmenxd.frame.basis;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import java.util.Map;
 import java.util.Stack;
@@ -21,6 +20,15 @@ public enum ActivityNodeManager {
     private Class<? extends FrameActivity> firstNode;
 
     /**
+     * 跳到栈顶
+     *
+     * @return
+     */
+    public void skipTop() {
+        skipNode(firstNode);
+    }
+
+    /**
      * 跳到指定节点
      */
     public Bundle skipNode(@NonNull Class<? extends FrameActivity> node) {
@@ -34,7 +42,11 @@ public enum ActivityNodeManager {
             }
             if (isSkip) {
                 skipStack.add(stack);
-                activityNode.remove(stack);
+                if (stack != null && stack.size() > 0 && stack.firstElement().containsKey(firstNode)) {
+
+                } else {
+                    activityNode.remove(stack);
+                }
             }
         }
         for (int i = 0, len = skipStack.size(); i < len; i++) {
@@ -76,7 +88,7 @@ public enum ActivityNodeManager {
     /**
      * 添加一个节点
      */
-    public void addNode(@NonNull Class<? extends FrameActivity> node, @Nullable Bundle pBundle) {
+    public void addNode(@NonNull Class<? extends FrameActivity> node, Bundle pBundle) {
         if (pBundle == null) {
             pBundle = new Bundle();
         }
@@ -90,11 +102,11 @@ public enum ActivityNodeManager {
     /**
      * 添加一个child
      */
-    protected void addChild(@NonNull Class<? extends FrameActivity> child, @Nullable Bundle pBundle) {
+    protected void addChild(@NonNull Class<? extends FrameActivity> child, @NonNull Bundle pBundle) {
         if (pBundle == null) {
             pBundle = new Bundle();
         }
-        if(activityNode != null && activityNode.size() > 0) {
+        if (activityNode != null && activityNode.size() > 0) {
             Stack<Map<Class<? extends FrameActivity>, Bundle>> stack = activityNode.lastElement();
             if (stack != null && stack.size() > 0 && !stack.firstElement().containsKey(child)) {
                 Map<Class<? extends FrameActivity>, Bundle> map = new ConcurrentHashMap<>();

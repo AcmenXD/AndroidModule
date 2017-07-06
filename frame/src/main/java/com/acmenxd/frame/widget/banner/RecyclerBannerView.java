@@ -1,6 +1,7 @@
 package com.acmenxd.frame.widget.banner;
 
 import android.content.Context;
+import android.support.annotation.DrawableRes;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.OrientationHelper;
@@ -9,6 +10,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -38,6 +40,7 @@ public class RecyclerBannerView extends RelativeLayout implements View.OnTouchLi
     private Context mContext;
     private ViewPager mViewPager;
     private LinearLayout mIndicatorLayout;
+    private ImageView mIvDefault;
     private List<View> indicatorViews;
     private List<?> datas;
 
@@ -78,7 +81,7 @@ public class RecyclerBannerView extends RelativeLayout implements View.OnTouchLi
         indicatorDiameterDip = (int) Utils.dp2px(mContext, defaultSize);
         indicatorSpaceDip = (int) Utils.dp2px(mContext, defaultSize);
         indicatorGravity = Gravity.CENTER;
-        autoDuration = 3;
+        autoDuration = 5;
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
@@ -105,6 +108,11 @@ public class RecyclerBannerView extends RelativeLayout implements View.OnTouchLi
                 }
             }
         }, 1000, 1000);
+
+        mIvDefault = new ImageView(mContext);
+        mIvDefault.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        mIvDefault.setScaleType(ImageView.ScaleType.FIT_XY);
+        this.addView(mIvDefault);
     }
 
     /**
@@ -156,6 +164,14 @@ public class RecyclerBannerView extends RelativeLayout implements View.OnTouchLi
         indicatorSpaceDip = (int) Utils.dp2px(mContext, pIndicatorSpaceDip);
     }
 
+    /**
+     * 设置默认视图以及Listener
+     */
+    public void setDefaultView(@DrawableRes int pResId, OnClickListener pListener) {
+        mIvDefault.setImageResource(pResId);
+        mIvDefault.setOnClickListener(pListener);
+    }
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         int action = event.getAction();
@@ -184,8 +200,14 @@ public class RecyclerBannerView extends RelativeLayout implements View.OnTouchLi
      */
     public void setDataCommit(List<?> pDatas) {
         if (pDatas == null || pDatas.size() <= 0) {
+            mIvDefault.setVisibility(VISIBLE);
+            mIndicatorLayout.setVisibility(GONE);
+            mViewPager.setVisibility(GONE);
             return;
         }
+        mIvDefault.setVisibility(GONE);
+        mIndicatorLayout.setVisibility(VISIBLE);
+        mViewPager.setVisibility(VISIBLE);
         // 重置参数
         time = 0;
         isDown = false;
@@ -197,6 +219,11 @@ public class RecyclerBannerView extends RelativeLayout implements View.OnTouchLi
         mIndicatorLayout.removeAllViews();
         mIndicatorLayout.setGravity(indicatorGravity);
         mIndicatorLayout.setPadding(0, 0, 0, indicatorDiameterDip * 2);
+        if (datas.size() <= 1) {
+            mIndicatorLayout.setVisibility(GONE);
+        } else {
+            mIndicatorLayout.setVisibility(VISIBLE);
+        }
         for (int i = 0, len = datas.size(); i < len; i++) {
             int indicatorResource = mOnListener.getIndicatorResource();
             View view = new View(mContext);
@@ -206,7 +233,11 @@ public class RecyclerBannerView extends RelativeLayout implements View.OnTouchLi
             if (indicatorResource > 0) {
                 view.setBackgroundResource(mOnListener.getIndicatorResource());
             }
-            mIndicatorLayout.addView(view);
+            if (len == 2) {
+                mIndicatorLayout.addView(view, 0);
+            } else {
+                mIndicatorLayout.addView(view);
+            }
             indicatorViews.add(view);
         }
         if (mAdapter != null) {

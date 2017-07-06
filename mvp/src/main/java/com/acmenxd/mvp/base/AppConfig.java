@@ -10,6 +10,9 @@ import com.acmenxd.logger.Logger;
 import com.acmenxd.marketer.Marketer;
 import com.acmenxd.mvp.BuildConfig;
 import com.acmenxd.mvp.R;
+import com.acmenxd.mvp.net.NetCode;
+import com.acmenxd.retrofit.NetManager;
+import com.acmenxd.retrofit.NetMutualCallback;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -56,19 +59,10 @@ public final class AppConfig {
      */
     public static String IMEI = "000000000000000";
 
-    // 公共请求参数
-    protected static Map<String, String> ParameterMaps = new HashMap<>();
-    // 公共Header(不允许相同Key值存在)
-    protected static Map<String, String> HeaderMaps = new HashMap<>();
-    // 公共Header(允许相同Key值存在)
-    protected static Map<String, String> HeaderMaps2 = new HashMap<>();
-    // 公共Body
-    protected static Map<String, String> BodyMaps = new HashMap<>();
-
     /**
      * 初始化 -> BaseApplication中调用
      */
-    public static synchronized void init() {
+    public static void init() {
         BaseApplication app = BaseApplication.instance();
         PackageManager pkgManager = app.getPackageManager();
         // 设置默认值
@@ -91,22 +85,51 @@ public final class AppConfig {
         VERSION_CODE = info.versionCode;
         VERSION_NAME = info.versionName;
         MARKET = Marketer.getMarket(app.getApplicationContext(), MARKET);
+
+
+        /**
+         * 设置Net公共参数 -> 为动态配置而设置的此函数
+         */
+        NetManager.INSTANCE.parseNetCode = new NetCode();
+        NetManager.INSTANCE.mutualCallback = new NetMutualCallback() {
+            @Override
+            public Map<String, String> getBodys(String url) {
+                Map<String, String> maps = new HashMap<>();
+                maps.put("body_key_1", "body_value_1");
+                return maps;
+            }
+
+            @Override
+            public Map<String, String> getParameters(String url) {
+                Map<String, String> maps = new HashMap<>();
+                maps.put("parameter_key_1", "parameter_value_1");
+                maps.put("IMEI", IMEI);
+                return maps;
+            }
+
+            @Override
+            public Map<String, String> getHeaders(String url) {
+                Map<String, String> maps = new HashMap<>();
+                maps.put("header_key_1", "header_value_1");
+                maps.put("IMEI", IMEI);
+                return maps;
+            }
+
+            @Override
+            public Map<String, String> getReHeaders(String url) {
+                Map<String, String> maps = new HashMap<>();
+                maps.put("header_key_1", "header_value_1");
+                maps.put("IMEI", IMEI);
+                return null;
+            }
+        };
     }
 
     /**
      * 获取到手机权限后回调
      */
-    public static synchronized void permissionsAfterInit() {
+    public static void permissionsAfterInit() {
         BaseApplication app = BaseApplication.instance();
         IMEI = ((TelephonyManager) app.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
-        /**
-         * 设置Net公共参数
-         */
-        ParameterMaps.put("parameter_key_1", "parameter_value_1");
-        HeaderMaps.put("header_key_1", "header_value_1");
-        HeaderMaps2.put("header_key_1", "header_value_1");
-        BodyMaps.put("body_key_1", "body_value_1");
-        HeaderMaps.put("IMEI", IMEI);
-        config.setNetMaps(ParameterMaps, HeaderMaps, HeaderMaps2, BodyMaps);
     }
 }

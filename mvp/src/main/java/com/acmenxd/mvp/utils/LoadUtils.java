@@ -6,7 +6,7 @@ import android.text.format.Formatter;
 import com.acmenxd.frame.basis.FrameApplication;
 import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frame.utils.IOUtils;
-import com.acmenxd.retrofit.NetLog;
+import com.acmenxd.logger.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -63,7 +63,7 @@ public final class LoadUtils {
                     downloadSize += read;
                 }
                 outputStream.flush();
-                NetLog.print("下载完成: 保存路径->" + saveFile.getAbsolutePath()
+                Logger.v("下载完成: 保存路径->" + saveFile.getAbsolutePath()
                         + "  总大小->" + Formatter.formatFileSize(FrameApplication.instance(), fileSize));
                 return true;
             } catch (IOException e) {

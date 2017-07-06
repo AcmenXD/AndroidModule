@@ -130,6 +130,8 @@ public interface IActivityFragment {
 
     void showErrorView(boolean animat);
 
+    void showErrorView(View.OnClickListener pListener);
+
     /**
      * 隐藏内容视图
      */

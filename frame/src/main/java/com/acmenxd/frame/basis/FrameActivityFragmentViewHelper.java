@@ -1,18 +1,21 @@
 package com.acmenxd.frame.basis;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.acmenxd.frame.R;
+import com.acmenxd.frame.utils.BitmapUtils;
 import com.acmenxd.frame.utils.Utils;
 import com.acmenxd.frame.widget.CircleProgress;
 
@@ -30,23 +33,12 @@ public final class FrameActivityFragmentViewHelper {
      */
     public static View getLoadingView(@NonNull Context pContext) {
         LinearLayout loadLayout = new LinearLayout(pContext);
-        loadLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        loadLayout.setOrientation(LinearLayout.VERTICAL);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.CENTER;
+        loadLayout.setLayoutParams(params);
         loadLayout.setGravity(Gravity.CENTER);
-        // 进度progressBar
-        ImageView ivProgress = new ImageView(pContext);
-        CircleProgress progress = new CircleProgress(pContext, ivProgress);
-        progress.updateSizes(CircleProgress.LARGE);
-        ivProgress.setImageDrawable(progress);
-        loadLayout.addView(ivProgress);
-        // 文本
-        TextView loadTV = new TextView(pContext);
-        loadTV.setGravity(Gravity.CENTER);
-        loadTV.setTextSize(18);
-        loadTV.setTextColor(Color.GRAY);
-        loadTV.setText("正在加载...");
-        loadTV.setPadding(0, (int) Utils.dp2px(pContext, 4), 0, 0);
-        loadLayout.addView(loadTV);
+        loadLayout.setBackgroundResource(R.drawable.loading);
+        ((AnimationDrawable) loadLayout.getBackground()).start();
         return loadLayout;
     }
 
@@ -58,13 +50,17 @@ public final class FrameActivityFragmentViewHelper {
         errorLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         errorLayout.setOrientation(LinearLayout.VERTICAL);
         errorLayout.setGravity(Gravity.CENTER);
+        // 图片
+        ImageView iv = new ImageView(pContext);
+        iv.setImageResource(R.mipmap.no_wifi);
+        errorLayout.addView(iv);
         // 文本
         TextView loadTV = new TextView(pContext);
         loadTV.setGravity(Gravity.CENTER);
-        loadTV.setTextSize(18);
-        loadTV.setTextColor(Color.GRAY);
-        loadTV.setText("检查网络");
-        loadTV.setPadding(0, (int) Utils.dp2px(pContext, 4), 0, 0);
+        loadTV.setTextSize(15);
+        loadTV.setTextColor(Color.BLACK);
+        loadTV.setText("请检查网络");
+        loadTV.setPadding(0, (int) Utils.dp2px(pContext, 5), 0, 0);
         errorLayout.addView(loadTV);
         return errorLayout;
     }
@@ -73,31 +69,18 @@ public final class FrameActivityFragmentViewHelper {
      * 获取Dialog弹框
      */
     public static View getDialogView(@NonNull Context pContext) {
-        int width = (int) Utils.dp2px(pContext, 130);
-        int height = (int) Utils.dp2px(pContext, 90);
         LinearLayout loadLayout = new LinearLayout(pContext);
-        loadLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        // 内容填充Layout
-        LinearLayout viewLayout = new LinearLayout(pContext);
-        viewLayout.setLayoutParams(new FrameLayout.LayoutParams(width, height));
-        viewLayout.setOrientation(LinearLayout.VERTICAL);
-        viewLayout.setGravity(Gravity.CENTER);
-        loadLayout.addView(viewLayout);
-        // 进度progressBar
-        ImageView ivProgress = new ImageView(pContext);
-        //ProgressBar progressBar = new ProgressBar(pContext, null, android.R.attr.progressBarStyle);
-        CircleProgress progressBar = new CircleProgress(pContext, ivProgress);
-        progressBar.updateSizes(CircleProgress.LARGE);
-        ivProgress.setImageDrawable(progressBar);
-        viewLayout.addView(ivProgress);
-        // 文本
-        TextView loadTV = new TextView(pContext);
-        loadTV.setGravity(Gravity.CENTER);
-        loadTV.setTextSize(16);
-        loadTV.setTextColor(Color.BLACK);
-        loadTV.setText("正在加载...");
-        loadTV.setPadding(0, (int) Utils.dp2px(pContext, 4), 0, 0);
-        viewLayout.addView(loadTV);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.CENTER;
+        loadLayout.setLayoutParams(params);
+        loadLayout.setGravity(Gravity.CENTER);
+        // loading动画
+        ImageView iv = new ImageView(pContext);
+        Bitmap bitmap = BitmapUtils.readBitmap(pContext.getResources(), R.mipmap.loading_frame_1, 0, 0);
+        iv.setPadding(0, 0, 0, bitmap.getHeight() / 4 * 3);
+        iv.setImageResource(R.drawable.loading);
+        ((AnimationDrawable) iv.getDrawable()).start();
+        loadLayout.addView(iv);
         return loadLayout;
     }
 
@@ -105,14 +88,16 @@ public final class FrameActivityFragmentViewHelper {
      * 获取进入动画
      */
     public static Animation getInAnimation(@NonNull Context pContext) {
-        return AnimationUtils.makeInAnimation(pContext, true);
+        return null;
+        // return AnimationUtils.makeInAnimation(pContext, true);
     }
 
     /**
      * 获取退出动画
      */
     public static Animation getOutAnimation(@NonNull Context pContext) {
-        return AnimationUtils.makeOutAnimation(pContext, true);
+        return null;
+        // return AnimationUtils.makeOutAnimation(pContext, true);
     }
 
     /**

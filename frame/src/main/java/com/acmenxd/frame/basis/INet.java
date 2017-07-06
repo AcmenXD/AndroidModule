@@ -18,11 +18,6 @@ import rx.Subscriber;
  */
 public interface INet {
     /**
-     * 获取IAllRequest实例
-     */
-    <T> T request();
-
-    /**
      * 根据IRequest类获取Request实例
      */
     <T> T request(@NonNull Class<T> pIRequest);

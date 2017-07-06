@@ -3,6 +3,7 @@ package com.acmenxd.frame.basis;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.CallSuper;
@@ -18,7 +19,9 @@ import android.text.SpannableString;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.acmenxd.frame.R;
 import com.acmenxd.frame.utils.Utils;
@@ -46,7 +49,7 @@ import rx.subscriptions.CompositeSubscription;
  * @date 2016/12/16 16:01
  * @detail Activity基类
  */
-public abstract class FrameActivity extends AppCompatActivity implements IActivityFragment ,INet{
+public abstract class FrameActivity extends AppCompatActivity implements IActivityFragment, INet {
     protected final String TAG = this.getClass().getSimpleName();
 
     // 统一持有Subscription
@@ -56,7 +59,7 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     // 存储子控件
     private SparseArray<View> mChildViews;
     // 布局容器
-    private FrameLayout mContentLayout;
+    private LinearLayout mContentLayout;
     private FrameLayout mLoadingLayout;
     private FrameLayout mErrorLayout;
     private FrameActivityFragmentOtherLayout mOtherLayout;
@@ -74,6 +77,12 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
             onNetStatusChange(status);
         }
     };
+    private View mStatusBar; // 状态栏
+    private boolean canCustomStatusBar = false; // 能否自定义statusBar
+    protected int statusBarHeight = 0; // statusBar高度
+    protected boolean skipStatusBar = false; // 是否跳过填充statusBar
+    public final int statusBarResId = R.drawable.status_bar_color; // statusBar填充的色值
+    public final float statusBarAlpha = 1f; // statusBar透明度
 
     @Deprecated
     @Override
@@ -84,6 +93,7 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     @CallSuper
     @Override
     protected void onCreate(@NonNull Bundle savedInstanceState) {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         super.onCreate(savedInstanceState);
         // 子类onCreate之前调用
         onCreateBefore(savedInstanceState);
@@ -106,6 +116,21 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
         showContentView();
         // 将此Activity添加到ActivityStackManager中管理
         ActivityStackManager.INSTANCE.addActivity(this);
+        // 修改状态栏高度
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            canCustomStatusBar = true;
+        }
+        if (canCustomStatusBar) {
+            mStatusBar = getView(R.id.activity_base_statusBar);
+            mStatusBar.setLayoutParams(new FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT, statusBarHeight));
+            setStatusBarResId(statusBarResId);
+            setStatusBarAlpha(statusBarAlpha);
+        }
     }
 
     @CallSuper
@@ -165,6 +190,24 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     protected void onNetStatusChange(@NonNull NetStatus pNetStatus) {
     }
     //------------------------------------子类可使用的工具函数 & 继承自IActivityFragment接口
+
+    /**
+     * statusBar填充的色值
+     */
+    public void setStatusBarResId(int pStatusBarResId) {
+        if (canCustomStatusBar) {
+            mStatusBar.setBackgroundResource(pStatusBarResId);
+        }
+    }
+
+    /**
+     * statusBar透明度
+     */
+    public void setStatusBarAlpha(float pStatusBarAlpha) {
+        if (canCustomStatusBar) {
+            mStatusBar.setAlpha(pStatusBarAlpha);
+        }
+    }
 
     /**
      * 退出应用程序
@@ -414,7 +457,7 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
             }
         }
         if (mLoadingDialog == null) {
-            mLoadingDialog = new Dialog(this);
+            mLoadingDialog = new Dialog(this, R.style.Translucent_Dialog);
         }
         mLoadingDialog.setContentView(FrameActivityFragmentViewHelper.getDialogView(this));
         mLoadingDialog.setCancelable(isCancelable);
@@ -448,7 +491,15 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
             return;
         }
         mContentView = view;
+        mContentView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         mContentLayout.removeAllViews();
+        if (!skipStatusBar && canCustomStatusBar) {
+            View statusBar = new View(this);
+            statusBar.setBackgroundDrawable(mContentView.getBackground());
+            statusBar.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, statusBarHeight));
+            mContentLayout.addView(statusBar);
+        }
         mContentLayout.addView(mContentView);
     }
 
@@ -528,6 +579,12 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
         } else {
             FrameActivityFragmentViewHelper.layouts$setVisibility(mErrorLayout, mContentLayout, mLoadingLayout, mErrorLayout);
         }
+    }
+
+    @Override
+    public final void showErrorView(View.OnClickListener pListener) {
+        showErrorView(false);
+        mErrorLayout.setOnClickListener(pListener);
     }
 
     /**

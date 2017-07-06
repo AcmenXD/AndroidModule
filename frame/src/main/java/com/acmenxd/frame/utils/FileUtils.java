@@ -55,7 +55,7 @@ public final class FileUtils {
     /**
      * 初始化 -> BaseApplication中调用
      */
-    public static synchronized void init() {
+    public static void init() {
         /**
          * 创建目录
          */

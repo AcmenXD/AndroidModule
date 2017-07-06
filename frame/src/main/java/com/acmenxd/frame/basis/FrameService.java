@@ -34,7 +34,7 @@ import rx.subscriptions.CompositeSubscription;
  * @version v1.0
  * @github https://github.com/AcmenXD
  * @date 2017/6/14 9:53
- * @detail something
+ * @detail Service基类
  */
 public abstract class FrameService extends Service implements INet {
     protected final String TAG = this.getClass().getSimpleName();

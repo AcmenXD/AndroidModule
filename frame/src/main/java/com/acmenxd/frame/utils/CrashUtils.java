@@ -10,7 +10,7 @@ import com.acmenxd.logger.Logger;
  * @version v1.0
  * @github https://github.com/AcmenXD
  * @date 2017/6/2 15:35
- * @detail something
+ * @detail 抓取蹦极日志工具类
  */
 public final class CrashUtils {
     public final static class CrashManager implements Thread.UncaughtExceptionHandler {

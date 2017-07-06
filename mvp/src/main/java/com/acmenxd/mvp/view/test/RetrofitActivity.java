@@ -19,7 +19,7 @@ import com.acmenxd.mvp.model.response.TestEntity;
 import com.acmenxd.mvp.net.IDownloadRequest;
 import com.acmenxd.mvp.net.IUploadRequest;
 import com.acmenxd.mvp.net.NetCode;
-import com.acmenxd.retrofit.NetCodeUtils;
+import com.acmenxd.retrofit.NetCodeParse;
 import com.acmenxd.retrofit.NetEntity;
 import com.acmenxd.retrofit.callback.NetCallback;
 import com.acmenxd.retrofit.callback.NetSubscriber;
@@ -113,7 +113,7 @@ public class RetrofitActivity extends BaseActivity {
                 newCallback(new NetCallback<NetEntity<TestEntity>>(true) {
                     @Override
                     public void succeed(NetEntity<TestEntity> pData) {
-                        NetException exception = new NetCode().parseNetCode(pData.getCode(), pData.getMsg());
+                        NetException exception = new NetCode().parse(pData.getCode(), pData.getMsg());
                         if (!(exception instanceof NetExceptionSuccess)) {
                             failed(exception); // 异常情况统一交给failed处理
                             return;
@@ -151,7 +151,7 @@ public class RetrofitActivity extends BaseActivity {
                     public TestEntity call(NetEntity<TestEntity> pData) {
                         code = pData.getCode();
                         msg = pData.getMsg();
-                        mNetException = new NetCode().parseNetCode(code, msg);
+                        mNetException = new NetCode().parse(code, msg);
                         return pData.getData();
                     }
                 })
@@ -160,8 +160,8 @@ public class RetrofitActivity extends BaseActivity {
                     @Override
                     public void succeed(final TestEntity pData) {
                         // 服务器响应的code和msg统一交给NetCode处理
-                        NetException exception = new NetCode().parseNetCode(code, msg);
-                        NetCodeUtils.netCodeResult(exception, new NetCodeUtils.NetCodeCallback() {
+                        NetException exception = new NetCode().parse(code, msg);
+                        NetCodeParse.parseNetException(exception, new NetCodeParse.NetCodeCallback() {
                             @Override
                             public void successData(NetExceptionSuccess pE) {
                                 mTestResponse = pData;

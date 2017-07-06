@@ -5,8 +5,9 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.acmenxd.logger.LogTag;
 import com.acmenxd.logger.LogType;
-import com.acmenxd.retrofit.NetManager;
+import com.acmenxd.retrofit.NetCodeParse;
 import com.acmenxd.toaster.ToastDuration;
 import com.acmenxd.toaster.ToastNW;
 
@@ -110,6 +111,7 @@ public abstract class BaseConfig {
                 BASE_URL = "http://www.baidu.com";
                 break;
             default:
+                //正式版
                 BASE_URL = "http://www.baidu.com";
                 break;
         }
@@ -120,11 +122,13 @@ public abstract class BaseConfig {
     // Net Log 的日志级别
     public int NET_LOG_LEVEL = Log.WARN;
     // Net Log 的日志Tag
-    public String NET_LOG_TAG = "NetLog";
+    public LogTag NET_LOG_TAG = LogTag.mk("NetLog");
     // Net Log 的日志显示形式 -> 是否显示 "请求头 请求体 响应头 错误日志" 等详情
     public boolean NET_LOG_DETAILS = true;
     // Net Log 的日志显示形式 -> 是否显示请求过程中的日志,包含详细的请求头日志
     public boolean NET_LOG_DETAILS_All = false;
+    // 非Form表单形式的请求体,是否加入公共Body
+    public boolean NOFORMBODY_CANADDBODY = true;
     // 网络缓存策略: 0->不启用缓存  1->遵从服务器缓存配置
     public int NET_CACHE_TYPE = 1;
     // 网络缓存大小(MB)
@@ -135,16 +139,4 @@ public abstract class BaseConfig {
     public int READ_TIMEOUT = 30;
     // 写入超时时间(秒)
     public int WRITE_TIMEOUT = 30;
-    // 非Form表单形式的请求体,是否加入公共Body
-    public boolean NOFORMBODY_CANADDBODY = false;
-
-    /**
-     * 设置Net请求参数
-     */
-    public final void setNetMaps(@NonNull Map<String, String> ParameterMaps,
-                                 @NonNull Map<String, String> HeaderMaps,
-                                 @NonNull Map<String, String> HeaderMaps2,
-                                 @NonNull Map<String, String> BodyMaps) {
-        ConfigBuilder.setNetMaps(ParameterMaps,HeaderMaps,HeaderMaps2,BodyMaps);
-    }
 }

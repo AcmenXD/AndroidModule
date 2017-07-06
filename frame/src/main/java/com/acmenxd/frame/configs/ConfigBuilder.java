@@ -2,17 +2,15 @@ package com.acmenxd.frame.configs;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.acmenxd.frame.basis.FrameApplication;
 import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frame.utils.code.EncodeDecode;
 import com.acmenxd.frescoview.FrescoManager;
 import com.acmenxd.glide.GlideManager;
+import com.acmenxd.logger.LogType;
 import com.acmenxd.logger.Logger;
-import com.acmenxd.retrofit.NetCodeUtils;
 import com.acmenxd.retrofit.NetManager;
-import com.acmenxd.retrofit.exception.NetException;
 import com.acmenxd.sptool.SpEncodeDecodeCallback;
 import com.acmenxd.sptool.SpManager;
 import com.acmenxd.toaster.Toaster;
@@ -20,7 +18,6 @@ import com.bumptech.glide.load.DecodeFormat;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * @author AcmenXD
@@ -36,9 +33,7 @@ public final class ConfigBuilder {
     /**
      * 创建配置详情
      */
-    public static void createConfig(@NonNull Class<? extends BaseConfig> pConfig, @NonNull boolean isDebug, @NonNull FrameNetCode.Parse pParse) {
-        // 配置Retrofit NetCode
-        FrameNetCode.setNetCode(pParse);
+    public static void createConfig(@NonNull Class<? extends BaseConfig> pConfig, @NonNull boolean isDebug) {
         try {
             sConfigInfo = pConfig.newInstance();
             sConfigInfo.init(isDebug);
@@ -60,86 +55,29 @@ public final class ConfigBuilder {
     }
 
     /**
-     * 设置Net公共参数 -> 为动态配置而设置的此函数
-     */
-    protected static void setNetMaps(@NonNull Map<String, String> ParameterMaps,
-                                     @NonNull Map<String, String> HeaderMaps,
-                                     @NonNull Map<String, String> HeaderMaps2,
-                                     @NonNull Map<String, String> BodyMaps) {
-        NetManager.INSTANCE.getBuilder().setParameterMaps(ParameterMaps);
-        NetManager.INSTANCE.getBuilder().setHeaderMaps(HeaderMaps);
-        NetManager.INSTANCE.getBuilder().setHeaderMaps2(HeaderMaps2);
-        NetManager.INSTANCE.getBuilder().setBodyMaps(BodyMaps);
-    }
-
-    /**
      * 初始化 -> BaseApplication中调用
      * * 基础组件配置
      */
-    public static synchronized void init() {
+    public static void init() {
         if (sConfigInfo == null) {
             throw new NullPointerException("ConfigInfo is null");
         }
         Context context = FrameApplication.instance().getApplicationContext();
-        //------------------------------------Logger配置---------------------------------
-        /**
-         * 初始化
-         * context必须设置
-         */
-        Logger.setContext(context);
-        /**
-         * 设置Log开关,可根据debug-release配置
-         *  默认为true
-         */
-        Logger.setOpen(sConfigInfo.LOG_OPEN);
-        /**
-         * 设置Log等级, >= 这个配置的log才会显示
-         *  默认为LogType.V
-         */
-        Logger.setLevel(Log.VERBOSE);
-        /**
-         * 设置本地Log日志的存储路径
-         *  默认为sd卡Logger目录下
-         * Environment.getExternalStorageDirectory().getAbsolutePath() + "/Logger/"
-         */
-        Logger.setPath(sConfigInfo.LOG_DIR);
-
         //------------------------------------Toaster配置---------------------------------
-        /**
-         * 设置Context对象
-         * * 必须设置,否则无法使用
-         */
+        Toaster.DEBUG = sConfigInfo.TOAST_DEBUG_OPEN;
+        Toaster.TOAST_DURATION = sConfigInfo.TOAST_DURATION;
+        Toaster.NEED_WAIT = sConfigInfo.TOAST_NEED_WAIT;
+        // * 必须设置,否则无法使用
         Toaster.setContext(context);
-        /**
-         * 设置debug开关,可根据debug-release配置
-         * 默认为true
-         */
-        Toaster.setDebugOpen(sConfigInfo.TOAST_DEBUG_OPEN);
-        /**
-         * 设置默认显示时长
-         * 默认为ToastD.SHORT = Toast.LENGTH_SHORT
-         */
-        Toaster.setDefaultDuration(sConfigInfo.TOAST_DURATION);
-        /**
-         * 设置Toaster显示方式 :  |
-         * 默认为ToastNW.NEED_WAIT(Toast需要等待,并逐个显示) 可设置为:ToastNW.No_NEED_WAIT(Toast无需等待,直接显示)
-         */
-        Toaster.setNeedWait(sConfigInfo.TOAST_NEED_WAIT);
-
+        //------------------------------------Logger配置---------------------------------
+        Logger.APP_PKG_NAME = context.getPackageName();
+        Logger.LOG_OPEN = sConfigInfo.LOG_OPEN;
+        Logger.LOG_LEVEL = LogType.V;
+        Logger.LOGFILE_PATH = sConfigInfo.LOG_DIR;
         //------------------------------------SpTool配置---------------------------------
-        /**
-         * 初始化
-         * context必须设置
-         */
-        SpManager.setContext(context);
-        /**
-         * 设置全局Sp实例,项目启动时创建,并通过getCommonSp拿到,项目中只有一份实例
-         */
-        SpManager.setCommonSp(sConfigInfo.spAll);
-        /**
-         * 设置加解密回调
-         * * 不设置或null表示不进行加解密处理
-         */
+        // 设置全局Sp实例,项目启动时创建,并通过getCommonSp拿到,项目中只有一份实例
+        SpManager.CommonSp = sConfigInfo.spAll;
+        // 加解密回调 - 不设置或null表示不进行加解密处理
         SpManager.setEncodeDecodeCallback(new SpEncodeDecodeCallback() {
             @Override
             public String encode(String pStr) {
@@ -165,33 +103,28 @@ public final class ConfigBuilder {
                 return result;
             }
         });
-        /**
-         * 初始化 -> 配置完成后必须调用此函数生效
-         */
-        SpManager.init();
-
+        // * 必须设置,否则无法使用
+        SpManager.setContext(context);
+        //------------------------------------Retrofit配置---------------------------------
+        // * 必须设置,否则无法使用
+        NetManager.INSTANCE.context = context;
+        // * 必须设置,否则无法使用
+        NetManager.INSTANCE.base_url = sConfigInfo.BASE_URL;
+        NetManager.INSTANCE.net_log_tag = sConfigInfo.NET_LOG_TAG;
+        NetManager.INSTANCE.net_log_details = sConfigInfo.NET_LOG_DETAILS;
+        NetManager.INSTANCE.net_log_details_all = sConfigInfo.NET_LOG_DETAILS_All;
+        NetManager.INSTANCE.noformbody_canaddbody = sConfigInfo.NOFORMBODY_CANADDBODY;
+        NetManager.INSTANCE.net_cache_dir = new File(FrameApplication.instance().getCacheDir(), "NetCache");
+        NetManager.INSTANCE.net_cache_type = sConfigInfo.NET_CACHE_TYPE;
+        NetManager.INSTANCE.net_cache_size = sConfigInfo.NET_CACHE_SIZE;
+        NetManager.INSTANCE.connect_timeout = sConfigInfo.CONNECT_TIMEOUT;
+        NetManager.INSTANCE.read_timeout = sConfigInfo.READ_TIMEOUT;
+        NetManager.INSTANCE.write_timeout = sConfigInfo.WRITE_TIMEOUT;
         //------------------------------------Glide配置---------------------------------
-        /**
-         * 设置缓存磁盘大小
-         *
-         * @param mainCacheSize  大图片磁盘大小(MB) 默认为50MB
-         */
-        GlideManager.setCacheSize(50);
-        /**
-         * 设置缓存图片的存放路径
-         * Environment.getExternalStorageDirectory().getAbsolutePath() + "/Glide/"
-         *
-         * @param cachePath     路径:默认为SD卡根目录Glide下 (此路径非直接存储图片的路径,还需要以下目录设置)
-         * @param mainCacheDir  大图片存放目录:默认为MainCache目录
-         */
-        GlideManager.setCachePath(FileUtils.imgCacheDirPath, "MainCache");
-        /**
-         * 设置图片解码格式
-         *
-         * @param decodeFormat 默认:DecodeFormat.PREFER_RGB_565
-         */
-        GlideManager.setDecodeFormat(DecodeFormat.PREFER_ARGB_8888);
-
+        GlideManager.DECODEFORMAT = DecodeFormat.PREFER_ARGB_8888;
+        GlideManager.IMAGE_CACHE_PATH = FileUtils.imgCacheDirPath;
+        GlideManager.MAIN_CACHE_DIR = "MainCache";
+        GlideManager.MAX_DISK_CACHE_SIZE = 50;
         //------------------------------------FrescoView配置---------------------------------
         /**
          * 初始化
@@ -223,30 +156,5 @@ public final class ConfigBuilder {
          * 初始化 -> 配置完成后必须调用此函数生效
          */
         FrescoManager.init();
-
-        //------------------------------------Retrofit配置---------------------------------
-        NetCodeUtils.startParseNetCode parseNetCode = new NetCodeUtils.startParseNetCode() {
-            @Override
-            public NetException parse(int code, String msg) {
-                return FrameNetCode.frameParseNetCode(code, msg);
-            }
-        };
-        NetManager.newBuilder()
-                .setContext(context)// 上下文对象(*必须设置)
-                .setParseNetCode(parseNetCode)// 统一处理NetCode回调(如不设置则不会处理NetCode)
-                .setBase_url(sConfigInfo.BASE_URL)// 基础URL地址(*必须设置)
-                .setNet_log_open(sConfigInfo.NET_LOG_OPEN)// Net Log 的开关
-                .setNet_log_level(sConfigInfo.NET_LOG_LEVEL) // Net Log 的日志级别
-                .setNet_log_tag(sConfigInfo.NET_LOG_TAG) // Net Log 的日志Tag
-                .setNet_log_details(sConfigInfo.NET_LOG_DETAILS)// Net Log 的日志显示形式 -> 是否显示 "请求头 请求体 响应头 错误日志" 等详情
-                .setNet_log_details_all(sConfigInfo.NET_LOG_DETAILS_All)// Net Log 的日志显示形式 -> 是否显示请求过程中的日志,包含详细的请求头日志
-                .setNet_cache_dir(new File(FrameApplication.instance().getCacheDir(), "NetCache"))  // 网络缓存默认存储路径
-                .setNet_cache_type(sConfigInfo.NET_CACHE_TYPE) // 网络缓存策略: 0->不启用缓存  1->遵从服务器缓存配置
-                .setNet_cache_size(sConfigInfo.NET_CACHE_SIZE) // 网络缓存大小(MB)
-                .setConnect_timeout(sConfigInfo.CONNECT_TIMEOUT)  // 网络连接超时时间(秒)
-                .setRead_timeout(sConfigInfo.READ_TIMEOUT) // 读取超时时间(秒)
-                .setWrite_timeout(sConfigInfo.WRITE_TIMEOUT)  // 写入超时时间(秒)
-                .setNoformbody_canaddbody(sConfigInfo.NOFORMBODY_CANADDBODY) // 非Form表单形式的请求体,是否加入公共Body
-                .build();
     }
 }

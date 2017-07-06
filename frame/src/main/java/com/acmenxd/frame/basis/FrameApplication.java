@@ -9,13 +9,13 @@ import android.support.annotation.NonNull;
 
 import com.acmenxd.frame.configs.BaseConfig;
 import com.acmenxd.frame.configs.ConfigBuilder;
-import com.acmenxd.frame.configs.FrameNetCode;
 import com.acmenxd.frame.utils.CrashUtils;
 import com.acmenxd.frame.utils.DateUtils;
 import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frame.utils.net.Monitor;
 import com.acmenxd.logger.LogTag;
 import com.acmenxd.logger.Logger;
+import com.acmenxd.retrofit.NetCodeParse;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -77,9 +77,9 @@ public abstract class FrameApplication extends Application {
     /**
      * 初始化配置
      */
-    public final void initFrameSetting(@NonNull Class<? extends BaseConfig> pConfig, @NonNull boolean isDebug, @NonNull FrameNetCode.Parse pParse) {
+    public final void initFrameSetting(@NonNull Class<? extends BaseConfig> pConfig, @NonNull boolean isDebug) {
         // 创建配置Info
-        ConfigBuilder.createConfig(pConfig, isDebug, pParse);
+        ConfigBuilder.createConfig(pConfig, isDebug);
         // 初始化模块配置
         ConfigBuilder.init();
         // 初始化File配置

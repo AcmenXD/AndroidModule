@@ -35,7 +35,7 @@ public final class BaseApplication extends FrameApplication {
         startTime = System.currentTimeMillis();
 
         // 配置框架设置
-        initFrameSetting(MvpConfig.class, AppConfig.DEBUG, new NetCode());
+        initFrameSetting(MvpConfig.class, AppConfig.DEBUG);
         // 存储项目整体配置信息
         AppConfig.config = getConfig();
         // 初始化App配置
