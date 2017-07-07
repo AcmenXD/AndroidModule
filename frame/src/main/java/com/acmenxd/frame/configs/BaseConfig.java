@@ -2,16 +2,12 @@ package com.acmenxd.frame.configs;
 
 import android.os.Environment;
 import android.support.annotation.CallSuper;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.acmenxd.logger.LogTag;
 import com.acmenxd.logger.LogType;
-import com.acmenxd.retrofit.NetCodeParse;
 import com.acmenxd.toaster.ToastDuration;
 import com.acmenxd.toaster.ToastNW;
-
-import java.util.Map;
 
 /**
  * @author AcmenXD

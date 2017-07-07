@@ -32,7 +32,14 @@ public final class BodyInterceptor implements Interceptor {
         Request.Builder requestBuilder = original.newBuilder();
         Map<String, String> bodys = new HashMap<>();
         if (NetManager.INSTANCE.mutualCallback != null) {
-            bodys = NetManager.INSTANCE.mutualCallback.getBodys(original.url().toString());
+            Map<String, String> maps = new HashMap<>();
+            if (requestBody instanceof FormBody) {
+                FormBody oldFormBody = (FormBody) requestBody;
+                for (int i = 0, len = oldFormBody.size(); i < len; i++) {
+                    maps.put(oldFormBody.encodedName(i), oldFormBody.encodedValue(i));
+                }
+            }
+            bodys = NetManager.INSTANCE.mutualCallback.getBodys(original.url().toString(),maps);
         }
         if (bodys != null && bodys.size() > 0) {
             if (requestBody instanceof FormBody) {

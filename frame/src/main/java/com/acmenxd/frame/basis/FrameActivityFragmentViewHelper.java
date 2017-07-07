@@ -17,7 +17,6 @@ import android.widget.TextView;
 import com.acmenxd.frame.R;
 import com.acmenxd.frame.utils.BitmapUtils;
 import com.acmenxd.frame.utils.Utils;
-import com.acmenxd.frame.widget.CircleProgress;
 
 /**
  * @author AcmenXD

@@ -570,6 +570,7 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     @Override
     public final void showErrorView() {
         showErrorView(false);
+        mErrorLayout.setOnClickListener(null);
     }
 
     @Override
@@ -579,6 +580,7 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
         } else {
             FrameActivityFragmentViewHelper.layouts$setVisibility(mErrorLayout, mContentLayout, mLoadingLayout, mErrorLayout);
         }
+        mErrorLayout.setOnClickListener(null);
     }
 
     @Override

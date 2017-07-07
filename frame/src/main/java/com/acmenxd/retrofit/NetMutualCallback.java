@@ -13,7 +13,7 @@ public abstract class NetMutualCallback {
     /**
      * 公共body参数
      */
-    public abstract Map<String, String> getBodys(String url);
+    public abstract Map<String, String> getBodys(String url, Map<String, String> maps);
 
     /**
      * 请求公共参数

@@ -86,7 +86,6 @@ public final class AppConfig {
         VERSION_NAME = info.versionName;
         MARKET = Marketer.getMarket(app.getApplicationContext(), MARKET);
 
-
         /**
          * 设置Net公共参数 -> 为动态配置而设置的此函数
          */

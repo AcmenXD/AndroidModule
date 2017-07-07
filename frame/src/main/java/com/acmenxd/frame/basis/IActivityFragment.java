@@ -10,11 +10,6 @@ import android.support.annotation.NonNull;
 import android.text.SpannableString;
 import android.view.View;
 
-import com.acmenxd.retrofit.callback.NetCallback;
-import com.acmenxd.retrofit.callback.NetSubscriber;
-
-import retrofit2.Callback;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 

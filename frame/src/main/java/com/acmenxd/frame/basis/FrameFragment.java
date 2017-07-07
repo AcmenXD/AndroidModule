@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.acmenxd.frame.R;
 import com.acmenxd.frame.utils.Utils;
@@ -59,7 +60,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
     // 顶级视图View
     private View mRootView;
     // 布局容器
-    private FrameLayout mContentLayout;
+    private LinearLayout mContentLayout;
     private FrameLayout mLoadingLayout;
     private FrameLayout mErrorLayout;
     private FrameActivityFragmentOtherLayout mOtherLayout;
@@ -593,6 +594,7 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
     @Override
     public final void showErrorView() {
         showErrorView(false);
+        mErrorLayout.setOnClickListener(null);
     }
 
     @Override
@@ -602,6 +604,13 @@ public abstract class FrameFragment extends Fragment implements IActivityFragmen
         } else {
             FrameActivityFragmentViewHelper.layouts$setVisibility(mErrorLayout, mContentLayout, mLoadingLayout, mErrorLayout);
         }
+        mErrorLayout.setOnClickListener(null);
+    }
+
+    @Override
+    public final void showErrorView(View.OnClickListener pListener) {
+        showErrorView(false);
+        mErrorLayout.setOnClickListener(pListener);
     }
 
     /**

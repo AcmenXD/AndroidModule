@@ -14,6 +14,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
@@ -191,7 +192,7 @@ public final class BitmapUtils {
      * 如width<=0 或 height <=0 则不进行缩放
      * * 此方式较耗费内存,建议使用上面的函数
      */
-    public static Bitmap readBitmapFromResources(@NonNull Resources resources, @RawRes int resourcesId, @IntRange(from = 0) int width, @IntRange(from = 0) int height) {
+    public static Bitmap readBitmapFromResources(@NonNull Resources resources, @DrawableRes int resourcesId, @IntRange(from = 0) int width, @IntRange(from = 0) int height) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         int inSampleSize = 1;
         if (width > 0 && height > 0) {

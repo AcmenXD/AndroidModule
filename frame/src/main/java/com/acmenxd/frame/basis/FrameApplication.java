@@ -15,7 +15,6 @@ import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frame.utils.net.Monitor;
 import com.acmenxd.logger.LogTag;
 import com.acmenxd.logger.Logger;
-import com.acmenxd.retrofit.NetCodeParse;
 
 import java.io.IOException;
 import java.lang.reflect.Field;

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.acmenxd.frame.R;
@@ -16,7 +17,7 @@ import com.acmenxd.frame.R;
  * @detail 顶部标题栏
  */
 public class TitleView extends FrameLayout {
-    private FrameLayout mBack;
+    private ImageView mBack;
     private TextView mTitle;
 
     public TitleView(Context context) {
@@ -30,7 +31,7 @@ public class TitleView extends FrameLayout {
     public TitleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         addView(LayoutInflater.from(context).inflate(R.layout.widget_title, null));
-        mBack = (FrameLayout) findViewById(R.id.title_fl_back);
+        mBack = (ImageView) findViewById(R.id.title_iv_back);
         mTitle = (TextView) findViewById(R.id.title_tv_title);
     }
 
