@@ -32,8 +32,6 @@ import javax.net.ssl.SSLHandshakeException;
  */
 
 public final class HttpError {
-    public static final String MSG = "未知错误";
-    public static final String TOAST_MSG = "网络繁忙,请稍后再试!";
     /**
      * 响应状态码
      */
@@ -56,10 +54,10 @@ public final class HttpError {
     /**
      * 异常状态码 -> 请求异常
      */
-    public static final int ERROR = 5000; // 统一异常,找不到已定义的异常时,统一发送此异常
+    public static final int ERROR = 5000; // 统一异常，找不到已定义的异常时，统一发送此异常
     public static final int ERROR_Http = 6000; // 统一的HttpException类型异常
     public static final int ERROR_NO_NETWORK = 6001; // 无网络连接
-    public static final int ERROR_HOST = 6002; // 网络已连接,但无法访问Internet -> 主机IP地址无法确定
+    public static final int ERROR_HOST = 6002; // 网络已连接，但无法访问Internet -> 主机IP地址无法确定
     public static final int ERROR_SocketTimeout = 6003; // socket连接超时异常
     public static final int ERROR_Connect = 6004; // 连接异常
     public static final int ERROR_Parse = 6005; // 解析异常
@@ -68,27 +66,24 @@ public final class HttpError {
     /**
      * 异常状态码 -> 自定义异常
      */
-    public static final int ERROR_NO_DATA_TYPE = 7001; // 数据无匹配type异常
-    public static final int ERROR_RESPONSE_BODY = 7001; // 数据解析空异常
+    public static final int ERROR_NO_DATA_TYPE = 7001; // 数据无匹配类型异常
+    public static final int ERROR_RESPONSE_BODY = 7002; // 数据解析异常
 
     /**
      * 分解异常情况
      */
     public static HttpException parseException(@NonNull Throwable pE) {
         int code = ERROR;
-        String msg = MSG;
-        String toastMsg = TOAST_MSG;
+        String msg = "系统异常，请稍后再试!";
         /**
          * 检查网络连接
          */
         if (!checkNetWork() || pE instanceof HttpNoWorkException) {
             code = ERROR_NO_NETWORK;
             msg = "无网络连接";
-            toastMsg = "无网络连接";
         } else if (pE instanceof UnknownHostException) {
             code = ERROR_HOST;
-            msg = "网络已连接,但无法访问Internet";
-            toastMsg = "网络已连接,但无法访问Internet";
+            msg = "网络已连接，但无法访问Internet";
         }
         /**
          * 系统异常
@@ -138,7 +133,7 @@ public final class HttpError {
                     break;
                 default:
                     code = ERROR_Http;
-                    msg = "retrofit2.adapter.rxjava.HttpException异常";
+                    msg = "HttpException异常";
                     break;
             }
         }
@@ -161,19 +156,17 @@ public final class HttpError {
         /**
          * 自定义
          */
-        else if (pE instanceof HttpResponseException) {
-            code = ((HttpResponseException) pE).getCode();
-            msg = "响应异常" + pE.getMessage();
-        } else if (pE instanceof HttpNoDataTypeException) {
+        else if (pE instanceof HttpNoDataTypeException) {
             code = ERROR_NO_DATA_TYPE;
-            msg = "数据无匹配type异常" + pE.getMessage();
+            msg = "数据无匹配类型异常";
         } else if (pE instanceof HttpNoDataBodyException) {
             code = ERROR_RESPONSE_BODY;
-            msg = "数据解析空异常" + pE.getMessage();
-        } else if (pE instanceof HttpException) {
-            return (HttpException) pE;
+            msg = "数据解析异常";
+        } else if (pE instanceof HttpResponseException) {
+            code = ((HttpResponseException) pE).getCode();
+            msg = "响应异常";
         }
-        return new HttpException(pE, code, msg, toastMsg);
+        return new HttpException(pE, code, msg);
     }
 
     /**
@@ -214,5 +207,4 @@ public final class HttpError {
         }
         return result;
     }
-
 }

@@ -11,6 +11,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.SpannableString;
 
 import com.acmenxd.frame.R;
@@ -388,6 +389,14 @@ public abstract class FrameService extends Service implements IFrameSubscription
     @Override
     public final void exit() {
         ActivityStackManager.INSTANCE.exit();
+    }
+
+    /**
+     * 字符串是否为空
+     */
+    @Override
+    public final boolean isEmpty(@Nullable CharSequence str) {
+        return Utils.isEmpty(str);
     }
 
     /**

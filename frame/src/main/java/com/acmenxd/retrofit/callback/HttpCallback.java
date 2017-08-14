@@ -3,19 +3,17 @@ package com.acmenxd.retrofit.callback;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
-import com.acmenxd.logger.Logger;
-import com.acmenxd.retrofit.HttpCodeParse;
 import com.acmenxd.retrofit.HttpEntity;
 import com.acmenxd.retrofit.HttpError;
 import com.acmenxd.retrofit.HttpGenericityEntity;
 import com.acmenxd.retrofit.HttpManager;
+import com.acmenxd.retrofit.HttpResultCallback;
 import com.acmenxd.retrofit.exception.HttpException;
-import com.acmenxd.retrofit.exception.HttpExceptionFail;
-import com.acmenxd.retrofit.exception.HttpExceptionSuccess;
-import com.acmenxd.retrofit.exception.HttpExceptionUnknownCode;
 import com.acmenxd.retrofit.exception.HttpNoDataBodyException;
 import com.acmenxd.retrofit.exception.HttpNoDataTypeException;
 import com.acmenxd.retrofit.exception.HttpResponseException;
+
+import java.io.Serializable;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -73,7 +71,13 @@ public abstract class HttpCallback<T> implements Callback<T>, IHttpProgress {
      * * 非必须重写,可根据需要自行实现
      */
     public void failed(@NonNull HttpException pE) {
-        Logger.w(HttpManager.INSTANCE.net_log_tag, "net failed : code -> " + pE.getCode() + " , msg -> " + pE.getMsg());
+    }
+
+    /**
+     * 请求完成回调
+     * * 非必须重写,可根据需要自行实现
+     */
+    public void finished() {
     }
 
     /**
@@ -114,29 +118,15 @@ public abstract class HttpCallback<T> implements Callback<T>, IHttpProgress {
             if (data != null) {
                 // 返回类型BaseEntity
                 if (data instanceof HttpEntity || data instanceof HttpGenericityEntity) {
-                    // 服务器响应的code和msg统一交给NetCode处理
-                    HttpCodeParse.parseNetCode parseNetCode = HttpManager.INSTANCE.parseNetCode;
-                    if (parseNetCode == null) {
+                    // 所有请求成功,下发前统一回调
+                    HttpResultCallback resultCallback = HttpManager.INSTANCE.resultCallback;
+                    if (resultCallback == null || !resultCallback.success(((HttpEntity) data).getCode(), ((HttpEntity) data).getMsg())) {
                         success(call, response, data);
-                    } else {
-                        HttpException exception = parseNetCode.parse(call.request().url().toString(), ((HttpEntity) data).getCode(), ((HttpEntity) data).getMsg());
-                        HttpCodeParse.parseNetException(exception, new HttpCodeParse.NetCodeCallback() {
-                            @Override
-                            public void successData(HttpExceptionSuccess pE) {
-                                success(call, response, data);
-                            }
-
-                            @Override
-                            public void errorData(HttpExceptionFail pE) {
-                                onFailure(call, pE);
-                            }
-
-                            @Override
-                            public void unknownCode(HttpExceptionUnknownCode pE) {
-                                onFailure(call, pE);
-                            }
-                        });
                     }
+                }
+                // 返回类型Serializable
+                else if (data instanceof Serializable) {
+                    success(call, response, data);
                 }
                 // 返回类型ResponseBody
                 else if (data instanceof ResponseBody) {
@@ -148,22 +138,28 @@ public abstract class HttpCallback<T> implements Callback<T>, IHttpProgress {
                 }
                 // 返回类型无定义,统一处理为NetNoDataTypeException异常
                 else {
-                    onFailure(call, new HttpNoDataTypeException("net error -> no type error"));
+                    onFailure(call, new HttpNoDataTypeException("http error -> no type error"));
                 }
             }
             // data空,统一处理为解析异常:NetNoDataBodyException
             else {
-                onFailure(call, new HttpNoDataBodyException("net error -> response body null error"));
+                onFailure(call, new HttpNoDataBodyException("http error -> response body null error"));
             }
         }
         // 服务器或请求过程没有正常响应,统一处理为响应异常:NetResponseException
         else {
-            onFailure(call, new HttpResponseException(code, "net response error : " + response.raw().toString()));
+            onFailure(call, new HttpResponseException(code, "http response error : " + response.raw().toString()));
         }
     }
 
-    public final void onFailure2(@NonNull Call<T> call, @NonNull Throwable t) {
-        fail(HttpError.parseException(t));
+    public final void onFailure2(@NonNull Call<T> call, @NonNull Throwable pE) {
+        // 解析后的Exception
+        HttpException exception = HttpError.parseException(pE);
+        // 所有请求失败,下发前统一回调
+        HttpResultCallback resultCallback = HttpManager.INSTANCE.resultCallback;
+        if (resultCallback == null || !resultCallback.fail(exception)) {
+            fail(exception);
+        }
     }
 
     /**
@@ -174,6 +170,7 @@ public abstract class HttpCallback<T> implements Callback<T>, IHttpProgress {
         succeed(pData);
         succeed(pResponse, pData);
         succeed(pCall, pResponse, pData);
+        finish();
     }
 
     /**
@@ -182,6 +179,14 @@ public abstract class HttpCallback<T> implements Callback<T>, IHttpProgress {
      */
     private final void fail(@NonNull HttpException pE) {
         failed(pE);
+        finish();
     }
 
+    /**
+     * 请求完成
+     * * 每个回调方法->完成的 都会调用
+     */
+    private final void finish() {
+        finished();
+    }
 }

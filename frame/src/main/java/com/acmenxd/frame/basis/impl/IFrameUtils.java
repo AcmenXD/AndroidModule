@@ -4,6 +4,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.SpannableString;
 
 /**
@@ -18,6 +19,11 @@ public interface IFrameUtils {
      * 退出应用程序
      */
     void exit();
+
+    /**
+     * 字符串是否为空
+     */
+    boolean isEmpty(@Nullable CharSequence str);
 
     /**
      * 串拼接

@@ -14,6 +14,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.SpannableString;
 import android.util.SparseArray;
@@ -740,6 +741,14 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
     @Override
     public final void exit() {
         ActivityStackManager.INSTANCE.exit();
+    }
+
+    /**
+     * 字符串是否为空
+     */
+    @Override
+    public final boolean isEmpty(@Nullable CharSequence str) {
+        return Utils.isEmpty(str);
     }
 
     /**

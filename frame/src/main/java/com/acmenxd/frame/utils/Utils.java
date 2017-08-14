@@ -135,23 +135,7 @@ public final class Utils {
     }
     //调用文件选择软件来选择文件 ---------------end
 
-    //---------------------------------以下函数已被BaseActivity与BaseFragment实现------------------------------
-
-    /**
-     * 串拼接
-     *
-     * @param strs 可变参数类型
-     * @return 拼接后的字符串
-     */
-    public static String appendStrs(@NonNull Object... strs) {
-        StringBuilder sb = new StringBuilder();
-        if (strs != null && strs.length > 0) {
-            for (Object str : strs) {
-                sb.append(String.valueOf(str));
-            }
-        }
-        return sb.toString();
-    }
+    //---------------------------------以下函数已被IFrameUtils实现------------------------------
 
     /**
      * 字符串是否为空
@@ -167,6 +151,22 @@ public final class Utils {
             }
         }
         return true;
+    }
+
+    /**
+     * 串拼接
+     *
+     * @param strs 可变参数类型
+     * @return 拼接后的字符串
+     */
+    public static String appendStrs(@NonNull Object... strs) {
+        StringBuilder sb = new StringBuilder();
+        if (strs != null && strs.length > 0) {
+            for (Object str : strs) {
+                sb.append(String.valueOf(str));
+            }
+        }
+        return sb.toString();
     }
 
     /**

@@ -76,8 +76,9 @@ public enum HttpManager {
     public int read_timeout = 30;
     // 写入超时时间(秒)
     public int write_timeout = 30;
-    // 统一处理NetCode回调
-    public HttpCodeParse.parseNetCode parseNetCode;
+    // 请求返回时回调
+    public HttpResultCallback resultCallback;
+    // 请求公共参数回调
     public HttpMutualCallback mutualCallback;
 
     private Retrofit mRetrofit;

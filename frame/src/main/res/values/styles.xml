@@ -4,8 +4,6 @@
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:windowTranslucentNavigation">false</item>
-        <!--<item name="android:listDivider">@drawable/divider</item>-->
-        <!--<item name="android:listDivider">@drawable/divider_bg</item>-->
     </style>
 
     <style name="AppTheme" parent="AppBaseTheme">
