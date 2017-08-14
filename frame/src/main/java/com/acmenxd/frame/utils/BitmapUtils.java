@@ -131,7 +131,8 @@ public final class BitmapUtils {
             options.inJustDecodeBounds = false;
             options.inSampleSize = inSampleSize;
             return BitmapFactory.decodeFileDescriptor(fis.getFD(), null, options);
-        } catch (Exception ex) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }

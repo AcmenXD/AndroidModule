@@ -16,12 +16,14 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
+import android.view.View;
 
 import com.acmenxd.toaster.Toaster;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Calendar;
 
 /**
  * @author AcmenXD
@@ -60,6 +62,36 @@ public final class Utils {
             return URLDecoder.decode(s, UTF8);
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 设置单击间隔事件Listener
+     */
+    public static abstract class OnClickListener implements View.OnClickListener {
+        /**
+         * 经过处理后的onClick事件
+         */
+        public abstract void onClick2(View v);
+
+        private int mDelayTime = 1000;
+        private long mLastTime = 0;
+
+        public OnClickListener() {
+
+        }
+
+        public OnClickListener(int delayTime) {
+            mDelayTime = delayTime;
+        }
+
+        @Override
+        public void onClick(View v) {
+            long currentTime = Calendar.getInstance().getTimeInMillis();
+            if (currentTime - mLastTime >= mDelayTime) {
+                mLastTime = currentTime;
+                this.onClick2(v);
+            }
         }
     }
 

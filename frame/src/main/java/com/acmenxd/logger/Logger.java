@@ -136,7 +136,7 @@ public final class Logger extends BaseLog {
      * @param thr
      * @param msgs
      */
-    private static void printLog(@NonNull LogType type, LogTag pTag, Throwable thr, String... msgs) {
+    private static synchronized void printLog(@NonNull LogType type, LogTag pTag, Throwable thr, String... msgs) {
         if (!LOG_OPEN) {
             //检测开关
             return;
@@ -179,7 +179,7 @@ public final class Logger extends BaseLog {
      * @param thr
      * @param msgs
      */
-    private static void printFile(@NonNull LogType type, LogTag pTag, File dirFile, String fileName, Throwable thr, String... msgs) {
+    private static synchronized void printFile(@NonNull LogType type, LogTag pTag, File dirFile, String fileName, Throwable thr, String... msgs) {
         if (!LOG_OPEN) {
             //检测开关
             return;

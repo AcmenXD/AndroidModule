@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.acmenxd.frame.utils.Utils;
 import com.acmenxd.recyclerview.adapter.AdapterUtils;
 import com.acmenxd.recyclerview.delegate.ViewHolder;
 import com.acmenxd.recyclerview.listener.OnEmptyListener;
@@ -105,9 +106,9 @@ public final class EmptyWrapper<T> extends RecyclerView.Adapter<RecyclerView.Vie
             if (mEmptyView != null) {
                 viewHolder = ViewHolder.createViewHolder(parent.getContext(), mEmptyView);
             }
-            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            viewHolder.itemView.setOnClickListener(new Utils.OnClickListener() {
                 @Override
-                public void onClick(View pView) {
+                public void onClick2(View pView) {
                     if (mRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
                         if (mOnEmptyListener != null) {
                             mOnEmptyListener.onEmptyClick(mEmptyView);

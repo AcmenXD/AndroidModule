@@ -6,11 +6,10 @@ import android.support.annotation.NonNull;
 import com.acmenxd.frame.basis.FrameApplication;
 import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frame.utils.code.EncodeDecode;
-import com.acmenxd.frescoview.FrescoManager;
 import com.acmenxd.glide.GlideManager;
 import com.acmenxd.logger.LogType;
 import com.acmenxd.logger.Logger;
-import com.acmenxd.retrofit.NetManager;
+import com.acmenxd.retrofit.HttpManager;
 import com.acmenxd.sptool.SpEncodeDecodeCallback;
 import com.acmenxd.sptool.SpManager;
 import com.acmenxd.toaster.Toaster;
@@ -72,7 +71,7 @@ public final class ConfigBuilder {
         //------------------------------------Logger配置---------------------------------
         Logger.APP_PKG_NAME = context.getPackageName();
         Logger.LOG_OPEN = sConfigInfo.LOG_OPEN;
-        Logger.LOG_LEVEL = LogType.V;
+        Logger.LOG_LEVEL = sConfigInfo.LOG_LEVEL;
         Logger.LOGFILE_PATH = sConfigInfo.LOG_DIR;
         //------------------------------------SpTool配置---------------------------------
         // 设置全局Sp实例,项目启动时创建,并通过getCommonSp拿到,项目中只有一份实例
@@ -107,54 +106,40 @@ public final class ConfigBuilder {
         SpManager.setContext(context);
         //------------------------------------Retrofit配置---------------------------------
         // * 必须设置,否则无法使用
-        NetManager.INSTANCE.context = context;
+        HttpManager.INSTANCE.context = context;
         // * 必须设置,否则无法使用
-        NetManager.INSTANCE.base_url = sConfigInfo.BASE_URL;
-        NetManager.INSTANCE.net_log_tag = sConfigInfo.NET_LOG_TAG;
-        NetManager.INSTANCE.net_log_details = sConfigInfo.NET_LOG_DETAILS;
-        NetManager.INSTANCE.net_log_details_all = sConfigInfo.NET_LOG_DETAILS_All;
-        NetManager.INSTANCE.noformbody_canaddbody = sConfigInfo.NOFORMBODY_CANADDBODY;
-        NetManager.INSTANCE.net_cache_dir = new File(FrameApplication.instance().getCacheDir(), "NetCache");
-        NetManager.INSTANCE.net_cache_type = sConfigInfo.NET_CACHE_TYPE;
-        NetManager.INSTANCE.net_cache_size = sConfigInfo.NET_CACHE_SIZE;
-        NetManager.INSTANCE.connect_timeout = sConfigInfo.CONNECT_TIMEOUT;
-        NetManager.INSTANCE.read_timeout = sConfigInfo.READ_TIMEOUT;
-        NetManager.INSTANCE.write_timeout = sConfigInfo.WRITE_TIMEOUT;
+        HttpManager.INSTANCE.base_url = sConfigInfo.BASE_URL;
+        HttpManager.INSTANCE.net_log_tag = sConfigInfo.NET_LOG_TAG;
+        HttpManager.INSTANCE.net_log_details = sConfigInfo.NET_LOG_DETAILS;
+        HttpManager.INSTANCE.net_log_details_all = sConfigInfo.NET_LOG_DETAILS_All;
+        HttpManager.INSTANCE.noformbody_canaddbody = sConfigInfo.NOFORMBODY_CANADDBODY;
+        HttpManager.INSTANCE.net_cache_dir = new File(FrameApplication.instance().getCacheDir(), "NetCache");
+        HttpManager.INSTANCE.net_cache_type = sConfigInfo.NET_CACHE_TYPE;
+        HttpManager.INSTANCE.net_cache_size = sConfigInfo.NET_CACHE_SIZE;
+        HttpManager.INSTANCE.connect_timeout = sConfigInfo.CONNECT_TIMEOUT;
+        HttpManager.INSTANCE.read_timeout = sConfigInfo.READ_TIMEOUT;
+        HttpManager.INSTANCE.write_timeout = sConfigInfo.WRITE_TIMEOUT;
         //------------------------------------Glide配置---------------------------------
         GlideManager.DECODEFORMAT = DecodeFormat.PREFER_ARGB_8888;
         GlideManager.IMAGE_CACHE_PATH = FileUtils.imgCacheDirPath;
         GlideManager.MAIN_CACHE_DIR = "MainCache";
         GlideManager.MAX_DISK_CACHE_SIZE = 50;
         //------------------------------------FrescoView配置---------------------------------
-        /**
-         * 初始化
-         * context必须设置
-         */
+        /*// * 必须设置,否则无法使用
         FrescoManager.setContext(context);
-        /**
-         * 设置Log开关 & 等级
-         * * 默认为 开 & Log.VERBOSE
-         */
+        // 设置Log开关 & 等级 - * 默认为 开 & Log.VERBOSE
         FrescoManager.setOpen(sConfigInfo.LOG_OPEN, sConfigInfo.LOG_LEVEL.intValue());
-        /**
-         * 设置缓存图片的存放路径
-         * Environment.getExternalStorageDirectory().getAbsolutePath() + "/FrescoView/"
-         *
-         * @param cachePath     路径:默认为SD卡根目录FrescoView下 (此路径非直接存储图片的路径,还需要以下目录设置)
-         * @param mainCacheDir  大图片存放目录:默认为MainCache目录
-         * @param smallCacheDir 小图片存放目录:默认为SmallCache目录 (如不想区分大小图片,可设置为null或者"",表示大小图片都放在mainCacheDir目录下)
-         */
+        // 设置缓存图片的存放路径
+        // Environment.getExternalStorageDirectory().getAbsolutePath() + "/FrescoView/"
+        // @param cachePath     路径:默认为SD卡根目录FrescoView下 (此路径非直接存储图片的路径,还需要以下目录设置)
+        // @param mainCacheDir  大图片存放目录:默认为MainCache目录
+        // @param smallCacheDir 小图片存放目录:默认为SmallCache目录 (如不想区分大小图片,可设置为null或者"",表示大小图片都放在mainCacheDir目录下)
         FrescoManager.setCachePath(FileUtils.imgCacheDirPath, "MainCache", "SmallCache");
-        /**
-         * 设置缓存磁盘大小
-         *
-         * @param mainCacheSize  大图片磁盘大小(MB) 默认为50MB
-         * @param smallCacheSize 小图片磁盘大小(MB) 默认为20MB
-         */
+        // 设置缓存磁盘大小
+        // @param mainCacheSize  大图片磁盘大小(MB) 默认为50MB
+        // @param smallCacheSize 小图片磁盘大小(MB) 默认为20MB
         FrescoManager.setCacheSize(50, 20);
-        /**
-         * 初始化 -> 配置完成后必须调用此函数生效
-         */
-        FrescoManager.init();
+        // 初始化 -> 配置完成后必须调用此函数生效
+        FrescoManager.init();*/
     }
 }

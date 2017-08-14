@@ -1,44 +1,48 @@
 package com.acmenxd.frame.basis;
 
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.acmenxd.frame.R;
+import com.acmenxd.frame.basis.impl.IFrameNet;
+import com.acmenxd.frame.basis.impl.IFrameStart;
+import com.acmenxd.frame.basis.impl.IFrameSubscription;
+import com.acmenxd.frame.basis.impl.IFrameUtils;
+import com.acmenxd.frame.basis.impl.IFrameView;
+import com.acmenxd.frame.utils.DeviceUtils;
 import com.acmenxd.frame.utils.Utils;
 import com.acmenxd.frame.utils.net.IMonitorListener;
 import com.acmenxd.frame.utils.net.Monitor;
 import com.acmenxd.frame.utils.net.NetStatus;
-import com.acmenxd.retrofit.NetManager;
-import com.acmenxd.retrofit.callback.NetCallback;
-import com.acmenxd.retrofit.callback.NetSubscriber;
+import com.acmenxd.retrofit.HttpManager;
+import com.acmenxd.retrofit.callback.HttpCallback;
+import com.acmenxd.retrofit.callback.HttpSubscriber;
+import com.acmenxd.retrofit.callback.IHttpProgress;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -49,27 +53,32 @@ import rx.subscriptions.CompositeSubscription;
  * @date 2016/12/16 16:01
  * @detail Activity基类
  */
-public abstract class FrameActivity extends AppCompatActivity implements IActivityFragment, INet {
+public abstract class FrameActivity extends AppCompatActivity implements IFrameSubscription, IFrameStart, IFrameView, IFrameNet, IFrameUtils, IBView {
     protected final String TAG = this.getClass().getSimpleName();
 
-    // 统一持有Subscription
-    private CompositeSubscription mSubscription;
     // 统一管理Presenters
     private List<FramePresenter> mPresenters;
+    // 统一持有Subscription
+    private CompositeSubscription mSubscription;
     // 存储子控件
     private SparseArray<View> mChildViews;
     // 布局容器
     private LinearLayout mContentLayout;
-    private FrameLayout mLoadingLayout;
-    private FrameLayout mErrorLayout;
-    private FrameActivityFragmentOtherLayout mOtherLayout;
-    private Dialog mLoadingDialog;
+    private LinearLayout mLoadingLayout;
+    private LinearLayout mErrorLayout;
+    private LinearLayout mTitleLayout;
     // 视图view
     private View mContentView;
     private View mLoadingView;
     private View mErrorView;
-    // 页面是否关闭(包含正在关闭)
-    private boolean isFinish = false;
+    private View mTitleView;
+    private Dialog mLoadingDialog;
+    // 状态栏
+    private View mStatusBarBg;
+    protected boolean isFillStatusBarBg = true; // 自定义状态栏 & 系统支持自定义statusBar
+    private int statusBarHeight = 0; // statusBar高度
+    private int statusBarBgResId = R.drawable.status_bar_color; // statusBar填充的色值
+    private float statusBarBgAlpha = 1f; // statusBar透明度
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override
@@ -77,18 +86,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
             onNetStatusChange(status);
         }
     };
-    private View mStatusBar; // 状态栏
-    private boolean canCustomStatusBar = false; // 能否自定义statusBar
-    protected int statusBarHeight = 0; // statusBar高度
-    protected boolean skipStatusBar = false; // 是否跳过填充statusBar
-    public final int statusBarResId = R.drawable.status_bar_color; // statusBar填充的色值
-    public final float statusBarAlpha = 1f; // statusBar透明度
-
-    @Deprecated
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-    }
 
     @CallSuper
     @Override
@@ -98,38 +95,29 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
         // 子类onCreate之前调用
         onCreateBefore(savedInstanceState);
         // 设置base视图
-        super.setContentView(R.layout.activity_base);
+        super.setContentView(R.layout.activity_frame);
         // 初始化容器
         mSubscription = getCompositeSubscription();
         mPresenters = new ArrayList<>();
         mChildViews = new SparseArray<>();
         // 获取布局容器
-        mContentLayout = getView(R.id.activity_base_contentLayout);
-        mLoadingLayout = getView(R.id.activity_base_loadingLayout);
-        mErrorLayout = getView(R.id.activity_base_errorLayout);
-        mOtherLayout = getView(R.id.activity_base_otherLayout);
-        // 设置默认的加载视图
-        setLoadingView(FrameActivityFragmentViewHelper.getLoadingView(this));
-        // 设置默认的错误视图
-        setErrorView(FrameActivityFragmentViewHelper.getErrorView(this));
-        // 默认显示加载视图
+        mContentLayout = getView(R.id.activity_frame_contentLayout);
+        mLoadingLayout = getView(R.id.activity_frame_loadingLayout);
+        mErrorLayout = getView(R.id.activity_frame_errorLayout);
+        mTitleLayout = getView(R.id.activity_frame_titleLayout);
+        mStatusBarBg = getView(R.id.activity_frame_statusBarBg);
+        // 默认显示内容视图
         showContentView();
         // 将此Activity添加到ActivityStackManager中管理
         ActivityStackManager.INSTANCE.addActivity(this);
         // 修改状态栏高度
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            statusBarHeight = getResources().getDimensionPixelSize(resourceId);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            canCustomStatusBar = true;
-        }
-        if (canCustomStatusBar) {
-            mStatusBar = getView(R.id.activity_base_statusBar);
-            mStatusBar.setLayoutParams(new FrameLayout.LayoutParams(
-                    FrameLayout.LayoutParams.MATCH_PARENT, statusBarHeight));
-            setStatusBarResId(statusBarResId);
-            setStatusBarAlpha(statusBarAlpha);
+        statusBarHeight = DeviceUtils.getStatusBarHeight(this);
+        if (isFillStatusBarBg && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            mStatusBarBg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, statusBarHeight));
+            setStatusBarBgResId(statusBarBgResId);
+            setStatusBarBgAlpha(statusBarBgAlpha);
+        } else {
+            isFillStatusBarBg = false;
         }
     }
 
@@ -137,7 +125,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        isFinish = true;
         // 网络监控反注册
         Monitor.unRegistListener(mNetListener);
         //解绑 Subscriptions
@@ -163,16 +150,8 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     @Override
     protected void onStart() {
         super.onStart();
-        isFinish = false;
         // 网络监控注册
         Monitor.registListener(mNetListener);
-    }
-
-    /**
-     * 为了统一Activity&Fragment 在 Presenter&Model中获取上下文对象
-     */
-    public Context getContext() {
-        return this;
     }
     //------------------------------------子类可重写的函数
 
@@ -189,46 +168,35 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     @CallSuper
     protected void onNetStatusChange(@NonNull NetStatus pNetStatus) {
     }
-    //------------------------------------子类可使用的工具函数 & 继承自IActivityFragment接口
+    //------------------------------------子类可使用的工具函数 -> 私有
 
     /**
-     * statusBar填充的色值
+     * statusBarBg填充的色值
      */
-    public void setStatusBarResId(int pStatusBarResId) {
-        if (canCustomStatusBar) {
-            mStatusBar.setBackgroundResource(pStatusBarResId);
+    public final void setStatusBarBgResId(@DrawableRes int pStatusBarBgResId) {
+        if (isFillStatusBarBg) {
+            this.statusBarBgResId = pStatusBarBgResId;
+            if (mStatusBarBg != null) {
+                mStatusBarBg.setBackgroundResource(pStatusBarBgResId);
+            }
         }
     }
 
     /**
-     * statusBar透明度
+     * statusBarBg透明度
      */
-    public void setStatusBarAlpha(float pStatusBarAlpha) {
-        if (canCustomStatusBar) {
-            mStatusBar.setAlpha(pStatusBarAlpha);
+    public final void setStatusBarBgAlpha(@FloatRange(from = 0, to = 1) float pStatusBarBgAlpha) {
+        if (isFillStatusBarBg) {
+            this.statusBarBgAlpha = pStatusBarBgAlpha;
+            if (mStatusBarBg != null) {
+                mStatusBarBg.setAlpha(pStatusBarBgAlpha);
+            }
         }
-    }
-
-    /**
-     * 退出应用程序
-     */
-    @Override
-    public final void exit() {
-        ActivityStackManager.INSTANCE.exit();
-    }
-
-    /**
-     * 添加Subscriptions
-     */
-    @Override
-    public final void addSubscriptions(@NonNull Subscription... pSubscriptions) {
-        getCompositeSubscription().addAll(pSubscriptions);
     }
 
     /**
      * 添加Presenters
      */
-    @Override
     public final void addPresenters(@NonNull FramePresenter... pPresenters) {
         if (pPresenters != null && pPresenters.length > 0) {
             if (mPresenters == null) {
@@ -241,6 +209,94 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     }
 
     /**
+     * 统一处理因异步导致的 Activity|Fragment销毁时发生NullPointerException问题
+     * 统一处理LoadingDialog逻辑
+     */
+    public abstract class BindCallback<E> extends HttpCallback<E> {
+        /**
+         * 设置LoadingDialog参数
+         *
+         * @param setting 数组下标 ->
+         *                0.是否显示LoadingDialog(默认false)
+         *                1.isCancelable(是否可以通过点击Back键取消)(默认true)
+         *                2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
+         */
+        public BindCallback(boolean... setting) {
+            showLoadingDialogBySetting(setting);
+        }
+
+        @Deprecated
+        @Override
+        public void onResponse(Call<E> call, Response<E> response) {
+            if (canReceiveResponse()) {
+                super.onResponse(call, response);
+            }
+            hideLoadingDialog();
+        }
+
+        @Deprecated
+        @Override
+        public void onFailure(Call<E> call, Throwable t) {
+            if (canReceiveResponse()) {
+                super.onFailure(call, t);
+            }
+            hideLoadingDialog();
+        }
+    }
+
+    /**
+     * 统一处理因异步导致的 Activity|Fragment销毁时发生NullPointerException问题
+     * 统一处理LoadingDialog逻辑
+     */
+    public abstract class BindSubscriber<E> extends HttpSubscriber<E> {
+        /**
+         * 设置LoadingDialog参数
+         *
+         * @param setting 数组下标 ->
+         *                0.是否显示LoadingDialog(默认false)
+         *                1.isCancelable(是否可以通过点击Back键取消)(默认true)
+         *                2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
+         */
+        public BindSubscriber(boolean... setting) {
+            showLoadingDialogBySetting(setting);
+        }
+
+        @Deprecated
+        @Override
+        public void onNext(E data) {
+            if (canReceiveResponse()) {
+                super.onNext(data);
+            }
+        }
+
+        @Deprecated
+        @Override
+        public void onError(Throwable pE) {
+            if (canReceiveResponse()) {
+                super.onError(pE);
+            }
+        }
+
+        @Deprecated
+        @Override
+        public void onCompleted() {
+            if (canReceiveResponse()) {
+                super.onCompleted();
+            }
+            hideLoadingDialog();
+        }
+    }
+    //------------------------------------子类可使用的工具函数 -> IFrameSubscription
+
+    /**
+     * 添加Subscriptions
+     */
+    @Override
+    public final void addSubscriptions(@NonNull Subscription... pSubscriptions) {
+        getCompositeSubscription().addAll(pSubscriptions);
+    }
+
+    /**
      * 获取CompositeSubscription实例
      */
     @Override
@@ -250,6 +306,15 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
         }
         return mSubscription;
     }
+
+    /**
+     * 判断能否接收Response
+     */
+    @Override
+    public final boolean canReceiveResponse() {
+        return !mSubscription.isUnsubscribed();
+    }
+    //------------------------------------子类可使用的工具函数 -> IFrameStart
 
     /**
      * 获取Intent中数据参数
@@ -314,174 +379,54 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     }
 
     /**
-     * 根据IRequest类获取Request实例
+     * 为了统一启动方式,所以暂作过时处理
+     * * 尽量不要使用此函数启动Activity
      */
+    @Deprecated
     @Override
-    public final <T> T request(@NonNull Class<T> pIRequest) {
-        return NetManager.INSTANCE.request(pIRequest);
+    public final ComponentName startService(Intent intent) {
+        return super.startService(intent);
     }
 
     /**
-     * 创建新的Retrofit实例
-     * 根据IRequest类获取Request实例
+     * 启动Service
      */
     @Override
-    public final <T> T newRequest(@NonNull Class<T> pIRequest) {
-        return NetManager.INSTANCE.newRequest(pIRequest);
+    public final ComponentName startService(@NonNull Class cls) {
+        Intent intent = new Intent(this, cls);
+        return super.startService(intent);
     }
 
     /**
-     * 创建新的Retrofit实例,并设置超时时间
-     * 根据IRequest类获取Request实例
+     * 启动Service
      */
     @Override
-    public final <T> T newRequest(@IntRange(from = 0) int connectTimeout, @IntRange(from = 0) int readTimeout, @IntRange(from = 0) int writeTimeout, @NonNull Class<T> pIRequest) {
-        return NetManager.INSTANCE.newRequest(connectTimeout, readTimeout, writeTimeout, pIRequest);
+    public final ComponentName startService(@NonNull Class cls, @NonNull Bundle bundle) {
+        Intent intent = new Intent(this, cls);
+        intent.putExtras(bundle);
+        return super.startService(intent);
     }
+    //------------------------------------子类可使用的工具函数 -> IFrameView
 
     /**
-     * 统一处理因异步导致的 Activity|Fragment销毁时发生NullPointerException问题
-     *
-     * @param pCallback Net请求回调
-     * @param setting   数组下标 ->
-     *                  0.是否显示LoadingDialog(默认false)
-     *                  1.isCancelable(是否可以通过点击Back键取消)(默认true)
-     *                  2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
+     * 通过viewId获取控件
      */
     @Override
-    public final <T> Callback<T> newCallback(@NonNull final NetCallback<T> pCallback, final boolean... setting) {
-        showLoadingDialogBySetting(setting);
-        return new Callback<T>() {
-            @Override
-            public void onResponse(Call<T> call, Response<T> response) {
-                if (!mSubscription.isUnsubscribed()) {
-                    pCallback.onResponse(call, response);
-                }
-                hideLoadingDialog();
-            }
-
-            @Override
-            public void onFailure(Call<T> call, Throwable t) {
-                if (!mSubscription.isUnsubscribed()) {
-                    pCallback.onFailure(call, t);
-                }
-                hideLoadingDialog();
-            }
-        };
-    }
-
-    /**
-     * 统一处理因异步导致的 Activity|Fragment销毁时发生NullPointerException问题
-     *
-     * @param pSubscriber Net请求回调
-     * @param setting     数组下标 ->
-     *                    0.是否显示LoadingDialog(默认false)
-     *                    1.isCancelable(是否可以通过点击Back键取消)(默认true)
-     *                    2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
-     */
-    @Override
-    public final <T> Subscriber<T> newSubscriber(@NonNull final NetSubscriber<T> pSubscriber, final boolean... setting) {
-        showLoadingDialogBySetting(setting);
-        return new Subscriber<T>() {
-            @Override
-            public void onCompleted() {
-                if (!mSubscription.isUnsubscribed()) {
-                    pSubscriber.onCompleted();
-                }
-                hideLoadingDialog();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                if (!mSubscription.isUnsubscribed()) {
-                    pSubscriber.onError(e);
-                }
-                hideLoadingDialog();
-            }
-
-            @Override
-            public void onNext(T pT) {
-                if (!mSubscription.isUnsubscribed()) {
-                    pSubscriber.onNext(pT);
-                }
-            }
-        };
-    }
-
-    /**
-     * 根据setting,检查是否显示LoadingDialog
-     *
-     * @param setting 数组下标 ->
-     *                0.是否显示LoadingDialog(默认false)
-     *                1.isCancelable(是否可以通过点击Back键取消)(默认true)
-     *                2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
-     */
-    @Override
-    public final void showLoadingDialogBySetting(final boolean... setting) {
-        boolean isShow = false;
-        boolean isCancelable = true;
-        boolean isCanceledOnTouchOutside = false;
-        if (setting != null) {
-            if (setting.length >= 1) {
-                isShow = setting[0];
-            }
-            if (setting.length >= 2) {
-                isCancelable = setting[1];
-            }
-            if (setting.length >= 3) {
-                isCanceledOnTouchOutside = setting[2];
-            }
+    public final <E extends View> E getView(@IdRes int viewId) {
+        View view = mChildViews.get(viewId);
+        if (view == null) {
+            view = this.findViewById(viewId);
+            mChildViews.put(viewId, view);
         }
-        if (isShow == true) {
-            showLoadingDialog(isCancelable, isCanceledOnTouchOutside);
-        }
+        return (E) view;
     }
-
-    /**
-     * 显示LoadingDialog
-     *
-     * @param setting 数组下标 ->
-     *                0.isCancelable(是否可以通过点击Back键取消)(默认true)
-     *                1.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
-     */
-    @Override
-    public final void showLoadingDialog(final boolean... setting) {
-        boolean isCancelable = true;
-        boolean isCanceledOnTouchOutside = false;
-        if (setting != null) {
-            if (setting.length >= 1) {
-                isCancelable = setting[0];
-            }
-            if (setting.length >= 2) {
-                isCanceledOnTouchOutside = setting[1];
-            }
-        }
-        if (mLoadingDialog == null) {
-            mLoadingDialog = new Dialog(this, R.style.Translucent_Dialog);
-        }
-        mLoadingDialog.setContentView(FrameActivityFragmentViewHelper.getDialogView(this));
-        mLoadingDialog.setCancelable(isCancelable);
-        mLoadingDialog.setCanceledOnTouchOutside(isCanceledOnTouchOutside);
-        mLoadingDialog.show();
-    }
-
-    /**
-     * 隐藏LoadingDialog
-     */
-    @Override
-    public final void hideLoadingDialog() {
-        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
-            mLoadingDialog.dismiss();
-        }
-    }
-    //------------------------------------ContentView|LoadingView|ErrorView相关操作 & 继承自IActivityFragment接口
 
     /**
      * 设置内容视图
      */
     @Override
     public final void setContentView(@LayoutRes int layoutResId) {
-        View view = LayoutInflater.from(this).inflate(layoutResId, null);
+        View view = LayoutInflater.from(this).inflate(layoutResId, mContentLayout, false);
         setContentView(view);
     }
 
@@ -493,41 +438,26 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
         mContentView = view;
         mContentView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
         mContentLayout.removeAllViews();
-        if (!skipStatusBar && canCustomStatusBar) {
-            View statusBar = new View(this);
-            statusBar.setBackgroundDrawable(mContentView.getBackground());
-            statusBar.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, statusBarHeight));
-            mContentLayout.addView(statusBar);
-        }
         mContentLayout.addView(mContentView);
     }
 
     /**
-     * 设置加载视图
+     * 设置标题视图
      */
     @Override
-    public final void setLoadingView(@NonNull View view) {
-        if (view == null) {
-            return;
-        }
-        mLoadingView = view;
-        mLoadingLayout.removeAllViews();
-        mLoadingLayout.addView(mLoadingView);
+    public final void setTitleView(@LayoutRes int layoutResId) {
+        View view = LayoutInflater.from(this).inflate(layoutResId, mTitleLayout, false);
+        setTitleView(view);
     }
 
-    /**
-     * 设置错误视图
-     */
     @Override
-    public final void setErrorView(@NonNull View view) {
+    public final void setTitleView(@NonNull View view) {
         if (view == null) {
             return;
-
         }
-        mErrorView = view;
-        mErrorLayout.removeAllViews();
-        mErrorLayout.addView(mErrorView);
+        mTitleView = view;
+        mTitleLayout.removeAllViews();
+        mTitleLayout.addView(mTitleView);
     }
 
     /**
@@ -552,11 +482,29 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
      */
     @Override
     public final void showLoadingView() {
-        showLoadingView(false);
+        showLoadingView(null, false);
+    }
+
+    @Override
+    public final void showLoadingView(View pView) {
+        showLoadingView(pView, false);
     }
 
     @Override
     public final void showLoadingView(boolean animat) {
+        showLoadingView(null, animat);
+    }
+
+    @Override
+    public final void showLoadingView(View pView, boolean animat) {
+        if (pView == null) {
+            // 设置默认的加载视图
+            mLoadingView = FrameActivityFragmentViewHelper.getLoadingView(this);
+        } else {
+            mLoadingView = pView;
+        }
+        mLoadingLayout.removeAllViews();
+        mLoadingLayout.addView(mLoadingView);
         if (animat) {
             FrameActivityFragmentViewHelper.layoutCancelInOutAnimation(this, mLoadingLayout, mContentLayout, mLoadingLayout, mErrorLayout);
         } else {
@@ -569,48 +517,50 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
      */
     @Override
     public final void showErrorView() {
-        showErrorView(false);
-        mErrorLayout.setOnClickListener(null);
+        showErrorView(null, null, false);
+    }
+
+    @Override
+    public final void showErrorView(View pView) {
+        showErrorView(pView, null, false);
     }
 
     @Override
     public final void showErrorView(boolean animat) {
+        showErrorView(null, null, animat);
+    }
+
+    @Override
+    public final void showErrorView(Utils.OnClickListener pListener) {
+        showErrorView(null, pListener, false);
+    }
+
+    @Override
+    public final void showErrorView(View pView, boolean animat) {
+        showErrorView(pView, null, animat);
+    }
+
+    @Override
+    public final void showErrorView(View pView, Utils.OnClickListener pListener) {
+        showErrorView(pView, pListener, false);
+    }
+
+    @Override
+    public final void showErrorView(View pView, Utils.OnClickListener pListener, boolean animat) {
+        if (pView == null) {
+            // 设置默认的错误视图
+            mErrorView = FrameActivityFragmentViewHelper.getErrorView(this);
+        } else {
+            mErrorView = pView;
+        }
+        mErrorLayout.removeAllViews();
+        mErrorLayout.addView(mErrorView);
+        mErrorLayout.setOnClickListener(pListener);
         if (animat) {
             FrameActivityFragmentViewHelper.layoutCancelInOutAnimation(this, mErrorLayout, mContentLayout, mLoadingLayout, mErrorLayout);
         } else {
             FrameActivityFragmentViewHelper.layouts$setVisibility(mErrorLayout, mContentLayout, mLoadingLayout, mErrorLayout);
         }
-        mErrorLayout.setOnClickListener(null);
-    }
-
-    @Override
-    public final void showErrorView(View.OnClickListener pListener) {
-        showErrorView(false);
-        mErrorLayout.setOnClickListener(pListener);
-    }
-
-    /**
-     * 隐藏内容视图
-     */
-    @Override
-    public final void hideContentView() {
-        mContentLayout.setVisibility(View.GONE);
-    }
-
-    /**
-     * 隐藏加载视图
-     */
-    @Override
-    public final void hideLoadingView() {
-        mLoadingLayout.setVisibility(View.GONE);
-    }
-
-    /**
-     * 隐藏错误视图
-     */
-    @Override
-    public final void hideErrorView() {
-        mErrorLayout.setVisibility(View.GONE);
     }
 
     /**
@@ -636,19 +586,85 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     public final View getErrorView() {
         return mErrorView;
     }
-    //------------------------------------子类可使用的工具函数 & 继承自IActivityFragment接口
 
     /**
-     * 通过viewId获取控件
+     * 获取标题视图实例
      */
     @Override
-    public final <T extends View> T getView(@IdRes int viewId) {
-        View view = mChildViews.get(viewId);
-        if (view == null) {
-            view = this.findViewById(viewId);
-            mChildViews.put(viewId, view);
-        }
-        return (T) view;
+    public final View getTitleView() {
+        return mTitleView;
+    }
+    //------------------------------------子类可使用的工具函数 -> IFrameNet
+
+    /**
+     * 根据IRequest类获取Request实例
+     */
+    @Override
+    public final <E> E request(@NonNull Class<E> pIRequest) {
+        return HttpManager.INSTANCE.request(pIRequest);
+    }
+
+    /**
+     * 创建新的Retrofit实例
+     * 根据IRequest类获取Request实例
+     */
+    @Override
+    public final <E> E newRequest(@NonNull Class<E> pIRequest) {
+        return HttpManager.INSTANCE.newRequest(pIRequest);
+    }
+
+    /**
+     * 创建新的Retrofit实例,并设置超时时间
+     * 根据IRequest类获取Request实例
+     */
+    @Override
+    public final <E> E newRequest(@NonNull Class<E> pIRequest, @IntRange(from = 0) int connectTimeout, @IntRange(from = 0) int readTimeout, @IntRange(from = 0) int writeTimeout) {
+        return HttpManager.INSTANCE.newRequest(pIRequest, connectTimeout, readTimeout, writeTimeout);
+    }
+
+    /**
+     * 下载Retrofit实例 -> 默认读取超时时间5分钟
+     * 根据IRequest类获取Request实例
+     */
+    @Override
+    public final <E> E downloadRequest(@NonNull Class<E> pIRequest, @NonNull IHttpProgress pProgress) {
+        return HttpManager.INSTANCE.downloadRequest(pIRequest, pProgress);
+    }
+
+    /**
+     * 下载Retrofit实例,并设置读取超时时间
+     * 根据IRequest类获取Request实例
+     */
+    @Override
+    public final <E> E downloadRequest(@NonNull Class<E> pIRequest, @NonNull IHttpProgress pProgress, @IntRange(from = 0) int read_timeout) {
+        return HttpManager.INSTANCE.downloadRequest(pIRequest, pProgress, read_timeout);
+    }
+
+    /**
+     * 上传Retrofit实例 -> 默认写入超时时间5分钟
+     * 根据IRequest类获取Request实例
+     */
+    @Override
+    public final <E> E uploadRequest(@NonNull Class<E> pIRequest, @NonNull IHttpProgress pProgress) {
+        return HttpManager.INSTANCE.uploadRequest(pIRequest, pProgress);
+    }
+
+    /**
+     * 上传Retrofit实例,并设置写入超时时间
+     * 根据IRequest类获取Request实例
+     */
+    @Override
+    public final <E> E uploadRequest(@NonNull Class<E> pIRequest, @NonNull IHttpProgress pProgress, @IntRange(from = 0) int writeTimeout) {
+        return HttpManager.INSTANCE.uploadRequest(pIRequest, pProgress, writeTimeout);
+    }
+    //------------------------------------子类可使用的工具函数 -> IFrameUtils
+
+    /**
+     * 退出应用程序
+     */
+    @Override
+    public final void exit() {
+        ActivityStackManager.INSTANCE.exit();
     }
 
     /**
@@ -709,5 +725,81 @@ public abstract class FrameActivity extends AppCompatActivity implements IActivi
     public final float px2sp(@FloatRange(from = 0) float px) {
         return Utils.px2sp(this, px);
     }
+    //------------------------------------子类可使用的工具函数 -> IBView
 
+    /**
+     * 统一获取上下文对象
+     */
+    @Override
+    public final Context getContext() {
+        return this;
+    }
+
+    /**
+     * 根据setting,检查是否显示LoadingDialog
+     *
+     * @param setting 数组下标 ->
+     *                0.是否显示LoadingDialog(默认false)
+     *                1.isCancelable(是否可以通过点击Back键取消)(默认true)
+     *                2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
+     */
+    @Override
+    public final void showLoadingDialogBySetting(final boolean... setting) {
+        boolean isShow = false;
+        boolean isCancelable = true;
+        boolean isCanceledOnTouchOutside = false;
+        if (setting != null) {
+            if (setting.length >= 1) {
+                isShow = setting[0];
+            }
+            if (setting.length >= 2) {
+                isCancelable = setting[1];
+            }
+            if (setting.length >= 3) {
+                isCanceledOnTouchOutside = setting[2];
+            }
+        }
+        if (isShow == true) {
+            showLoadingDialog(isCancelable, isCanceledOnTouchOutside);
+        }
+    }
+
+    /**
+     * 显示LoadingDialog
+     *
+     * @param setting 数组下标 ->
+     *                0.isCancelable(是否可以通过点击Back键取消)(默认true)
+     *                1.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
+     */
+    @Override
+    public final void showLoadingDialog(final boolean... setting) {
+        boolean isCancelable = true;
+        boolean isCanceledOnTouchOutside = false;
+        if (setting != null) {
+            if (setting.length >= 1) {
+                isCancelable = setting[0];
+            }
+            if (setting.length >= 2) {
+                isCanceledOnTouchOutside = setting[1];
+            }
+        }
+        if (mLoadingDialog == null || !mLoadingDialog.isShowing()) {
+            mLoadingDialog = new Dialog(this);
+            mLoadingDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+            mLoadingDialog.setContentView(FrameActivityFragmentViewHelper.getLoadingDialogView(this));
+            mLoadingDialog.show();
+        }
+        mLoadingDialog.setCancelable(isCancelable);
+        mLoadingDialog.setCanceledOnTouchOutside(isCanceledOnTouchOutside);
+    }
+
+    /**
+     * 隐藏LoadingDialog
+     */
+    @Override
+    public final void hideLoadingDialog() {
+        if (mLoadingDialog != null && mLoadingDialog.isShowing()) {
+            mLoadingDialog.dismiss();
+        }
+    }
 }

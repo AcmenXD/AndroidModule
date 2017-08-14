@@ -1,8 +1,6 @@
 package com.acmenxd.frame.configs;
 
 import android.os.Environment;
-import android.support.annotation.CallSuper;
-import android.util.Log;
 
 import com.acmenxd.logger.LogTag;
 import com.acmenxd.logger.LogType;
@@ -17,19 +15,10 @@ import com.acmenxd.toaster.ToastNW;
  * @detail 配置详细参数类
  */
 public abstract class BaseConfig {
-
     /**
      * 初始化
      */
-    @CallSuper
-    protected void init(boolean isDebug) {
-        DEBUG = isDebug;
-        LOG_OPEN = DEBUG;
-        TOAST_DEBUG_OPEN = DEBUG;
-        NET_LOG_OPEN = DEBUG;
-        initSpData();
-        initNetURL();
-    }
+    protected abstract void init(boolean isDebug);
 
     /**
      * 调试模式开关
@@ -49,47 +38,43 @@ public abstract class BaseConfig {
      * * 详情参考FileUtils.init();
      */
     public String SDCARD_DIR = Environment.getExternalStorageDirectory().getAbsolutePath();
+    // 项目主路径
     public String BASE_DIR = SDCARD_DIR + "/AcmenXD/";
+    // Log日志默认保存路径
+    public String LOG_DIR = BASE_DIR + "Logger/";
+
+    /**
+     * SharedPreferences 配置
+     */
+    public String SP_Cookie = "spCookie";
+    protected String[] spAll = new String[]{SP_Cookie};
 
     /**
      * Log 配置
      */
     // Log开关
-    public boolean LOG_OPEN = DEBUG;
+    protected boolean LOG_OPEN = DEBUG;
     // Log显示等级, >= LOG_LEVEL的log显示
-    public LogType LOG_LEVEL = LogType.V;
-    // Log日志默认保存路径
-    public String LOG_DIR = BASE_DIR + "Logger/";
+    protected LogType LOG_LEVEL = LogType.V;
 
     /**
      * Toast 配置
      * * Toast 有Debug模式,正式上线版本将不会显示debug模式下的Toast
      */
     // Toast调试开关
-    public boolean TOAST_DEBUG_OPEN = DEBUG;
+    protected boolean TOAST_DEBUG_OPEN = DEBUG;
     // Toast默认显示时长
-    public ToastDuration TOAST_DURATION = ToastDuration.SHORT;
+    protected ToastDuration TOAST_DURATION = ToastDuration.SHORT;
     // Toast显示方式 : Toast需要等待,并逐个显示 | Toast无需等待,直接显示
-    public ToastNW TOAST_NEED_WAIT = ToastNW.NEED_WAIT;
-
-    /**
-     * SharedPreferences 配置
-     */
-    public String SP_Device = "spDevice";
-    public String[] spAll;
-
-    // 配置sp初始个数
-    protected void initSpData() {
-        spAll = new String[]{SP_Device};
-    }
+    protected ToastNW TOAST_NEED_WAIT = ToastNW.NEED_WAIT;
 
     /**
      * Net 配置
      */
     // 请求地址配置 -1:正式版  0->预发布  1->测试1
-    public byte URL_Type = -1;
+    protected byte URL_Type = -1;
     // 基础url配置
-    public String BASE_URL;
+    protected String BASE_URL = "http://www.baidu.com";
 
     // 配置连接地址
     protected void initNetURL() {
@@ -113,26 +98,22 @@ public abstract class BaseConfig {
         }
     }
 
-    // Net Log 的开关
-    public boolean NET_LOG_OPEN = DEBUG;
-    // Net Log 的日志级别
-    public int NET_LOG_LEVEL = Log.WARN;
     // Net Log 的日志Tag
-    public LogTag NET_LOG_TAG = LogTag.mk("NetLog");
+    protected LogTag NET_LOG_TAG = LogTag.mk("NetLog");
     // Net Log 的日志显示形式 -> 是否显示 "请求头 请求体 响应头 错误日志" 等详情
-    public boolean NET_LOG_DETAILS = true;
+    protected boolean NET_LOG_DETAILS = true;
     // Net Log 的日志显示形式 -> 是否显示请求过程中的日志,包含详细的请求头日志
-    public boolean NET_LOG_DETAILS_All = false;
+    protected boolean NET_LOG_DETAILS_All = false;
     // 非Form表单形式的请求体,是否加入公共Body
-    public boolean NOFORMBODY_CANADDBODY = true;
+    protected boolean NOFORMBODY_CANADDBODY = true;
     // 网络缓存策略: 0->不启用缓存  1->遵从服务器缓存配置
-    public int NET_CACHE_TYPE = 1;
+    protected int NET_CACHE_TYPE = 0;
     // 网络缓存大小(MB)
-    public int NET_CACHE_SIZE = 10;
+    protected int NET_CACHE_SIZE = 0;
     // 网络连接超时时间(秒)
-    public int CONNECT_TIMEOUT = 30;
-    // 读取超时时间(秒)
-    public int READ_TIMEOUT = 30;
+    protected int CONNECT_TIMEOUT = 10;
     // 写入超时时间(秒)
-    public int WRITE_TIMEOUT = 30;
+    protected int WRITE_TIMEOUT = 30;
+    // 读取超时时间(秒)
+    protected int READ_TIMEOUT = 30;
 }

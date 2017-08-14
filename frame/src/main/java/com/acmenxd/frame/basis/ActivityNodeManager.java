@@ -3,6 +3,7 @@ package com.acmenxd.frame.basis;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,45 +25,49 @@ public enum ActivityNodeManager {
      *
      * @return
      */
-    public void skipTop() {
+    public synchronized void skipTop() {
         skipNode(firstNode);
     }
 
     /**
      * 跳到指定节点
      */
-    public Bundle skipNode(@NonNull Class<? extends FrameActivity> node) {
+    public synchronized Bundle skipNode(@NonNull Class<? extends FrameActivity> node) {
         boolean isSkip = false;
         Bundle bundle = null;
         Stack<Stack<Map<Class<? extends FrameActivity>, Bundle>>> skipStack = new Stack<>();
-        for (Stack<Map<Class<? extends FrameActivity>, Bundle>> stack : activityNode) {
+        Iterator<Stack<Map<Class<? extends FrameActivity>, Bundle>>> iterator = activityNode.iterator();
+        while (iterator.hasNext()) {
+            Stack<Map<Class<? extends FrameActivity>, Bundle>> stack = iterator.next();
             if (stack.firstElement().containsKey(node)) {
                 isSkip = true;
                 bundle = stack.firstElement().get(node);
             }
             if (isSkip) {
                 skipStack.add(stack);
-                if (stack != null && stack.size() > 0 && stack.firstElement().containsKey(firstNode)) {
-
-                } else {
-                    activityNode.remove(stack);
-                }
             }
         }
-        for (int i = 0, len = skipStack.size(); i < len; i++) {
-            Stack<Map<Class<? extends FrameActivity>, Bundle>> stack = skipStack.lastElement();
+        for (int i = skipStack.size() - 1; i >= 0; i--) {
+            Stack<Map<Class<? extends FrameActivity>, Bundle>> stack = skipStack.get(i);
             if (stack != null && stack.size() > 0) {
-                for (int j = 0, len2 = stack.size(); j < len2; j++) {
-                    Map<Class<? extends FrameActivity>, Bundle> map = stack.lastElement();
+                for (int j = stack.size() - 1; j >= 0; j--) {
+                    Map<Class<? extends FrameActivity>, Bundle> map = stack.get(j);
                     if (map != null && map.size() > 0) {
-                        for (Class<? extends FrameActivity> n : map.keySet())
+                        for (Class<? extends FrameActivity> n : map.keySet()) {
                             if (n != firstNode) {
-                                ActivityStackManager.INSTANCE.finishActivity(n);
+                                ActivityStackManager.INSTANCE.finishActivity(n, false);
                             }
+                        }
                     }
                 }
             }
-            skipStack.remove(stack);
+            if (stack != null && stack.size() > 0 && stack.firstElement().containsKey(firstNode)) {
+                Map<Class<? extends FrameActivity>, Bundle> onlyOne = stack.firstElement();
+                stack.clear();
+                stack.add(onlyOne);
+            } else {
+                activityNode.remove(stack);
+            }
         }
         return bundle;
     }
@@ -70,7 +75,7 @@ public enum ActivityNodeManager {
     /**
      * 跳到指定节点,并启动节点的Activity
      */
-    public void skipAndStartNode(@NonNull Class<? extends FrameActivity> node) {
+    public synchronized void skipAndStartNode(@NonNull Class<? extends FrameActivity> node) {
         Bundle bundle = skipNode(node);
         if (node != firstNode) {
             ActivityStackManager.INSTANCE.currentActivity().startActivity(node, bundle);
@@ -80,29 +85,34 @@ public enum ActivityNodeManager {
     /**
      * 添加一个节点
      */
-    public void addFirstNode(@NonNull Class<? extends FrameActivity> node) {
+    public synchronized void addFirstNode(@NonNull Class<? extends FrameActivity> node, Bundle pBundle) {
+        activityNode.clear();
+        addNode(node, pBundle);
         firstNode = node;
-        addNode(node, null);
     }
 
     /**
      * 添加一个节点
      */
-    public void addNode(@NonNull Class<? extends FrameActivity> node, Bundle pBundle) {
+    public synchronized void addNode(@NonNull Class<? extends FrameActivity> node, Bundle pBundle) {
         if (pBundle == null) {
             pBundle = new Bundle();
         }
-        Stack<Map<Class<? extends FrameActivity>, Bundle>> stack = new Stack<>();
-        Map<Class<? extends FrameActivity>, Bundle> map = new ConcurrentHashMap<>();
-        map.put(node, pBundle);
-        stack.add(map);
-        activityNode.add(stack);
+        if (node == firstNode) {
+            activityNode.firstElement().firstElement().put(node, pBundle);
+        } else {
+            Stack<Map<Class<? extends FrameActivity>, Bundle>> stack = new Stack<>();
+            Map<Class<? extends FrameActivity>, Bundle> map = new ConcurrentHashMap<>();
+            map.put(node, pBundle);
+            stack.add(map);
+            activityNode.add(stack);
+        }
     }
 
     /**
      * 添加一个child
      */
-    protected void addChild(@NonNull Class<? extends FrameActivity> child, @NonNull Bundle pBundle) {
+    protected synchronized void addChild(@NonNull Class<? extends FrameActivity> child, @NonNull Bundle pBundle) {
         if (pBundle == null) {
             pBundle = new Bundle();
         }
@@ -119,7 +129,10 @@ public enum ActivityNodeManager {
     /**
      * 移除一个节点
      */
-    public void removeNode(@NonNull Class<? extends FrameActivity> node) {
+    public synchronized void removeNode(@NonNull Class<? extends FrameActivity> node) {
+        if (node == firstNode) {
+            return;
+        }
         Stack<Map<Class<? extends FrameActivity>, Bundle>> removeStack = null;
         Stack<Map<Class<? extends FrameActivity>, Bundle>> prevStack = null;
         for (Stack<Map<Class<? extends FrameActivity>, Bundle>> stack : activityNode) {
@@ -138,7 +151,7 @@ public enum ActivityNodeManager {
     /**
      * 获取当前节点
      */
-    public Class<? extends FrameActivity> currentNode() {
+    public synchronized Class<? extends FrameActivity> currentNode() {
         Stack<Map<Class<? extends FrameActivity>, Bundle>> stack = activityNode.lastElement();
         if (stack != null && stack.size() > 0) {
             Map<Class<? extends FrameActivity>, Bundle> map = stack.firstElement();
@@ -152,23 +165,30 @@ public enum ActivityNodeManager {
     /**
      * 判断Node是否在栈顶
      */
-    public boolean isCurrentNode(@NonNull Class<? extends FrameActivity> node) {
+    public synchronized boolean isCurrentNode(@NonNull Class<? extends FrameActivity> node) {
         return node == currentNode();
     }
 
     /**
      * 获取前一个节点
      */
-    public Class<? extends FrameActivity> prevNode(@NonNull Class<? extends FrameActivity> node) {
+    public synchronized Class<? extends FrameActivity> prevNode(@NonNull Class<? extends FrameActivity> node) {
+        if (node == firstNode || activityNode.size() <= 1) {
+            return null;
+        }
         for (Stack<Map<Class<? extends FrameActivity>, Bundle>> stack : activityNode) {
-            if (stack != null && stack.size() > 0 && stack.firstElement().containsKey(node) && stack != activityNode.firstElement()) {
-                Stack<Map<Class<? extends FrameActivity>, Bundle>> prevStack = activityNode.get(activityNode.lastIndexOf(stack) - 1);
-                if (prevStack != null && prevStack.size() > 0) {
-                    Map<Class<? extends FrameActivity>, Bundle> map = prevStack.firstElement();
-                    for (Class<? extends FrameActivity> n : map.keySet()) {
-                        return n;
+            if (stack != null && stack.size() > 0 && stack.firstElement().containsKey(node)) {
+                int currStackIndex = activityNode.indexOf(stack);
+                if (currStackIndex - 1 >= 0) {
+                    Stack<Map<Class<? extends FrameActivity>, Bundle>> prevStack = activityNode.get(currStackIndex - 1);
+                    if (prevStack != null && prevStack.size() > 0) {
+                        Map<Class<? extends FrameActivity>, Bundle> map = prevStack.firstElement();
+                        for (Class<? extends FrameActivity> n : map.keySet()) {
+                            return n;
+                        }
                     }
                 }
+                break;
             }
         }
         return null;
@@ -177,14 +197,20 @@ public enum ActivityNodeManager {
     /**
      * 获取下一个节点
      */
-    public Class<? extends FrameActivity> nextNode(@NonNull Class<? extends FrameActivity> node) {
+    public synchronized Class<? extends FrameActivity> nextNode(@NonNull Class<? extends FrameActivity> node) {
+        if (activityNode.size() <= 1) {
+            return null;
+        }
         for (Stack<Map<Class<? extends FrameActivity>, Bundle>> stack : activityNode) {
-            if (stack != null && stack.size() > 0 && stack.firstElement().containsKey(node) && stack != activityNode.lastElement()) {
-                Stack<Map<Class<? extends FrameActivity>, Bundle>> prevStack = activityNode.get(activityNode.lastIndexOf(stack) + 1);
-                if (prevStack != null && prevStack.size() > 0) {
-                    Map<Class<? extends FrameActivity>, Bundle> map = prevStack.firstElement();
-                    for (Class<? extends FrameActivity> n : map.keySet()) {
-                        return n;
+            if (stack != null && stack.size() > 0 && stack.firstElement().containsKey(node)) {
+                int currStackIndex = activityNode.indexOf(stack);
+                if (currStackIndex + 1 < activityNode.size()) {
+                    Stack<Map<Class<? extends FrameActivity>, Bundle>> nextStack = activityNode.get(currStackIndex + 1);
+                    if (nextStack != null && nextStack.size() > 0) {
+                        Map<Class<? extends FrameActivity>, Bundle> map = nextStack.firstElement();
+                        for (Class<? extends FrameActivity> n : map.keySet()) {
+                            return n;
+                        }
                     }
                 }
             }

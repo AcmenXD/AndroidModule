@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,11 +44,18 @@ public final class Toaster {
     public static void setContext(@NonNull Context pContext) {
         sContext = pContext;
         Toast toast = new Toast(pContext);
-        gravity = Gravity.CENTER;
+        // 初始配置
+        gravity = toast.getGravity();
         offsetX = toast.getXOffset();
         offsetY = toast.getYOffset();
         marginX = toast.getHorizontalMargin();
         marginY = toast.getVerticalMargin();
+        // 项目配置
+        gravity = Gravity.CENTER;
+        offsetX = 0;
+        offsetY = 0;
+        marginX = 0;
+        marginY = 0;
     }
 
     // Toast 表
@@ -67,7 +73,7 @@ public final class Toaster {
      *
      * @param tId
      */
-    public static void cancel(long tId) {
+    public synchronized static void cancel(long tId) {
         Toast2 t = tMap.remove(tId);
         if (t != null) {
             t.cancel();
@@ -77,7 +83,7 @@ public final class Toaster {
     /**
      * 取消所有Toast
      */
-    public static void cancelAll() {
+    public synchronized static void cancelAll() {
         Iterator<Long> it = tMap.keySet().iterator();
         while (it.hasNext()) {
             cancel(it.next());
@@ -87,7 +93,7 @@ public final class Toaster {
     /**
      * 检索集合,整理数据
      */
-    private static void checkCancel() {
+    private synchronized static void checkCancel() {
         for (Map.Entry<Long, Toast2> entry : tMap.entrySet()) {
             if (entry.getValue().isCancel()) {
                 cancel(entry.getKey());
@@ -299,6 +305,9 @@ public final class Toaster {
      * @return Toast2 对象实例
      */
     private static final synchronized Toast2 showBase(boolean isDebug, @NonNull ToastNW needWait, @NonNull ToastDuration duration, int gravity, int offsetX, int offsetY, float marginX, float marginY, View view, Object... msgs) {
+        if (view == null && Utils.isEmpty(Utils.appendStrs(msgs))) {
+            return null;
+        }
         /**
          * 初始化
          */
@@ -321,12 +330,10 @@ public final class Toaster {
         } else if (msgs != null & msgs.length > 0) {
             // view等于null时, 不显示view ,而显示内容
             String msgStr = Utils.appendStrs(msgs);
-            if (!TextUtils.isEmpty(msgStr)) {
-                View layout = LayoutInflater.from(sContext).inflate(R.layout.widget_toaster, null);
-                ((TextView) layout.findViewById(R.id.widget_toaster_tvContent)).setText(msgStr);
-                toast2.setView(layout);
-                canShow = true;
-            }
+            View layout = LayoutInflater.from(sContext).inflate(R.layout.widget_toaster, null);
+            ((TextView) layout.findViewById(R.id.widget_toaster_tvContent)).setText(msgStr);
+            toast2.setView(layout);
+            canShow = true;
         }
         if (canShow) {
             toast2.setGravity(gravity, offsetX, offsetY);

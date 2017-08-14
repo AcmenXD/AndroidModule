@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.telephony.TelephonyManager;
 
 import com.acmenxd.frame.basis.FrameApplication;
+import com.acmenxd.toaster.Toaster;
 
 /**
  * @author AcmenXD
@@ -102,9 +103,20 @@ public final class NetUtils {
     public static final int NETWORK_TYPE_LTE_CA = 19;
 
     /**
+     * 检查网络是否连接 如无网络弹出提示
+     */
+    public static boolean checkNetworkWithToast() {
+        boolean network = checkNetwork();
+        if (!network) {
+            Toaster.show("无网络连接");
+        }
+        return network;
+    }
+
+    /**
      * 检查网络是否连接
      */
-    public static boolean checkNetWork() {
+    public static boolean checkNetwork() {
         boolean result = false;
         ConnectivityManager connMgr = (ConnectivityManager) FrameApplication.instance().getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connMgr == null) {

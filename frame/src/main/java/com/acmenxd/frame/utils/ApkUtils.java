@@ -6,7 +6,9 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,8 +28,15 @@ public final class ApkUtils {
      */
     public static void install(@NonNull Context context, @NonNull File uriFile) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(Uri.fromFile(uriFile), "application/vnd.android.package-archive");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri data;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            data = Uri.fromFile(uriFile);
+        } else {
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            data = FileProvider.getUriForFile(context, "com.nuoyuan.njs.fileprovider", uriFile);
+        }
+        intent.setDataAndType(data, "application/vnd.android.package-archive");
         context.startActivity(intent);
     }
 

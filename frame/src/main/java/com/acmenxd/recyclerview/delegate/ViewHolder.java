@@ -28,6 +28,8 @@ import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.acmenxd.frame.utils.Utils;
+
 /**
  * @author AcmenXD
  * @version v1.0
@@ -210,7 +212,7 @@ public final class ViewHolder extends RecyclerView.ViewHolder {
     /**
      * 关于事件的
      */
-    public ViewHolder setOnClickListener(@IdRes int viewId, @NonNull View.OnClickListener listener) {
+    public ViewHolder setOnClickListener(@IdRes int viewId, @NonNull Utils.OnClickListener listener) {
         View view = getView(viewId);
         view.setOnClickListener(listener);
         return this;

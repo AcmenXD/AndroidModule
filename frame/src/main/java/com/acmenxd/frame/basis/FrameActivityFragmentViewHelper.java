@@ -58,16 +58,16 @@ public final class FrameActivityFragmentViewHelper {
         loadTV.setGravity(Gravity.CENTER);
         loadTV.setTextSize(15);
         loadTV.setTextColor(Color.BLACK);
-        loadTV.setText("请检查网络");
+        loadTV.setText("请求失败，请检查网络！");
         loadTV.setPadding(0, (int) Utils.dp2px(pContext, 5), 0, 0);
         errorLayout.addView(loadTV);
         return errorLayout;
     }
 
     /**
-     * 获取Dialog弹框
+     * 获取LoadingDialog弹框
      */
-    public static View getDialogView(@NonNull Context pContext) {
+    public static View getLoadingDialogView(@NonNull Context pContext) {
         LinearLayout loadLayout = new LinearLayout(pContext);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         params.gravity = Gravity.CENTER;
@@ -75,8 +75,6 @@ public final class FrameActivityFragmentViewHelper {
         loadLayout.setGravity(Gravity.CENTER);
         // loading动画
         ImageView iv = new ImageView(pContext);
-        Bitmap bitmap = BitmapUtils.readBitmap(pContext.getResources(), R.mipmap.loading_frame_1, 0, 0);
-        iv.setPadding(0, 0, 0, bitmap.getHeight() / 4 * 3);
         iv.setImageResource(R.drawable.loading);
         ((AnimationDrawable) iv.getDrawable()).start();
         loadLayout.addView(iv);
@@ -84,7 +82,7 @@ public final class FrameActivityFragmentViewHelper {
     }
 
     /**
-     * 获取进入动画
+     * 获取进入动画 -> ContentView - LoadingView - ErrorView 切换时
      */
     public static Animation getInAnimation(@NonNull Context pContext) {
         return null;
@@ -92,7 +90,7 @@ public final class FrameActivityFragmentViewHelper {
     }
 
     /**
-     * 获取退出动画
+     * 获取退出动画 -> ContentView - LoadingView - ErrorView 切换时
      */
     public static Animation getOutAnimation(@NonNull Context pContext) {
         return null;

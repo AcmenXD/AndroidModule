@@ -4,9 +4,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.format.Formatter;
 
+import com.acmenxd.frame.utils.Utils;
 import com.acmenxd.logger.LogTag;
 import com.acmenxd.logger.Logger;
-import com.acmenxd.retrofit.NetManager;
+import com.acmenxd.retrofit.HttpManager;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -38,9 +39,9 @@ public final class LoggerInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         boolean net_log_open = Logger.LOG_OPEN;
-        boolean logDetails = NetManager.INSTANCE.net_log_details;
-        LogTag logTag = NetManager.INSTANCE.net_log_tag;
-        Context context = NetManager.INSTANCE.context;
+        boolean logDetails = HttpManager.INSTANCE.net_log_details;
+        LogTag logTag = HttpManager.INSTANCE.net_log_tag;
+        Context context = HttpManager.INSTANCE.context;
         // 日志String
         StringBuilder sb = new StringBuilder();
         // 请求request
@@ -87,18 +88,16 @@ public final class LoggerInterceptor implements Interceptor {
                 } else {
                     sb.append("\tContent-Length: ").append("unknown-length").append("\n");
                 }
-                if (charset != null) {
-                    if (!bodyEncoded(requestHeaders) && !(requestBody instanceof MultipartBody)) {
-                        Buffer buffer = new Buffer();
-                        requestBody.writeTo(buffer);
-                        if (isPlaintext(buffer)) {
-                            sb.append("\tParameters: ").append(buffer.clone().readString(charset)).append("\n");
-                        } else {
-                            sb.append("\tParameters: ").append(charStr).append("\n");
-                        }
+                if (charset != null && !(requestBody instanceof MultipartBody) && contentType(requestBody.contentType().toString())) {
+                    Buffer buffer = new Buffer();
+                    requestBody.writeTo(buffer);
+                    if (isPlaintext(buffer)) {
+                        sb.append("\tParameters: ").append(buffer.clone().readString(charset)).append("\n");
                     } else {
                         sb.append("\tParameters: ").append(charStr).append("\n");
                     }
+                } else {
+                    sb.append("\tParameters: ").append(charStr).append("\n");
                 }
             }
         }
@@ -178,12 +177,10 @@ public final class LoggerInterceptor implements Interceptor {
                 if (logDetails) {
                     sb.append("\t").append("Size: ").append(Formatter.formatFileSize(context, buffer.size())).append("\n");
                 }
-                if (charset != null) {
-                    if (isPlaintext(buffer) && !bodyEncoded(request.headers())) {
-                        sb.append("\tParameters: ").append(buffer.clone().readString(charset)).append("\n");
-                    } else {
-                        sb.append("\tParameters: ").append(charStr).append("\n");
-                    }
+                if (charset != null && isPlaintext(buffer) && contentType(response.headers().get("Content-Type"))) {
+                    sb.append("\tParameters: ").append(buffer.clone().readString(charset)).append("\n");
+                } else {
+                    sb.append("\tParameters: ").append(charStr).append("\n");
                 }
             }
         }
@@ -218,9 +215,12 @@ public final class LoggerInterceptor implements Interceptor {
         }
     }
 
-    private boolean bodyEncoded(@NonNull Headers headers) {
-        String contentEncoding = headers.get("Content-Encoding");
-        return contentEncoding != null && !contentEncoding.equalsIgnoreCase("identity");
+    private boolean contentType(@NonNull String contentTypeStr) {
+        if (!Utils.isEmpty(contentTypeStr)
+                && (contentTypeStr.contains("UTF-8") || contentTypeStr.contains("json") || contentTypeStr.contains("x-www-form-urlencoded")
+                || contentTypeStr.contains("html") || contentTypeStr.contains("text") || contentTypeStr.contains("xml"))) {
+            return true;
+        }
+        return false;
     }
-
 }

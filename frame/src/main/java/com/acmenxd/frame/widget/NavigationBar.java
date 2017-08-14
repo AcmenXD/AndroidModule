@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.acmenxd.frame.R;
+import com.acmenxd.frame.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
  * @date 2017/5/5 16:20
  * @detail 底部导航栏, 支持红点显示
  */
-public class NavigationBar extends FrameLayout implements View.OnClickListener {
+public class NavigationBar extends FrameLayout{
     public interface OnNavigationListener {
         void onTabChange(int position);
 
@@ -47,20 +48,6 @@ public class NavigationBar extends FrameLayout implements View.OnClickListener {
         addView(LayoutInflater.from(mContext).inflate(R.layout.widget_navigation_bar, null));
     }
 
-    @Override
-    public void onClick(View v) {
-        int position = -1;
-        if (mItems.contains(v)) {
-            position = mItems.indexOf(v);
-        }
-        if (position >= 0) {
-            changeTab(position);
-            if (mListener != null) {
-                mListener.onClick(position);
-            }
-        }
-    }
-
     public void addItem(String name, int resId) {
         addItem(name, mContext.getResources().getDrawable(resId));
     }
@@ -69,7 +56,21 @@ public class NavigationBar extends FrameLayout implements View.OnClickListener {
         LinearLayout layout = (LinearLayout) findViewById(R.id.navigation_bar_ll);
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.widget_navigation_bar_item, null);
         itemView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-        itemView.setOnClickListener(this);
+        itemView.setOnClickListener(new Utils.OnClickListener(0) {
+            @Override
+            public void onClick2(View v) {
+                int position = -1;
+                if (mItems.contains(v)) {
+                    position = mItems.indexOf(v);
+                }
+                if (position >= 0) {
+                    changeTab(position);
+                    if (mListener != null) {
+                        mListener.onClick(position);
+                    }
+                }
+            }
+        });
         layout.addView(itemView);
         TextView tvName = (TextView) itemView.findViewById(R.id.navigation_bar_item_tv_name);
         tvName.setText(name);

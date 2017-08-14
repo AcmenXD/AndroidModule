@@ -2,7 +2,8 @@ package com.acmenxd.retrofit.interceptor;
 
 import android.support.annotation.NonNull;
 
-import com.acmenxd.retrofit.NetManager;
+import com.acmenxd.frame.utils.Utils;
+import com.acmenxd.retrofit.HttpManager;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,15 +32,15 @@ public final class BodyInterceptor implements Interceptor {
         RequestBody requestBody = original.body();
         Request.Builder requestBuilder = original.newBuilder();
         Map<String, String> bodys = new HashMap<>();
-        if (NetManager.INSTANCE.mutualCallback != null) {
-            Map<String, String> maps = new HashMap<>();
+        if (HttpManager.INSTANCE.mutualCallback != null) {
+            Map<String, String> oldMaps = new HashMap<>();
             if (requestBody instanceof FormBody) {
                 FormBody oldFormBody = (FormBody) requestBody;
                 for (int i = 0, len = oldFormBody.size(); i < len; i++) {
-                    maps.put(oldFormBody.encodedName(i), oldFormBody.encodedValue(i));
+                    oldMaps.put(oldFormBody.encodedName(i), oldFormBody.encodedValue(i));
                 }
             }
-            bodys = NetManager.INSTANCE.mutualCallback.getBodys(original.url().toString(),maps);
+            bodys = HttpManager.INSTANCE.mutualCallback.getBodys(original.url().toString(), oldMaps);
         }
         if (bodys != null && bodys.size() > 0) {
             if (requestBody instanceof FormBody) {
@@ -50,15 +51,19 @@ public final class BodyInterceptor implements Interceptor {
                     formBody.addEncoded(oldFormBody.encodedName(i), oldFormBody.encodedValue(i));
                 }
                 for (Map.Entry<String, String> entry : bodys.entrySet()) {
-                    formBody.add(entry.getKey(), entry.getValue());
+                    if (entry != null && !Utils.isEmpty(entry.getKey()) && !Utils.isEmpty(entry.getValue())) {
+                        formBody.add(entry.getKey(), entry.getValue());
+                    }
                 }
                 requestBuilder.method(original.method(), formBody.build());
-            } else if (NetManager.INSTANCE.noformbody_canaddbody && !(requestBody instanceof MultipartBody)) {
+            } else if (HttpManager.INSTANCE.noformbody_canaddbody && original.method().equals("POST") && !(requestBody instanceof MultipartBody)) {
                 //非表单形式 & 非上传数据的情况下,添加公共body参数
                 String postBodyString = bodyToString(requestBody);
                 FormBody.Builder formBody = new FormBody.Builder();
                 for (Map.Entry<String, String> entry : bodys.entrySet()) {
-                    formBody.add(entry.getKey(), entry.getValue());
+                    if (entry != null && !Utils.isEmpty(entry.getKey()) && !Utils.isEmpty(entry.getValue())) {
+                        formBody.add(entry.getKey(), entry.getValue());
+                    }
                 }
                 postBodyString += ((postBodyString.length() > 0) ? "&" : "") + bodyToString(formBody.build());
                 requestBuilder = requestBuilder

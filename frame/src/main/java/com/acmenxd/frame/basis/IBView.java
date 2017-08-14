@@ -11,6 +11,16 @@ import android.content.Context;
  */
 public interface IBView {
     /**
+     * 统一获取上下文对象
+     */
+    Context getContext();
+
+    /**
+     * 判断能否接收Response
+     */
+    boolean canReceiveResponse();
+
+    /**
      * 根据setting,检查是否显示LoadingDialog
      *
      * @param setting 数组下标 ->
@@ -33,9 +43,4 @@ public interface IBView {
      * 隐藏LoadingDialog
      */
     void hideLoadingDialog();
-
-    /**
-     * 为了统一Activity&Fragment 在 Presenter&Model中获取上下文对象
-     */
-    Context getContext();
 }

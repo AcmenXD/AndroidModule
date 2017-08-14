@@ -1,6 +1,7 @@
 package com.acmenxd.retrofit.interceptor;
 
-import com.acmenxd.retrofit.NetManager;
+import com.acmenxd.frame.utils.Utils;
+import com.acmenxd.retrofit.HttpManager;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,14 +24,16 @@ public final class ParameterInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();
         Map<String, String> parameters = new HashMap<>();
-        if (NetManager.INSTANCE.mutualCallback != null) {
-            parameters = NetManager.INSTANCE.mutualCallback.getParameters(original.url().toString());
+        if (HttpManager.INSTANCE.mutualCallback != null) {
+            parameters = HttpManager.INSTANCE.mutualCallback.getParameters(original.url().toString());
         }
         HttpUrl.Builder builder = original.url().newBuilder();
         //添加请求公共参数
         if (parameters != null && parameters.size() > 0) {
             for (Map.Entry<String, String> entry : parameters.entrySet()) {
-                builder.addQueryParameter(entry.getKey(), entry.getValue());
+                if (entry != null && !Utils.isEmpty(entry.getKey()) && !Utils.isEmpty(entry.getValue())) {
+                    builder.addQueryParameter(entry.getKey(), entry.getValue());
+                }
             }
         }
         Request request = original.newBuilder()

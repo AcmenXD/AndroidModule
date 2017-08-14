@@ -9,23 +9,24 @@ package com.acmenxd.frame.configs;
  */
 public final class MvpConfig extends BaseConfig {
 
-    public String SP_User = "spUser";
+    public String SP_Device = "spDevice";
     public String SP_Config = "spConfig";
+    public String SP_User = "spUser";
 
     @Override
     protected void init(boolean isDebug) {
-        super.init(isDebug);
+        DEBUG = isDebug;
+        LOG_OPEN = DEBUG;
+        TOAST_DEBUG_OPEN = DEBUG;
 
         DB_NAME = "mvp_db";
         BASE_DIR = SDCARD_DIR + "/Mvp/";
         LOG_DIR = BASE_DIR + "Logger/";
+        spAll = new String[]{SP_Cookie, SP_Device, SP_Config, SP_User};
+
         // 请求地址配置 -1:正式版  0->预发布  1->测试1
         URL_Type = 1;
-    }
-
-    @Override
-    protected void initSpData() {
-        spAll = new String[]{SP_Device, SP_User, SP_Config};
+        initNetURL();
     }
 
     @Override

@@ -4,20 +4,21 @@ import android.support.annotation.CallSuper;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
+import com.acmenxd.frame.basis.impl.IFrameNet;
+import com.acmenxd.frame.basis.impl.IFrameSubscription;
 import com.acmenxd.frame.utils.net.IMonitorListener;
 import com.acmenxd.frame.utils.net.Monitor;
 import com.acmenxd.frame.utils.net.NetStatus;
-import com.acmenxd.retrofit.NetManager;
-import com.acmenxd.retrofit.callback.NetCallback;
-import com.acmenxd.retrofit.callback.NetSubscriber;
+import com.acmenxd.retrofit.HttpManager;
+import com.acmenxd.retrofit.callback.HttpCallback;
+import com.acmenxd.retrofit.callback.HttpSubscriber;
+import com.acmenxd.retrofit.callback.IHttpProgress;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
@@ -28,7 +29,7 @@ import rx.subscriptions.CompositeSubscription;
  * @date 2016/12/16 16:01
  * @detail Presenter基类
  */
-public abstract class FramePresenter<T extends IBView> implements INet {
+public abstract class FramePresenter<T extends IBView> implements IFrameSubscription, IFrameNet {
     protected final String TAG = this.getClass().getSimpleName();
 
     // Activity|Fragment实例
@@ -37,8 +38,6 @@ public abstract class FramePresenter<T extends IBView> implements INet {
     private CompositeSubscription mSubscription;
     // 统一管理Models
     private List<FrameModel> mModels;
-    // 页面是否关闭(包含正在关闭)
-    private boolean isFinish = false;
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override
@@ -51,7 +50,6 @@ public abstract class FramePresenter<T extends IBView> implements INet {
      * 构造器,传入BaseView实例
      */
     public FramePresenter(@NonNull T pView) {
-        isFinish = false;
         mView = pView;
         // 初始化容器
         mSubscription = getCompositeSubscription();
@@ -65,7 +63,6 @@ public abstract class FramePresenter<T extends IBView> implements INet {
      */
     @CallSuper
     public void unSubscribe() {
-        isFinish = true;
         // 网络监控反注册
         Monitor.unRegistListener(mNetListener);
         //解绑 Subscriptions
@@ -79,9 +76,7 @@ public abstract class FramePresenter<T extends IBView> implements INet {
             }
             mModels.clear();
         }
-        mView = null;
     }
-
     //------------------------------------子类可重写的函数
 
     /**
@@ -90,21 +85,7 @@ public abstract class FramePresenter<T extends IBView> implements INet {
     @CallSuper
     protected void onNetStatusChange(@NonNull NetStatus pNetStatus) {
     }
-    //------------------------------------工具函数
-
-    /**
-     * 退出应用程序
-     */
-    public final void exit() {
-        ActivityStackManager.INSTANCE.exit();
-    }
-
-    /**
-     * 添加Subscriptions
-     */
-    public final void addSubscriptions(@NonNull Subscription... pSubscriptions) {
-        getCompositeSubscription().addAll(pSubscriptions);
-    }
+    //------------------------------------子类可使用的工具函数 -> 私有
 
     /**
      * 添加Models
@@ -121,8 +102,107 @@ public abstract class FramePresenter<T extends IBView> implements INet {
     }
 
     /**
+     * 统一处理因异步导致的 Activity|Fragment销毁时发生NullPointerException问题
+     * 统一处理LoadingDialog逻辑
+     */
+    public abstract class BindCallback<E> extends HttpCallback<E> {
+        /**
+         * 设置LoadingDialog参数
+         *
+         * @param setting 数组下标 ->
+         *                0.是否显示LoadingDialog(默认false)
+         *                1.isCancelable(是否可以通过点击Back键取消)(默认true)
+         *                2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
+         */
+        public BindCallback(boolean... setting) {
+            if (mView != null) {
+                mView.showLoadingDialogBySetting(setting);
+            }
+        }
+
+        @Deprecated
+        @Override
+        public void onResponse(Call<E> call, Response<E> response) {
+            if (canReceiveResponse()) {
+                super.onResponse(call, response);
+            }
+            if (mView != null) {
+                mView.hideLoadingDialog();
+            }
+        }
+
+        @Deprecated
+        @Override
+        public void onFailure(Call<E> call, Throwable t) {
+            if (canReceiveResponse()) {
+                super.onFailure(call, t);
+            }
+            if (mView != null) {
+                mView.hideLoadingDialog();
+            }
+        }
+    }
+
+    /**
+     * 统一处理因异步导致的 Activity|Fragment销毁时发生NullPointerException问题
+     * 统一处理LoadingDialog逻辑
+     */
+    public abstract class BindSubscriber<E> extends HttpSubscriber<E> {
+        /**
+         * 设置LoadingDialog参数
+         *
+         * @param setting 数组下标 ->
+         *                0.是否显示LoadingDialog(默认false)
+         *                1.isCancelable(是否可以通过点击Back键取消)(默认true)
+         *                2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
+         */
+        public BindSubscriber(boolean... setting) {
+            if (mView != null) {
+                mView.showLoadingDialogBySetting(setting);
+            }
+        }
+
+        @Deprecated
+        @Override
+        public void onNext(E data) {
+            if (canReceiveResponse()) {
+                super.onNext(data);
+            }
+        }
+
+        @Deprecated
+        @Override
+        public void onError(Throwable pE) {
+            if (canReceiveResponse()) {
+                super.onError(pE);
+            }
+        }
+
+        @Deprecated
+        @Override
+        public void onCompleted() {
+            if (canReceiveResponse()) {
+                super.onCompleted();
+            }
+            if (mView != null) {
+                mView.hideLoadingDialog();
+            }
+        }
+    }
+    //------------------------------------子类可使用的工具函数 -> IFrameSubscription
+
+    /**
+     * 添加Subscriptions
+     */
+    @Override
+    public final void addSubscriptions(@NonNull Subscription... pSubscriptions) {
+        getCompositeSubscription().addAll(pSubscriptions);
+    }
+
+    /**
      * 获取CompositeSubscription实例
      */
+    @Override
     public final CompositeSubscription getCompositeSubscription() {
         if (mSubscription == null) {
             mSubscription = new CompositeSubscription();
@@ -131,11 +211,20 @@ public abstract class FramePresenter<T extends IBView> implements INet {
     }
 
     /**
+     * 判断能否接收Response
+     */
+    @Override
+    public final boolean canReceiveResponse() {
+        return !mSubscription.isUnsubscribed();
+    }
+    //------------------------------------子类可使用的工具函数 -> IFrameNet
+
+    /**
      * 根据IRequest类获取Request实例
      */
     @Override
     public final <E> E request(@NonNull Class<E> pIRequest) {
-        return NetManager.INSTANCE.request(pIRequest);
+        return HttpManager.INSTANCE.request(pIRequest);
     }
 
     /**
@@ -144,7 +233,7 @@ public abstract class FramePresenter<T extends IBView> implements INet {
      */
     @Override
     public final <E> E newRequest(@NonNull Class<E> pIRequest) {
-        return NetManager.INSTANCE.newRequest(pIRequest);
+        return HttpManager.INSTANCE.newRequest(pIRequest);
     }
 
     /**
@@ -152,89 +241,43 @@ public abstract class FramePresenter<T extends IBView> implements INet {
      * 根据IRequest类获取Request实例
      */
     @Override
-    public final <E> E newRequest(@IntRange(from = 0) int connectTimeout, @IntRange(from = 0) int readTimeout, @IntRange(from = 0) int writeTimeout, @NonNull Class<E> pIRequest) {
-        return NetManager.INSTANCE.newRequest(connectTimeout, readTimeout, writeTimeout, pIRequest);
+    public final <E> E newRequest(@NonNull Class<E> pIRequest, @IntRange(from = 0) int connectTimeout, @IntRange(from = 0) int readTimeout, @IntRange(from = 0) int writeTimeout) {
+        return HttpManager.INSTANCE.newRequest(pIRequest, connectTimeout, readTimeout, writeTimeout);
     }
 
     /**
-     * 统一处理因异步导致的 Activity|Fragment销毁时发生NullPointerException问题
-     *
-     * @param pCallback Net请求回调
-     * @param setting   数组下标 ->
-     *                  0.是否显示LoadingDialog(默认false)
-     *                  1.isCancelable(是否可以通过点击Back键取消)(默认true)
-     *                  2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
+     * 下载Retrofit实例 -> 默认读取超时时间5分钟
+     * 根据IRequest类获取Request实例
      */
     @Override
-    public final <E> Callback<E> newCallback(@NonNull final NetCallback<E> pCallback, final boolean... setting) {
-        if (mView != null) {
-            mView.showLoadingDialogBySetting(setting);
-        }
-        return new Callback<E>() {
-            @Override
-            public void onResponse(Call<E> call, Response<E> response) {
-                if (!mSubscription.isUnsubscribed()) {
-                    pCallback.onResponse(call, response);
-                }
-                if (mView != null) {
-                    mView.hideLoadingDialog();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<E> call, Throwable t) {
-                if (!mSubscription.isUnsubscribed()) {
-                    pCallback.onFailure(call, t);
-                }
-                if (mView != null) {
-                    mView.hideLoadingDialog();
-                }
-            }
-        };
+    public final <E> E downloadRequest(@NonNull Class<E> pIRequest, @NonNull IHttpProgress pProgress) {
+        return HttpManager.INSTANCE.downloadRequest(pIRequest, pProgress);
     }
 
     /**
-     * 统一处理因异步导致的 Activity|Fragment销毁时发生NullPointerException问题
-     *
-     * @param pSubscriber Net请求回调
-     * @param setting     数组下标 ->
-     *                    0.是否显示LoadingDialog(默认false)
-     *                    1.isCancelable(是否可以通过点击Back键取消)(默认true)
-     *                    2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
+     * 下载Retrofit实例,并设置读取超时时间
+     * 根据IRequest类获取Request实例
      */
     @Override
-    public final <E> Subscriber<E> newSubscriber(@NonNull final NetSubscriber<E> pSubscriber, final boolean... setting) {
-        if (mView != null) {
-            mView.showLoadingDialogBySetting(setting);
-        }
-        return new Subscriber<E>() {
-            @Override
-            public void onCompleted() {
-                if (!mSubscription.isUnsubscribed()) {
-                    pSubscriber.onCompleted();
-                }
-                if (mView != null) {
-                    mView.hideLoadingDialog();
-                }
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                if (!mSubscription.isUnsubscribed()) {
-                    pSubscriber.onError(e);
-                }
-                if (mView != null) {
-                    mView.hideLoadingDialog();
-                }
-            }
-
-            @Override
-            public void onNext(E pT) {
-                if (!mSubscription.isUnsubscribed()) {
-                    pSubscriber.onNext(pT);
-                }
-            }
-        };
+    public final <E> E downloadRequest(@NonNull Class<E> pIRequest, @NonNull IHttpProgress pProgress, @IntRange(from = 0) int read_timeout) {
+        return HttpManager.INSTANCE.downloadRequest(pIRequest, pProgress, read_timeout);
     }
 
+    /**
+     * 上传Retrofit实例 -> 默认写入超时时间5分钟
+     * 根据IRequest类获取Request实例
+     */
+    @Override
+    public final <E> E uploadRequest(@NonNull Class<E> pIRequest, @NonNull IHttpProgress pProgress) {
+        return HttpManager.INSTANCE.uploadRequest(pIRequest, pProgress);
+    }
+
+    /**
+     * 上传Retrofit实例,并设置写入超时时间
+     * 根据IRequest类获取Request实例
+     */
+    @Override
+    public final <E> E uploadRequest(@NonNull Class<E> pIRequest, @NonNull IHttpProgress pProgress, @IntRange(from = 0) int writeTimeout) {
+        return HttpManager.INSTANCE.uploadRequest(pIRequest, pProgress, writeTimeout);
+    }
 }

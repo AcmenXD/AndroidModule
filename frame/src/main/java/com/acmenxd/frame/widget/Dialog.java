@@ -1,6 +1,7 @@
 package com.acmenxd.frame.widget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -18,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.acmenxd.frame.R;
+import com.acmenxd.frame.utils.DeviceUtils;
 import com.acmenxd.frame.utils.Utils;
 
 /**
@@ -31,6 +33,10 @@ public class Dialog extends android.app.Dialog {
     public interface OnClickListener {
         void onClick(Dialog dialog, View v);
     }
+
+    public static final int BTN_COLOR_TYPE_BLUE = Color.parseColor("#2159E7");
+    public static final int BTN_COLOR_TYPE_BLACK = Color.parseColor("#333333");
+    public static final int BTN_COLOR_TYPE_GREY = Color.parseColor("#9b9b9b");
 
     public static class Builder {
         private Context mContext;
@@ -51,12 +57,15 @@ public class Dialog extends android.app.Dialog {
         private int mCustomResId;
         private int mBtnOrientation;
         private boolean mBtn1Bool;
+        private int mBtn1Color;
         private CharSequence mBtn1Str;
         private OnClickListener mBtn1Listener;
         private boolean mBtn2Bool;
+        private int mBtn2Color;
         private CharSequence mBtn2Str;
         private OnClickListener mBtn2Listener;
         private boolean mBtn3Bool;
+        private int mBtn3Color;
         private CharSequence mBtn3Str;
         private OnClickListener mBtn3Listener;
 
@@ -84,11 +93,31 @@ public class Dialog extends android.app.Dialog {
         }
 
         /**
-         * 设置为大尺寸弹框
+         * 设置固定弹框
          */
-        public Builder autoWHBig() {
+        public Builder auto335$230() {
             this.mWidth = (int) Utils.dp2px(mContext, 335);
             this.mHeight = (int) Utils.dp2px(mContext, 230);
+            isChangeWH = true;
+            return this;
+        }
+
+        /**
+         * 设置固定弹框
+         */
+        public Builder auto320$260() {
+            this.mWidth = (int) Utils.dp2px(mContext, 320);
+            this.mHeight = (int) Utils.dp2px(mContext, 260);
+            isChangeWH = true;
+            return this;
+        }
+
+        /**
+         * 设置固定弹框
+         */
+        public Builder auto335$282() {
+            this.mWidth = (int) Utils.dp2px(mContext, 335);
+            this.mHeight = (int) Utils.dp2px(mContext, 282);
             isChangeWH = true;
             return this;
         }
@@ -172,18 +201,38 @@ public class Dialog extends android.app.Dialog {
         public Builder setButton1(@Nullable CharSequence pBtn1Str, @Nullable OnClickListener pBtn1Listener) {
             this.mBtn1Bool = true;
             this.mBtn1Str = pBtn1Str;
+            this.mBtn1Color = BTN_COLOR_TYPE_BLUE;
             this.mBtn1Listener = pBtn1Listener;
             return this;
         }
 
         /**
-         * @param pBtn2Str      为null则默认"取消"
+         * @param pBtn1Color 默认为蓝色
+         */
+        public Builder setButton1(@Nullable CharSequence pBtn1Str, int pBtn1Color, @Nullable OnClickListener pBtn1Listener) {
+            setButton1(pBtn1Str, pBtn1Listener);
+            this.mBtn1Color = pBtn1Color;
+            return this;
+        }
+
+        /**
+         * @param pBtn2Str      为null则默认"忽略"
          * @param pBtn2Listener 为null则默认事件,单击关闭Dialog
          */
         public Builder setButton2(@Nullable CharSequence pBtn2Str, @Nullable OnClickListener pBtn2Listener) {
             this.mBtn2Bool = true;
             this.mBtn2Str = pBtn2Str;
+            this.mBtn2Color = BTN_COLOR_TYPE_BLACK;
             this.mBtn2Listener = pBtn2Listener;
+            return this;
+        }
+
+        /**
+         * @param pBtn2Color 默认为黑色
+         */
+        public Builder setButton2(@Nullable CharSequence pBtn2Str, int pBtn2Color, @Nullable OnClickListener pBtn2Listener) {
+            setButton2(pBtn2Str, pBtn2Listener);
+            this.mBtn2Color = pBtn2Color;
             return this;
         }
 
@@ -194,50 +243,75 @@ public class Dialog extends android.app.Dialog {
         public Builder setButton3(@Nullable CharSequence pBtn3Str, @Nullable OnClickListener pBtn3Listener) {
             this.mBtn3Bool = true;
             this.mBtn3Str = pBtn3Str;
+            this.mBtn3Color = BTN_COLOR_TYPE_BLACK;
             this.mBtn3Listener = pBtn3Listener;
             return this;
         }
 
+        /**
+         * @param pBtn3Color 默认为黑色
+         */
+        public Builder setButton3(@Nullable CharSequence pBtn3Str, int pBtn3Color, @Nullable OnClickListener pBtn3Listener) {
+            setButton3(pBtn3Str, pBtn3Listener);
+            this.mBtn3Color = pBtn3Color;
+            return this;
+        }
+
         public Dialog build() {
-            View view = LayoutInflater.from(mContext).inflate(R.layout.widget_dialog, null);
-            final Dialog dialog = new Dialog(mContext, R.style.Translucent_Dialog, view);
+            // 配置Dialog
+            final Dialog dialog = new Dialog(mContext);
+            dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+            dialog.setContentView(R.layout.widget_dialog);
+            dialog.setCancelable(isCancelable);
+            dialog.setCanceledOnTouchOutside(isCanceledOnTouchOutside);
+            // 去掉蓝线
+            int divierId = dialog.getContext().getResources().getIdentifier("android:id/titleDivider", null, null);
+            View divider = dialog.findViewById(divierId);
+            if (divider != null) {
+                divider.setBackgroundColor(Color.TRANSPARENT);
+            }
             // 初始化控件
-            LinearLayout dialogLayout = (LinearLayout) view.findViewById(R.id.dialog_layout);
-            LinearLayout contentLayout = (LinearLayout) view.findViewById(R.id.dialog_layout_content);
-            LinearLayout btnLayout = (LinearLayout) view.findViewById(R.id.dialog_layout_btn);
-            ImageView ibClose = (ImageView) view.findViewById(R.id.dialog_close);
-            TextView tvTitle = (TextView) view.findViewById(R.id.dialog_tv_title);
-            TextView tvMessage = (TextView) view.findViewById(R.id.dialog_tv_message);
-            Button btn1 = (Button) view.findViewById(R.id.dialog_btn1);
-            Button btn2 = (Button) view.findViewById(R.id.dialog_btn2);
-            Button btn3 = (Button) view.findViewById(R.id.dialog_btn3);
-            View btn1Line = view.findViewById(R.id.dialog_btnLine1);
-            View btn2Line = view.findViewById(R.id.dialog_btnLine2);
-            View btn3Line = view.findViewById(R.id.dialog_btnLine3);
+            LinearLayout dialogLayout = (LinearLayout) dialog.findViewById(R.id.dialog_layout);
+            LinearLayout closeLayout = (LinearLayout) dialog.findViewById(R.id.dialog_closeLayout);
+            LinearLayout contentLayout = (LinearLayout) dialog.findViewById(R.id.dialog_layout_content);
+            LinearLayout btnLayout = (LinearLayout) dialog.findViewById(R.id.dialog_layout_btn);
+            ImageView ibClose = (ImageView) dialog.findViewById(R.id.dialog_close);
+            TextView tvTitle = (TextView) dialog.findViewById(R.id.dialog_tv_title);
+            TextView tvMessage = (TextView) dialog.findViewById(R.id.dialog_tv_message);
+            Button btn1 = (Button) dialog.findViewById(R.id.dialog_btn1);
+            Button btn2 = (Button) dialog.findViewById(R.id.dialog_btn2);
+            Button btn3 = (Button) dialog.findViewById(R.id.dialog_btn3);
+            View btn1Line = dialog.findViewById(R.id.dialog_btnLine1);
+            View btn2Line = dialog.findViewById(R.id.dialog_btnLine2);
+            View btn3Line = dialog.findViewById(R.id.dialog_btnLine3);
             // 填充视图
             CharSequence title = mTitleResId != 0 ? mContext.getString(mTitleResId) : mTitle;
-            View customView = mCustomResId != 0 ? LayoutInflater.from(mContext).inflate(mCustomResId, null) : mCustomView;
+            View customView = mCustomResId != 0 ? LayoutInflater.from(mContext).inflate(mCustomResId, contentLayout, false) : mCustomView;
             if (Utils.isEmpty(title) && !isChangeWH && customView == null) {
                 mHeight = (int) Utils.dp2px(mContext, 150);
                 tvMessage.setPadding(0, 0, 0, 0);
             }
+            if (mWidth >= DeviceUtils.getScreenX(mContext)) {
+                mWidth = DeviceUtils.getScreenX(mContext) - (int) Utils.dp2px(mContext, 20);
+            }
             dialogLayout.setLayoutParams(new FrameLayout.LayoutParams(mWidth, mHeight));
+            closeLayout.setLayoutParams(new FrameLayout.LayoutParams(mWidth, FrameLayout.LayoutParams.WRAP_CONTENT));
             if (isCloseVisible) {
                 ibClose.setVisibility(View.VISIBLE);
             } else {
                 ibClose.setVisibility(View.GONE);
             }
             if (mCloseListener == null) {
-                ibClose.setOnClickListener(new View.OnClickListener() {
+                ibClose.setOnClickListener(new Utils.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick2(View v) {
                         dialog.dismiss();
                     }
                 });
             } else {
-                ibClose.setOnClickListener(new View.OnClickListener() {
+                ibClose.setOnClickListener(new Utils.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
+                    public void onClick2(View v) {
                         mCloseListener.onClick(dialog, v);
                     }
                 });
@@ -252,7 +326,6 @@ public class Dialog extends android.app.Dialog {
                 tvMessage.setVisibility(View.GONE);
                 contentLayout.addView(customView);
             } else {
-
                 CharSequence message = mMessageResId != 0 ? mContext.getString(mMessageResId) : mMessage;
                 if (Utils.isEmpty(mSpannableMessage)) {
                     if (Utils.isEmpty(message)) {
@@ -285,20 +358,21 @@ public class Dialog extends android.app.Dialog {
                     btn1.setText(mBtn1Str);
                 }
                 if (mBtn1Listener != null) {
-                    btn1.setOnClickListener(new View.OnClickListener() {
+                    btn1.setOnClickListener(new Utils.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick2(View v) {
                             mBtn1Listener.onClick(dialog, v);
                         }
                     });
                 } else {
-                    btn1.setOnClickListener(new View.OnClickListener() {
+                    btn1.setOnClickListener(new Utils.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick2(View v) {
                             dialog.dismiss();
                         }
                     });
                 }
+                btn1.setTextColor(mBtn1Color);
                 btn1.setVisibility(View.VISIBLE);
             } else {
                 btn1.setVisibility(View.GONE);
@@ -310,20 +384,21 @@ public class Dialog extends android.app.Dialog {
                     btn2.setText(mBtn2Str);
                 }
                 if (mBtn2Listener != null) {
-                    btn2.setOnClickListener(new View.OnClickListener() {
+                    btn2.setOnClickListener(new Utils.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick2(View v) {
                             mBtn2Listener.onClick(dialog, v);
                         }
                     });
                 } else {
-                    btn2.setOnClickListener(new View.OnClickListener() {
+                    btn2.setOnClickListener(new Utils.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick2(View v) {
                             dialog.dismiss();
                         }
                     });
                 }
+                btn2.setTextColor(mBtn2Color);
                 btn2.setVisibility(View.VISIBLE);
             } else {
                 btn2.setVisibility(View.GONE);
@@ -335,44 +410,42 @@ public class Dialog extends android.app.Dialog {
                     btn3.setText(mBtn3Str);
                 }
                 if (mBtn3Listener != null) {
-                    btn3.setOnClickListener(new View.OnClickListener() {
+                    btn3.setOnClickListener(new Utils.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick2(View v) {
                             mBtn3Listener.onClick(dialog, v);
                         }
                     });
                 } else {
-                    btn3.setOnClickListener(new View.OnClickListener() {
+                    btn3.setOnClickListener(new Utils.OnClickListener() {
                         @Override
-                        public void onClick(View v) {
+                        public void onClick2(View v) {
                             dialog.dismiss();
                         }
                     });
                 }
+                btn3.setTextColor(mBtn3Color);
                 btn3.setVisibility(View.VISIBLE);
             } else {
                 btn3.setVisibility(View.GONE);
             }
-            // 配置Dialog
-            dialog.setContentView(view);
-            dialog.setCancelable(isCancelable);
-            dialog.setCanceledOnTouchOutside(isCanceledOnTouchOutside);
             return dialog;
         }
     }
 
-    private View contentView;
+    public Dialog(@NonNull Context pContext) {
+        this(pContext, 0);
+    }
 
-    public Dialog(@NonNull Context pContext, @StyleRes int pThemeResId, View pContentView) {
+    public Dialog(@NonNull Context pContext, @StyleRes int pThemeResId) {
         super(pContext, pThemeResId);
-        this.contentView = pContentView;
     }
 
     /**
      * 右上角叉是否显示,默认显示
      */
     public void setCloseVisible(boolean pIsCloseVisible) {
-        ImageView ibClose = (ImageView) contentView.findViewById(R.id.dialog_close);
+        ImageView ibClose = (ImageView) findViewById(R.id.dialog_close);
         if (pIsCloseVisible) {
             ibClose.setVisibility(View.VISIBLE);
         } else {
@@ -383,12 +456,12 @@ public class Dialog extends android.app.Dialog {
     /**
      * 点击右上角叉时回调
      */
-    public void setCloseListener(@Nullable View.OnClickListener pCloseListener) {
-        ImageView ibClose = (ImageView) contentView.findViewById(R.id.dialog_close);
+    public void setCloseListener(@Nullable Utils.OnClickListener pCloseListener) {
+        ImageView ibClose = (ImageView) findViewById(R.id.dialog_close);
         if (pCloseListener == null) {
-            ibClose.setOnClickListener(new View.OnClickListener() {
+            ibClose.setOnClickListener(new Utils.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick2(View v) {
                     Dialog.this.dismiss();
                 }
             });
