@@ -108,7 +108,7 @@ public final class SplashActivity extends BaseActivity {
                 duration = coopenEntity.getShowTime() * 1000;
             } else {
                 // 默认广告
-                duration = 1000;
+                duration = 3000;
             }*/
             mHandler = new Handler();
             mHandler.postDelayed(new Runnable() {
