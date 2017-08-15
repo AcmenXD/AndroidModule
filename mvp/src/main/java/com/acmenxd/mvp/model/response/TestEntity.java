@@ -1,5 +1,7 @@
 package com.acmenxd.mvp.model.response;
 
+import java.io.Serializable;
+
 /**
  * @author AcmenXD
  * @version v1.0
@@ -7,7 +9,7 @@ package com.acmenxd.mvp.model.response;
  * @date 2016/12/13 14:05
  * @detail 测试用实体类
  */
-public class TestEntity<T> {
+public class TestEntity<T> implements Serializable {
 
     /**
      * author : {"des":"欢迎下载使用OkHttpUtils网络框架，如果遇到问题，欢迎反馈！如果觉得好用，不妨star一下，以便让更多的人了解使用！","email":"liaojeason@126.com","address":"北京","name":"jeasonlzy","github":"https://github.com/jeasonlzy0216","qq":"QQ交流群：489873144","fullname":"廖子尧"}

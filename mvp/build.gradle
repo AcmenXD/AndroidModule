@@ -30,7 +30,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         javaCompileOptions {
             annotationProcessorOptions {
                 // EventBus Config
@@ -81,14 +81,21 @@ android {
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
                         def fileName
                         if (variant.buildType.name.equals('debug')) {
-                            fileName = "MvpProject_v${defaultConfig.versionName}_${defaultConfig.versionCode}_${releaseTime()}_debug.apk"
+                            fileName = "MvpProject_v${defaultConfig.versionName}_${defaultConfig.versionCode}_debug.apk"
                         } else if (variant.buildType.name.equals('release')) {
-                            fileName = "MvpProject_v${defaultConfig.versionName}_${defaultConfig.versionCode}_${releaseTime()}_release.apk"
+                            fileName = "MvpProject_v${defaultConfig.versionName}_${defaultConfig.versionCode}_release.apk"
                         }
                         output.outputFile = new File(outputFile.parent, fileName)
                     }
                 }
             }
+        }
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/main/java']
+            jniLibs.srcDirs = ['libs']
         }
     }
 }
@@ -119,8 +126,11 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
+    /**
+     * 系统库
+     */
     testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:25.0.0'
     /**
      * 框架库
      */

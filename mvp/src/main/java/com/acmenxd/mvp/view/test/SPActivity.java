@@ -11,6 +11,7 @@ import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.R;
 import com.acmenxd.mvp.base.AppConfig;
 import com.acmenxd.mvp.base.BaseActivity;
+import com.acmenxd.mvp.utils.ViewUtils;
 import com.acmenxd.sptool.SpChangeListener;
 import com.acmenxd.sptool.SpManager;
 import com.acmenxd.sptool.SpTool;
@@ -31,8 +32,14 @@ public class SPActivity extends BaseActivity {
     @Override
     public void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(getBundle().getString("title"));
         setContentView(R.layout.activity_sp);
+        setTitleView(R.layout.layout_title);
+        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title"), new ViewUtils.OnTitleListener() {
+            @Override
+            public void onBack() {
+                SPActivity.this.finish();
+            }
+        });
         /**
          * SP 读写操作
          */
@@ -116,6 +123,6 @@ public class SPActivity extends BaseActivity {
         tv.setText("SP读取成功");
         LinearLayout.LayoutParams pa = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         pa.gravity = Gravity.CENTER;
-        this.addContentView(tv, pa);
+        ((LinearLayout)getContentView()).addView(tv, pa);
     }
 }

@@ -8,8 +8,8 @@ import android.support.annotation.NonNull;
 
 import com.acmenxd.mvp.db.core.DBManager;
 import com.acmenxd.mvp.db.dao.DaoSession;
-import com.acmenxd.mvp.db.dao.StudentDao;
-import com.acmenxd.mvp.model.db.Student;
+import com.acmenxd.mvp.db.dao.TestBeanDao;
+import com.acmenxd.mvp.model.db.TestBean;
 
 import org.greenrobot.greendao.query.Query;
 
@@ -23,21 +23,21 @@ import java.util.List;
  * @date 2017/2/28 10:00
  * @detail 数据库操作工具类
  */
-public final class StudentDB {
-    private static StudentDB instance;
+public final class TestBeanDB {
+    private static TestBeanDB instance;
     private SQLiteDatabase db;
     private DaoSession ds;
-    private StudentDao mStudentDao;
+    private TestBeanDao mStudentDao;
 
-    private StudentDB() {
+    private TestBeanDB() {
         db = DBManager.getInstance().getDatabase();
         ds = DBManager.getInstance().getDaoSession();
-        mStudentDao = ds.getStudentDao();
+        mStudentDao = ds.getTestBeanDao();
     }
 
-    public static StudentDB getInstance() {
+    public static TestBeanDB getInstance() {
         if (instance == null) {
-            instance = new StudentDB();
+            instance = new TestBeanDB();
         }
         return instance;
     }
@@ -49,7 +49,7 @@ public final class StudentDB {
      */
     public Cursor getStudentCursor() {
         //查询，得到cursor
-        String orderBy = StudentDao.Properties.Id.columnName + " DESC";//根据Id降序排序
+        String orderBy = TestBeanDao.Properties.Id.columnName + " DESC";//根据Id降序排序
         Cursor cursor = db.query(mStudentDao.getTablename(), mStudentDao.getAllColumns(), null, null, null, null, orderBy);
         return cursor;
     }
@@ -58,7 +58,7 @@ public final class StudentDB {
      * 添加学生
      */
     public void addStudent(@NonNull String name, @IntRange(from = 0) int age, @FloatRange(from = 0) double score) {
-        Student entity = new Student(null, name, age, score, new Date());
+        TestBean entity = new TestBean(null, name, age, score, new Date());
         //面向对象添加表数据
         mStudentDao.insert(entity);
     }
@@ -76,7 +76,7 @@ public final class StudentDB {
      * 更新
      */
     public void updateStudent(@NonNull Long id, @NonNull String name, @IntRange(from = 0) int age, @FloatRange(from = 0) double score) {
-        Student entity = new Student(id, name, age, score, new Date());
+        TestBean entity = new TestBean(id, name, age, score, new Date());
         mStudentDao.update(entity);
     }
 
@@ -88,8 +88,8 @@ public final class StudentDB {
     public List queryStudent(@NonNull String name) {
         // Query 类代表了一个可以被重复执行的查询
         Query query = mStudentDao.queryBuilder()
-                .where(StudentDao.Properties.Name.eq(name))
-                .orderAsc(StudentDao.Properties.Id)
+                .where(TestBeanDao.Properties.Name.eq(name))
+                .orderAsc(TestBeanDao.Properties.Id)
                 .build();
         // 查询结果以 List 返回
         return query.list();

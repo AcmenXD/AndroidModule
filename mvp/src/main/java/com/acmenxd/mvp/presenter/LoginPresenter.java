@@ -3,10 +3,8 @@ package com.acmenxd.mvp.presenter;
 import android.support.annotation.NonNull;
 
 import com.acmenxd.mvp.base.BasePresenter;
-import com.acmenxd.mvp.model.response.TestEntity;
-import com.acmenxd.retrofit.NetEntity;
-import com.acmenxd.retrofit.callback.NetCallback;
-import com.acmenxd.retrofit.exception.NetException;
+import com.acmenxd.mvp.model.response.TestHttpEntity;
+import com.acmenxd.retrofit.exception.HttpException;
 
 /**
  * @author AcmenXD
@@ -28,21 +26,19 @@ public class LoginPresenter extends BasePresenter<ILogin.IView> implements ILogi
 
     @Override
     public void login() {
-        request().get("token").enqueue(newCallback(new NetCallback<NetEntity<TestEntity>>() {
+        request().get("token").enqueue(new BindCallback<TestHttpEntity>() {
             @Override
-            public void succeed(NetEntity<TestEntity> pData) {
+            public void succeed(@NonNull TestHttpEntity pData) {
                 int code = pData.getCode();
                 String msg = pData.getMsg();
-                TestEntity data = pData.getData();
-                mView.loginSuccess(data);
+                mView.loginSuccess(pData);
             }
 
             @Override
-            public void failed(NetException pE) {
+            public void failed(@NonNull HttpException pE) {
                 int code = pE.getCode();
                 String msg = pE.getMsg();
-                String toastMsg = pE.getToastMsg();
             }
-        }));
+        });
     }
 }

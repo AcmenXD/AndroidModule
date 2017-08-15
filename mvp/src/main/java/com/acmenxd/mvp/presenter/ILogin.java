@@ -2,7 +2,7 @@ package com.acmenxd.mvp.presenter;
 
 import com.acmenxd.frame.basis.IBPresenter;
 import com.acmenxd.frame.basis.IBView;
-import com.acmenxd.mvp.model.response.TestEntity;
+import com.acmenxd.mvp.model.response.TestHttpEntity;
 
 /**
  * @author AcmenXD
@@ -13,7 +13,7 @@ import com.acmenxd.mvp.model.response.TestEntity;
  */
 public interface ILogin {
     interface IView extends IBView {
-        void loginSuccess(TestEntity data);
+        void loginSuccess(TestHttpEntity data);
     }
 
     interface IPresenter extends IBPresenter {

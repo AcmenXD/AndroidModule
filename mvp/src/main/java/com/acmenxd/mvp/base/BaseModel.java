@@ -1,11 +1,9 @@
 package com.acmenxd.mvp.base;
 
-import android.support.annotation.CallSuper;
-
 import com.acmenxd.frame.basis.FrameModel;
 import com.acmenxd.frame.basis.FramePresenter;
-import com.acmenxd.mvp.net.IAllRequest;
-import com.acmenxd.retrofit.NetManager;
+import com.acmenxd.mvp.base.impl.IBaseNet;
+import com.acmenxd.mvp.http.IAllRequest;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -16,21 +14,26 @@ import org.greenrobot.eventbus.Subscribe;
  * @date 2017/5/24 14:46
  * @detail 顶级Model
  */
-public abstract class BaseModel extends FrameModel implements INetBase{
+public abstract class BaseModel extends FrameModel implements IBaseNet {
+    /**
+     * 构造器
+     */
+    public BaseModel() {
+        this(null);
+    }
+
     /**
      * 构造器,传入FramePresenter实例
-     *
-     * @param pFramePresenter
      */
     public BaseModel(FramePresenter pFramePresenter) {
         super(pFramePresenter);
+        // EventBus事件注册
+        EventBusHelper.register(this);
     }
 
     /**
      * mView销毁时回调
      */
-    @CallSuper
-    @Override
     public void unSubscribe() {
         // EventBus事件反注册
         EventBusHelper.unregister(this);
@@ -44,13 +47,32 @@ public abstract class BaseModel extends FrameModel implements INetBase{
     @Subscribe
     public final void eventBusDefault(Object object) {
     }
+    //------------------------------------子类可使用的工具函数 -> IBaseNet
 
     /**
      * 获取IAllRequest实例
+     * * 开放重写,满足不同需求
      */
     @Override
-    public final IAllRequest request() {
+    public IAllRequest request() {
         return request(IAllRequest.class);
     }
 
+    /**
+     * 创建新的Retrofit实例
+     * * 开放重写,满足不同需求
+     */
+    @Override
+    public IAllRequest newRequest() {
+        return newRequest(IAllRequest.class);
+    }
+
+    /**
+     * 创建新的Retrofit实例,并设置超时时间
+     * * 开放重写,满足不同需求
+     */
+    @Override
+    public IAllRequest newRequest(int connectTimeout, int readTimeout, int writeTimeout) {
+        return newRequest(IAllRequest.class, connectTimeout, readTimeout, writeTimeout);
+    }
 }

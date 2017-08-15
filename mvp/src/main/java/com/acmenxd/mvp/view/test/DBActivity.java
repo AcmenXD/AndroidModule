@@ -17,9 +17,10 @@ import android.widget.Toast;
 
 import com.acmenxd.mvp.R;
 import com.acmenxd.mvp.base.BaseActivity;
-import com.acmenxd.mvp.db.StudentDB;
-import com.acmenxd.mvp.db.dao.StudentDao;
-import com.acmenxd.mvp.model.db.Student;
+import com.acmenxd.mvp.db.TestBeanDB;
+import com.acmenxd.mvp.db.dao.TestBeanDao;
+import com.acmenxd.mvp.model.db.TestBean;
+import com.acmenxd.mvp.utils.ViewUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,14 +41,20 @@ public class DBActivity extends BaseActivity {
     private TextView tDate;
     private ListView lv;
     private MyAdapter mMyAdapter;
-    private StudentDB mDBUtils;
+    private TestBeanDB mDBUtils;
     private Cursor mCursor;
 
     @Override
     protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(getBundle().getString("title"));
         setContentView(R.layout.activity_db);
+        setTitleView(R.layout.layout_title);
+        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title"), new ViewUtils.OnTitleListener() {
+            @Override
+            public void onBack() {
+                DBActivity.this.finish();
+            }
+        });
         //初始化
         tId = (TextView) findViewById(R.id.id);
         eName = (EditText) findViewById(R.id.name);
@@ -57,7 +64,7 @@ public class DBActivity extends BaseActivity {
         lv = (ListView) findViewById(R.id.lv);
 
         //读取数据
-        mDBUtils = StudentDB.getInstance();
+        mDBUtils = TestBeanDB.getInstance();
         mCursor = mDBUtils.getStudentCursor();
         //设置数据视图
         mMyAdapter = new MyAdapter(this, mCursor);
@@ -152,11 +159,11 @@ public class DBActivity extends BaseActivity {
             Toast.makeText(DBActivity.this, "name不能为空", Toast.LENGTH_SHORT).show();
             return;
         }
-        List<Student> data = mDBUtils.queryStudent(name);
+        List<TestBean> data = mDBUtils.queryStudent(name);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
         StringBuilder sb = new StringBuilder("查到 " + data.size() + " 条数据\n");
         for (int i = 0, c = data.size(); i < c; i++) {
-            Student s = data.get(i);
+            TestBean s = data.get(i);
             sb.append(" id:");
             sb.append(s.getId());
             sb.append(" name:");
@@ -253,11 +260,11 @@ public class DBActivity extends BaseActivity {
         @Override
         public void bindView(View pView, Context pContext, Cursor pCursor) {
             ViewHolder holder = (ViewHolder) pView.getTag();
-            long id = pCursor.getLong(pCursor.getColumnIndex(StudentDao.Properties.Id.columnName));
-            String name = pCursor.getString(pCursor.getColumnIndex(StudentDao.Properties.Name.columnName));
-            int age = pCursor.getInt(pCursor.getColumnIndex(StudentDao.Properties.Age.columnName));
-            double score = pCursor.getDouble(pCursor.getColumnIndex(StudentDao.Properties.Score.columnName));
-            long date = pCursor.getLong(pCursor.getColumnIndex(StudentDao.Properties.Date.columnName));
+            long id = pCursor.getLong(pCursor.getColumnIndex(TestBeanDao.Properties.Id.columnName));
+            String name = pCursor.getString(pCursor.getColumnIndex(TestBeanDao.Properties.Name.columnName));
+            int age = pCursor.getInt(pCursor.getColumnIndex(TestBeanDao.Properties.Age.columnName));
+            double score = pCursor.getDouble(pCursor.getColumnIndex(TestBeanDao.Properties.Score.columnName));
+            long date = pCursor.getLong(pCursor.getColumnIndex(TestBeanDao.Properties.Date.columnName));
             holder.tv_id.setText(id + "");
             holder.tv_name.setText(name);
             holder.tv_age.setText(age + "");

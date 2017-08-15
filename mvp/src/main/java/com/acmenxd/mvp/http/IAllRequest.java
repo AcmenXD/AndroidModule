@@ -1,9 +1,12 @@
-package com.acmenxd.mvp.net;
+package com.acmenxd.mvp.http;
 
 import android.graphics.Bitmap;
 
-import com.acmenxd.retrofit.NetEntity;
 import com.acmenxd.mvp.model.response.TestEntity;
+import com.acmenxd.mvp.model.response.TestHttpEntity;
+import com.acmenxd.retrofit.HttpEntity;
+import com.acmenxd.retrofit.HttpGenericityEntity;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -28,26 +31,26 @@ public interface IAllRequest {
      * get请求
      */
     @GET("method")
-    Call<NetEntity<TestEntity>> get(@Query("token") String token);
+    Call<TestHttpEntity> get(@Query("token") String token);
 
     /**
      * options请求
      */
     @OPTIONS("method")
-    Call<NetEntity<TestEntity>> options(@Query("token") String token);
+    Call<TestHttpEntity> options(@Query("token") String token);
 
     /**
      * post请求
      */
     @FormUrlEncoded
     @POST("method")
-    Observable<NetEntity<TestEntity>> post(@Field("token") String token);
+    Observable<HttpGenericityEntity<TestEntity>> post(@Field("token") String token);
 
     /**
      * put请求
      */
     @PUT("method")
-    Call<NetEntity<TestEntity>> put(@Query("token") String token, @Body TestEntity str);
+    Call<HttpGenericityEntity<TestEntity>> put(@Query("token") String token, @Body TestEntity str);
 
     /**
      * Post请求 -> 图片
@@ -60,6 +63,6 @@ public interface IAllRequest {
      * post请求 -> 上传图片
      */
     @POST("upload")
-    Call<NetEntity> upImage(@Query("token") String token, @Body Bitmap str);
+    Call<HttpEntity> upImage(@Query("token") String token, @Body Bitmap str);
 
 }

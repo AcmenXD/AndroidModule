@@ -1,15 +1,13 @@
 package com.acmenxd.mvp.base;
 
-import android.support.annotation.NonNull;
-
 import com.acmenxd.frame.basis.FrameApplication;
 import com.acmenxd.frame.configs.MvpConfig;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.MyEventBusIndex;
 import com.acmenxd.mvp.db.core.DBManager;
-import com.acmenxd.mvp.net.NetCode;
 
 import org.greenrobot.eventbus.EventBus;
+
 
 /**
  * @author AcmenXD
@@ -31,6 +29,10 @@ public final class BaseApplication extends FrameApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        //内存泄露检测
+        //LeakCanary.install(this);
+
         Logger.w("App已启动!");
         startTime = System.currentTimeMillis();
 
@@ -52,13 +54,13 @@ public final class BaseApplication extends FrameApplication {
     }
 
     @Override
-    public void crashException(@NonNull String projectInformation, @NonNull Thread pThread, @NonNull Throwable pE) {
+    public void crashException(String projectInformation, Thread pThread, Throwable pE) {
         StringBuffer sb = new StringBuffer();
         sb.append("Debug").append(" = ").append(AppConfig.DEBUG).append("\n");
         sb.append("Imei").append(" = ").append(AppConfig.IMEI).append("\n");
         sb.append("Market").append(" = ").append(AppConfig.MARKET).append("\n");
-        sb.append("ProjectName").append(" = ").append(AppConfig.PROJECT_NAME).append("\n");
         sb.append("PackageName").append(" = ").append(AppConfig.PKG_NAME).append("\n");
+        sb.append("ProjectName").append(" = ").append(AppConfig.PROJECT_NAME).append("\n");
         sb.append("VersionCode").append(" = ").append(AppConfig.VERSION_CODE).append("\n");
         sb.append("VersionName").append(" = ").append(AppConfig.VERSION_NAME).append("\n");
         sb.append("ThreadName").append(" = ").append(pThread.getName()).append("\n");

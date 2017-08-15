@@ -26,6 +26,7 @@
         </activity>
         <activity
             android:name=".view.MainActivity"
+            android:launchMode="singleTask"
             android:theme="@style/MainTheme"/>
         <activity
             android:name=".view.test.LogActivity"/>
@@ -38,7 +39,7 @@
         <activity
             android:name=".view.test.GlideActivity"/>
         <activity
-            android:name=".view.test.frescoActivity"/>
+            android:name=".view.test.FrescoActivity"/>
         <activity
             android:name=".view.test.RetrofitActivity"/>
         <activity

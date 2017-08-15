@@ -12,6 +12,7 @@ import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.R;
 import com.acmenxd.mvp.base.AppConfig;
 import com.acmenxd.mvp.base.BaseActivity;
+import com.acmenxd.mvp.utils.ViewUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,9 +28,16 @@ import java.io.InputStreamReader;
 public class LogActivity extends BaseActivity {
     @Override
     public void onCreate(@NonNull Bundle savedInstanceState) {
+        Logger.w("App进入LogActivity!");
         super.onCreate(savedInstanceState);
-        setTitle(getBundle().getString("title"));
         setContentView(R.layout.activity_log);
+        setTitleView(R.layout.layout_title);
+        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title"), new ViewUtils.OnTitleListener() {
+            @Override
+            public void onBack() {
+                LogActivity.this.finish();
+            }
+        });
 
         /**
          * 日志输出
@@ -104,6 +112,6 @@ public class LogActivity extends BaseActivity {
         tv.setText("日志输出成功");
         LinearLayout.LayoutParams pa = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         pa.gravity = Gravity.CENTER;
-        this.addContentView(tv, pa);
+        ((LinearLayout)getContentView()).addView(tv, pa);
     }
 }

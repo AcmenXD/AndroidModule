@@ -11,6 +11,7 @@ import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.R;
 import com.acmenxd.mvp.base.BaseActivity;
+import com.acmenxd.mvp.utils.ViewUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,8 +27,14 @@ public class FileActivity extends BaseActivity {
     @Override
     public void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(getBundle().getString("title"));
         setContentView(R.layout.activity_file);
+        setTitleView(R.layout.layout_title);
+        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title"), new ViewUtils.OnTitleListener() {
+            @Override
+            public void onBack() {
+                FileActivity.this.finish();
+            }
+        });
 
         /**
          * File文件操作
@@ -68,7 +75,6 @@ public class FileActivity extends BaseActivity {
         tv.setText("操作成功");
         LinearLayout.LayoutParams pa = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         pa.gravity = Gravity.CENTER;
-        this.addContentView(tv, pa);
+        ((LinearLayout)getContentView()).addView(tv, pa);
     }
-
 }

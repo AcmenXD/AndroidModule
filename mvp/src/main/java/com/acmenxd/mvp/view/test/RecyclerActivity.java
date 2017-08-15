@@ -18,7 +18,8 @@ import android.widget.Toast;
 
 import com.acmenxd.mvp.R;
 import com.acmenxd.mvp.base.BaseActivity;
-import com.acmenxd.recyclerview.LoadMoreView;
+import com.acmenxd.mvp.utils.ViewUtils;
+import com.acmenxd.recyclerview.LoadMoreLayout;
 import com.acmenxd.recyclerview.adapter.AdapterUtils;
 import com.acmenxd.recyclerview.adapter.MultiItemTypeAdapter;
 import com.acmenxd.recyclerview.adapter.MultiItemTypeSwipeMenuAdapter;
@@ -64,8 +65,14 @@ public class RecyclerActivity extends BaseActivity {
     @Override
     public void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(getBundle().getString("title"));
         setContentView(R.layout.activity_recycler);
+        setTitleView(R.layout.layout_title);
+        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title"), new ViewUtils.OnTitleListener() {
+            @Override
+            public void onBack() {
+                RecyclerActivity.this.finish();
+            }
+        });
 
         srl = (SwipeRefreshLayout) findViewById(R.id.srl);
         rv = (RecyclerView) findViewById(R.id.rv);
@@ -427,17 +434,17 @@ public class RecyclerActivity extends BaseActivity {
 
     public void loadMore(final View itemView) {
         if (mAdapter.getItemCount() >= 60 || mAdapter.getItemCount() <= 0) {
-            ((LoadMoreView) itemView).showFinish();
+            ((LoadMoreLayout) itemView).showFinish();
             itemView.setEnabled(false);
         } else {
-            ((LoadMoreView) itemView).showLoading();
+            ((LoadMoreLayout) itemView).showLoading();
             itemView.setEnabled(false);
             rv.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     addData();
                     refreshAdapter();
-                    ((LoadMoreView) itemView).showClick();
+                    ((LoadMoreLayout) itemView).showClick();
                     itemView.setEnabled(true);
                     showToast("加载更多");
                 }

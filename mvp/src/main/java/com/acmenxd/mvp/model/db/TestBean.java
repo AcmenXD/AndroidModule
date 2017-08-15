@@ -16,7 +16,7 @@ import java.util.Date;
  * @detail 数据库表测试类
  */
 @Entity //将我们的java普通类变为一个能够被greenDAO识别的数据库类型的实体类
-public class Student {
+public class TestBean {
     /**
      * 注释解释:
      *
@@ -36,8 +36,8 @@ public class Student {
     @Transient //表明这个字段不会被写入数据库，只是作为一个普通的java类字段，用来临时存储数据的，不会被持久化
     private Date date2;
 
-    @Generated(hash = 1297318209)
-    public Student(Long id, String name, int age, double score, Date date) {
+    @Generated(hash = 839484647)
+    public TestBean(Long id, String name, int age, double score, Date date) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -45,8 +45,8 @@ public class Student {
         this.date = date;
     }
 
-    @Generated(hash = 1556870573)
-    public Student() {
+    @Generated(hash = 2087637710)
+    public TestBean() {
     }
 
     public Long getId() {

@@ -14,6 +14,7 @@ import com.acmenxd.frescoview.FrescoView;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.R;
 import com.acmenxd.mvp.base.BaseActivity;
+import com.acmenxd.mvp.utils.ViewUtils;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.image.QualityInfo;
@@ -27,7 +28,7 @@ import com.facebook.imagepipeline.request.Postprocessor;
  * @date 2016/12/16 15:34
  * @detail something
  */
-public class frescoActivity extends BaseActivity {
+public class FrescoActivity extends BaseActivity {
     private FrescoView iv1;
     private FrescoView iv2;
     private FrescoView iv3;
@@ -35,8 +36,14 @@ public class frescoActivity extends BaseActivity {
     @Override
     public void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(getBundle().getString("title"));
         setContentView(R.layout.activity_fresco);
+        setTitleView(R.layout.layout_title);
+        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title"), new ViewUtils.OnTitleListener() {
+            @Override
+            public void onBack() {
+                FrescoActivity.this.finish();
+            }
+        });
         iv1 = (FrescoView) findViewById(R.id.imageView1);
         iv2 = (FrescoView) findViewById(R.id.imageView2);
         iv3 = (FrescoView) findViewById(R.id.imageView3);

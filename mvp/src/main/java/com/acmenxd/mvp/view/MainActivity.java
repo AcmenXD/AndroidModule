@@ -15,15 +15,16 @@ import com.acmenxd.mvp.base.AppConfig;
 import com.acmenxd.mvp.base.BaseActivity;
 import com.acmenxd.mvp.base.EventBusHelper;
 import com.acmenxd.mvp.model.response.TestEntity;
+import com.acmenxd.mvp.utils.ViewUtils;
 import com.acmenxd.mvp.view.test.DBActivity;
 import com.acmenxd.mvp.view.test.FileActivity;
+import com.acmenxd.mvp.view.test.FrescoActivity;
 import com.acmenxd.mvp.view.test.GlideActivity;
 import com.acmenxd.mvp.view.test.LogActivity;
 import com.acmenxd.mvp.view.test.RecyclerActivity;
 import com.acmenxd.mvp.view.test.RetrofitActivity;
 import com.acmenxd.mvp.view.test.SPActivity;
 import com.acmenxd.mvp.view.test.ToastActivity;
-import com.acmenxd.mvp.view.test.frescoActivity;
 import com.acmenxd.toaster.Toaster;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -46,8 +47,9 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.w("App进入MainActivity!");
-        setTitle(getBundle().getString("title", "Android框架设计"));
         setContentView(R.layout.activity_main);
+        setTitleView(R.layout.layout_title);
+        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title", "Android框架设计"), null);
         initData();
 
         lv_main = (ListView) findViewById(R.id.lv_main);
@@ -120,7 +122,7 @@ public class MainActivity extends BaseActivity {
                         "6.支持加载过程中显示加载动画 \n" +
                         "7.支持圆角|原型|边框,并设置颜色 \n" +
                         "8.支持图片渐显动画 \n" +
-                        "9.支持gif动画的随时播放暂停!", frescoActivity.class));
+                        "9.支持gif动画的随时播放暂停!", FrescoActivity.class));
         datas.add(new DataInfo("RecyclerView相关操作",
                 "1.支持下拉上拉刷新加载\n" +
                         "2.支持Header/Footer/Empty布局的添加\n" +

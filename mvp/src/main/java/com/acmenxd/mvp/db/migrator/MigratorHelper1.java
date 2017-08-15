@@ -4,7 +4,7 @@ package com.acmenxd.mvp.db.migrator;
 import android.support.annotation.NonNull;
 
 import com.acmenxd.mvp.db.core.MigrationHelperUtil;
-import com.acmenxd.mvp.db.dao.StudentDao;
+import com.acmenxd.mvp.db.dao.TestBeanDao;
 
 import org.greenrobot.greendao.database.Database;
 
@@ -42,6 +42,6 @@ public final class MigratorHelper1 extends BaseMigratorHelper {
             public Boolean onBoolean(@NonNull String tablename, @NonNull String columnName) {
                 return null;
             }
-        }, StudentDao.class);
+        }, TestBeanDao.class);
     }
 }

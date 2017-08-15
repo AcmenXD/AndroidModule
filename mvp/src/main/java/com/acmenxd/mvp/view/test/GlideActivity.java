@@ -13,6 +13,7 @@ import com.acmenxd.glide.RoundTransform;
 import com.acmenxd.glide.SaveCallback;
 import com.acmenxd.mvp.R;
 import com.acmenxd.mvp.base.BaseActivity;
+import com.acmenxd.mvp.utils.ViewUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -33,6 +34,13 @@ public class GlideActivity extends BaseActivity {
     protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_glide);
+        setTitleView(R.layout.layout_title);
+        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title"), new ViewUtils.OnTitleListener() {
+            @Override
+            public void onBack() {
+                GlideActivity.this.finish();
+            }
+        });
         iv = (ImageView) findViewById(R.id.iv);
     }
 

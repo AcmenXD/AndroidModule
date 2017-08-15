@@ -6,13 +6,17 @@ import android.content.pm.PackageManager;
 import android.telephony.TelephonyManager;
 
 import com.acmenxd.frame.configs.MvpConfig;
+import com.acmenxd.frame.utils.RandomUtils;
+import com.acmenxd.frame.utils.Utils;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.marketer.Marketer;
 import com.acmenxd.mvp.BuildConfig;
 import com.acmenxd.mvp.R;
-import com.acmenxd.mvp.net.NetCode;
-import com.acmenxd.retrofit.NetManager;
-import com.acmenxd.retrofit.NetMutualCallback;
+import com.acmenxd.mvp.http.ResultCallback;
+import com.acmenxd.retrofit.HttpManager;
+import com.acmenxd.retrofit.HttpMutualCallback;
+import com.acmenxd.sptool.SpManager;
+import com.acmenxd.sptool.SpTool;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,12 +61,12 @@ public final class AppConfig {
     /**
      * IMEI号
      */
-    public static String IMEI = "000000000000000";
+    public static String IMEI = "";
 
     /**
      * 初始化 -> BaseApplication中调用
      */
-    public static void init() {
+    public static synchronized void init() {
         BaseApplication app = BaseApplication.instance();
         PackageManager pkgManager = app.getPackageManager();
         // 设置默认值
@@ -70,7 +74,7 @@ public final class AppConfig {
         VERSION_NAME = "1.0";
         PROJECT_NAME = app.getResources().getString(R.string.app_name);
         PKG_NAME = "";
-        MARKET = "AcmenXD";
+        MARKET = "";
         /**
          * 初始化值
          */
@@ -85,40 +89,35 @@ public final class AppConfig {
         VERSION_CODE = info.versionCode;
         VERSION_NAME = info.versionName;
         MARKET = Marketer.getMarket(app.getApplicationContext(), MARKET);
-
+        /**
+         * 设置请求返回时回调
+         */
+        HttpManager.INSTANCE.resultCallback = new ResultCallback();
         /**
          * 设置Net公共参数 -> 为动态配置而设置的此函数
          */
-        NetManager.INSTANCE.parseNetCode = new NetCode();
-        NetManager.INSTANCE.mutualCallback = new NetMutualCallback() {
+        HttpManager.INSTANCE.mutualCallback = new HttpMutualCallback() {
             @Override
-            public Map<String, String> getBodys(String url) {
-                Map<String, String> maps = new HashMap<>();
-                maps.put("body_key_1", "body_value_1");
-                return maps;
+            public Map<String, String> getBodys(String url, Map<String, String> oldMaps) {
+                return null;
             }
 
             @Override
             public Map<String, String> getParameters(String url) {
                 Map<String, String> maps = new HashMap<>();
-                maps.put("parameter_key_1", "parameter_value_1");
-                maps.put("IMEI", IMEI);
+                maps.put("version", VERSION_NAME);
+                maps.put("channel", MARKET);
+                maps.put("imei", IMEI);
                 return maps;
             }
 
             @Override
             public Map<String, String> getHeaders(String url) {
-                Map<String, String> maps = new HashMap<>();
-                maps.put("header_key_1", "header_value_1");
-                maps.put("IMEI", IMEI);
-                return maps;
+                return null;
             }
 
             @Override
             public Map<String, String> getReHeaders(String url) {
-                Map<String, String> maps = new HashMap<>();
-                maps.put("header_key_1", "header_value_1");
-                maps.put("IMEI", IMEI);
                 return null;
             }
         };
@@ -127,8 +126,23 @@ public final class AppConfig {
     /**
      * 获取到手机权限后回调
      */
-    public static void permissionsAfterInit() {
-        BaseApplication app = BaseApplication.instance();
-        IMEI = ((TelephonyManager) app.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+    public static synchronized void permissionsAfterInit() {
+        SpTool spTool = SpManager.getCommonSp(config.SP_Device);
+        String tempIMEI = spTool.getString("imei", "");
+        if (Utils.isEmpty(tempIMEI)) {
+            BaseApplication app = BaseApplication.instance();
+            try {
+                tempIMEI = ((TelephonyManager) app.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+            } catch (Exception pE) {
+                Logger.e(pE);
+            }
+            if (Utils.isEmpty(tempIMEI) || tempIMEI.equals("000000000000000")) {
+                tempIMEI = String.valueOf(System.currentTimeMillis());
+                int x = (int) Math.pow(10, 15 - tempIMEI.length());
+                tempIMEI = tempIMEI + RandomUtils.randomByMinMax(x / 10, x - 1);
+            }
+            spTool.putString("imei", tempIMEI);
+        }
+        IMEI = tempIMEI;
     }
 }

@@ -6,8 +6,8 @@ import android.support.annotation.NonNull;
 import com.acmenxd.frame.basis.FrameApplication;
 import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frame.utils.code.EncodeDecode;
+import com.acmenxd.frescoview.FrescoManager;
 import com.acmenxd.glide.GlideManager;
-import com.acmenxd.logger.LogType;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.retrofit.HttpManager;
 import com.acmenxd.sptool.SpEncodeDecodeCallback;
@@ -125,7 +125,7 @@ public final class ConfigBuilder {
         GlideManager.MAIN_CACHE_DIR = "MainCache";
         GlideManager.MAX_DISK_CACHE_SIZE = 50;
         //------------------------------------FrescoView配置---------------------------------
-        /*// * 必须设置,否则无法使用
+        // * 必须设置,否则无法使用
         FrescoManager.setContext(context);
         // 设置Log开关 & 等级 - * 默认为 开 & Log.VERBOSE
         FrescoManager.setOpen(sConfigInfo.LOG_OPEN, sConfigInfo.LOG_LEVEL.intValue());
@@ -140,6 +140,6 @@ public final class ConfigBuilder {
         // @param smallCacheSize 小图片磁盘大小(MB) 默认为20MB
         FrescoManager.setCacheSize(50, 20);
         // 初始化 -> 配置完成后必须调用此函数生效
-        FrescoManager.init();*/
+        FrescoManager.init();
     }
 }
