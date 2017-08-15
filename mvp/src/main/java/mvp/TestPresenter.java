@@ -35,7 +35,6 @@ public class TestPresenter extends BasePresenter<ITest.IView> implements ITest.I
             public void succeed(@NonNull TestHttpEntity pData) {
                 super.succeed(pData);
                 mView.refreshView(pData);
-
             }
 
             @Override
