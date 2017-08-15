@@ -490,6 +490,13 @@ public class SSwipeRefreshLayout extends ViewGroup {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         ensureTarget();
         final int action = MotionEventCompat.getActionMasked(ev);
+        if (!isEnabled() || mReturningToStart || mRefreshing || mLoadMore || (mListener == null && mOnLoadMoreListener == null) || (!isChildScrollToTop() && !isChildScrollToBottom())) {
+            // 如果子View可以滑动，不拦截事件，交给子View处理-下拉刷新
+            // 或者子View没有滑动到底部不拦截事件-上拉加载更多
+            isToTop = false;
+            isToBottom = false;
+            return false;
+        }
         if (action == MotionEvent.ACTION_DOWN) {
             setTargetOffsetTopAndBottom(mOriginalOffsetTop - mHeadViewContainer.getTop(), true);// 恢复HeaderView的初始位置
             mIsBeingDragged = false;
@@ -503,16 +510,9 @@ public class SSwipeRefreshLayout extends ViewGroup {
                 isToTop = isChildScrollToTop();
                 isToBottom = isChildScrollToBottom();
             }
-        }
-        if (mReturningToStart && action == MotionEvent.ACTION_DOWN) {
-            mReturningToStart = false;
-        }
-        if (!isEnabled() || mReturningToStart || mRefreshing || mLoadMore || (mListener == null && mOnLoadMoreListener == null) || (!isChildScrollToTop() && !isChildScrollToBottom())) {
-            // 如果子View可以滑动，不拦截事件，交给子View处理-下拉刷新
-            // 或者子View没有滑动到底部不拦截事件-上拉加载更多
-            isToTop = false;
-            isToBottom = false;
-            return false;
+            if (mReturningToStart) {
+                mReturningToStart = false;
+            }
         }
         // 下拉刷新判断
         switch (action) {
