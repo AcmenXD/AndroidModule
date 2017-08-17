@@ -118,7 +118,6 @@ public final class SplashActivity extends BaseActivity {
                 }
             }, duration);
         }
-
         // 获取权限
         requestPermissions();
     }
@@ -130,7 +129,7 @@ public final class SplashActivity extends BaseActivity {
         permissionsIndex = 0;
         PermissionsUtils.requestPermissions(this, new PermissionsUtils.Callback() {
             @Override
-            public void result(@NonNull String permissionName, boolean result) {
+            public void result(@NonNull String permissionName, boolean result, boolean noInquiry) {
                 permissionsIndex++;
                 if (permissionsIndex == permissions.length) {
                     AppConfig.permissionsAfterInit();

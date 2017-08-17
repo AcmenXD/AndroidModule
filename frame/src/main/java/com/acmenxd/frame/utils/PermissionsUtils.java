@@ -18,7 +18,7 @@ import rx.functions.Action1;
 public final class PermissionsUtils {
 
     public interface Callback {
-        void result(@NonNull String permissionName, boolean result);
+        void result(@NonNull String permissionName, boolean result, boolean noInquiry);
     }
 
     public interface CallbackGroup {
@@ -39,7 +39,7 @@ public final class PermissionsUtils {
                     @Override
                     public void call(Permission permission) {// android 6.0之前会默认返回true
                         if (pCallback != null) {
-                            pCallback.result(permission.name, permission.granted);
+                            pCallback.result(permission.name, permission.granted, !permission.shouldShowRequestPermissionRationale);
                         }
                     }
                 });
