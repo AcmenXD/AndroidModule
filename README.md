@@ -24,18 +24,18 @@
 ```java
 -> BaseConfig    : 基础配置信息,项目配置必须继承此类,从而拓展其他配置!  例如:MvpConfig/OtherConfit(每个项目都有一份单独的配置清单)
 -> ConfigBuilder : 框架进行初始化操作类,包括初始化第三方组件/类库
--> FrameNetCode  : Retrofit请求状态码特殊处理回调类
 ```
 ---
 **basis**
 ```java
+-> impl包               : 框架层所需的接口基类
 -> FrameApplication     : 框架层Application, 项目需继承此类做相关拓展!
 -> FrameActivity        : 框架层Activity,实现Subscription | Presenter支持,内容 | 加载 | 错误视图,网络状态监控,Net支持,以及销毁等
 -> FrameFragment        : 框架层Fragment,实现Subscription | Presenter支持,内容 | 加载 | 错误视图,网络状态监控,Net支持,以及销毁等
+-> FrameService         : 框架层Service,实现Subscription | Presenter支持,网络状态监控,Net支持,以及销毁等
 -> FramePresenter       : 框架层Presenter,实现Subscription支持,网络状态监控,Net支持,以及销毁等
 -> FrameModel           : 框架层Model,实现Subscription支持,网络状态监控,Net支持,以及销毁等
 -> ActivityStackManager : Activity堆栈管理器,提供exit | restartApp支持
--> IActivityFragment    : FrameActivity & FrameFragment 提供的公共函数接口
 -> IBView               : MVP V层的实现接口类
 -> IBPresenter          : MVP P层的实现接口类
 ```
@@ -58,9 +58,11 @@
 ---
 **base**
 ```java
+-> impl包          : base层所需的接口基类
 -> BaseApplication : 继承自FrameApplication,拓展项目配置初始化等
 -> BaseActivity    : 继承自FrameActivity,拓展项目功能
 -> BaseFragment    : 继承自FrameFragment,拓展项目功能
+-> BaseService     : 继承自FrameService,拓展项目功能
 -> BasePresenter   : 继承自FramePresenter,拓展项目功能
 -> BaseModel       : 继承自FrameModel,拓展项目功能
 -> AppConfig       : debug开关,config配置及项目用到的其他参数等
@@ -75,7 +77,7 @@
 -> ...      : 数据库表操作相关类
 ```
 ---
-**net**
+**http**
 ```java
 -> IRequestDoc      : Retrofit注解的使用文档
 -> IAllRequest      : 默认所有服务器接口的定义
