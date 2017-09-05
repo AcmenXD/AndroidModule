@@ -105,7 +105,7 @@ public abstract class BaseConfig {
     // Net Log 的日志显示形式 -> 是否显示请求过程中的日志,包含详细的请求头日志
     protected boolean NET_LOG_DETAILS_All = false;
     // 非Form表单形式的请求体,是否加入公共Body
-    protected boolean NOFORMBODY_CANADDBODY = true;
+    protected boolean NOFORMBODY_CANADDBODY = false;
     // 网络缓存策略: 0->不启用缓存  1->遵从服务器缓存配置
     protected int NET_CACHE_TYPE = 0;
     // 网络缓存大小(MB)
