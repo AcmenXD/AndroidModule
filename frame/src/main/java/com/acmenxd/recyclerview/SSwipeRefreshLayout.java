@@ -13,6 +13,10 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Build;
 import android.os.Handler;
+import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -73,7 +77,7 @@ public class SSwipeRefreshLayout extends ViewGroup {
     private OnLoadMoreListener mOnLoadMoreListener;
     private CircleProgressView defaultProgressView = null;
     private boolean targetScrollWithLayout = false; // 默认为非侵入式
-    private float mTotalDragDistance = -1; // 滑到动多少dp触发
+    private float mTotalDragDistance = -1; // 滑动到多少dp触发
 
     private HeadViewContainer mHeadViewContainer;
     private RelativeLayout mFooterViewContainer;
@@ -81,7 +85,7 @@ public class SSwipeRefreshLayout extends ViewGroup {
     private Animation mScaleDownAnimation;
     private Animation mScaleDownToStartAnimation;
     private final DecelerateInterpolator mDecelerateInterpolator;
-    private int mScrollTriggerType = 1; //触发条件  1.只要滑动到顶部或底部就触发   2.初始位置在顶部或底部时,才触发
+    private int mScrollTriggerType = 1; //触发条件(上拉下拉)  1.只要滑动到顶部或底部就触发   2.初始位置在顶部或底部时,才触发
     private int mTouchSlop; //是一个距离，表示滑动的时候，手的移动要大于这个距离才开始移动控件。如果小于这个距离就不触发移动控件
     private int mActivePointerId = INVALID_POINTER;
     private boolean isToTop = false;
@@ -205,14 +209,14 @@ public class SSwipeRefreshLayout extends ViewGroup {
     /**
      * 设置下拉监听
      */
-    public void setOnRefreshListener(OnRefreshListener listener) {
+    public void setOnRefreshListener(@NonNull OnRefreshListener listener) {
         mListener = listener;
     }
 
     /**
      * 设置上拉监听
      */
-    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+    public void setOnLoadMoreListener(@NonNull OnLoadMoreListener onLoadMoreListener) {
         this.mOnLoadMoreListener = onLoadMoreListener;
     }
 
@@ -257,7 +261,7 @@ public class SSwipeRefreshLayout extends ViewGroup {
     /**
      * 添加顶部布局
      */
-    public void setHeaderView(View child) {
+    public void setHeaderView(@NonNull View child) {
         if (child == null) {
             return;
         }
@@ -274,7 +278,7 @@ public class SSwipeRefreshLayout extends ViewGroup {
     /**
      * 添加底部布局
      */
-    public void setFooterView(View child) {
+    public void setFooterView(@NonNull View child) {
         if (child == null) {
             return;
         }
@@ -289,14 +293,14 @@ public class SSwipeRefreshLayout extends ViewGroup {
     /**
      * 设置头部背景
      */
-    public void setHeaderBackgroundResource(int color) {
-        mHeadViewContainer.setBackgroundResource(color);
+    public void setHeaderBackgroundResource(@DrawableRes int resId) {
+        mHeadViewContainer.setBackgroundResource(resId);
     }
 
     /**
      * 设置头部背景色
      */
-    public void setHeaderBackgroundColor(int color) {
+    public void setHeaderBackgroundColor(@ColorInt int color) {
         mHeadViewContainer.setBackgroundColor(color);
     }
 
@@ -308,23 +312,23 @@ public class SSwipeRefreshLayout extends ViewGroup {
     }
 
     /**
-     * 设置触发条件  1.只要滑动到顶部或底部就触发   2.初始位置在顶部或底部时,才触发
+     * 设置触发条件(上拉下拉)  1.只要滑动到顶部或底部就触发   2.初始位置在顶部或底部时,才触发
      */
-    public void setScrollTriggerType(int scrollTriggerType) {
+    public void setScrollTriggerType(@IntRange(from = 1, to = 2) int scrollTriggerType) {
         mScrollTriggerType = scrollTriggerType;
     }
 
     /**
-     * 设置滑到动多少dp触发
+     * 设置滑动到多少dp触发
      */
     public void setDistanceToTriggerSync(int distance) {
-        mTotalDragDistance = distance;
+        mTotalDragDistance = distance * density;
     }
 
     /**
      * 设置默认圆形背景色
      */
-    public void setCircleBackgroundColor(int color) {
+    public void setCircleBackgroundColor(@ColorInt int color) {
         if (usingDefaultHeader) {
             defaultProgressView.setCircleBackgroundColor(color);
         }
@@ -333,7 +337,7 @@ public class SSwipeRefreshLayout extends ViewGroup {
     /**
      * 设置默认圆形进度条颜色
      */
-    public void setCircleProgressColor(int color) {
+    public void setCircleProgressColor(@ColorInt int color) {
         if (usingDefaultHeader) {
             defaultProgressView.setProgressColor(color);
         }
@@ -342,7 +346,7 @@ public class SSwipeRefreshLayout extends ViewGroup {
     /**
      * 设置默认圆形的阴影颜色
      */
-    public void setCircleShadowColor(int color) {
+    public void setCircleShadowColor(@ColorInt int color) {
         if (usingDefaultHeader) {
             defaultProgressView.setShadowColor(color);
         }
@@ -1283,15 +1287,15 @@ public class SSwipeRefreshLayout extends ViewGroup {
             postInvalidate();
         }
 
-        public void setProgressColor(int progressColor) {
+        public void setProgressColor(@ColorInt int progressColor) {
             this.progressColor = progressColor;
         }
 
-        public void setCircleBackgroundColor(int circleBackgroundColor) {
+        public void setCircleBackgroundColor(@ColorInt int circleBackgroundColor) {
             this.circleBackgroundColor = circleBackgroundColor;
         }
 
-        public void setShadowColor(int shadowColor) {
+        public void setShadowColor(@ColorInt int shadowColor) {
             this.shadowColor = shadowColor;
         }
     }
