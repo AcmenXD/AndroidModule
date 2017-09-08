@@ -34,7 +34,7 @@ public final class ApkUtils {
             data = Uri.fromFile(uriFile);
         } else {
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            data = FileProvider.getUriForFile(context, "com.nuoyuan.njs.fileprovider", uriFile);
+            data = FileProvider.getUriForFile(context, "com.acmenxd.frame.fileprovider", uriFile);
         }
         intent.setDataAndType(data, "application/vnd.android.package-archive");
         context.startActivity(intent);
