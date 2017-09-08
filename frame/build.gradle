@@ -56,5 +56,8 @@ dependencies {
      * 图片加载处理库
      */
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    /**
+     * 自处理的图片库
+     */
     compile 'com.github.AcmenXD:FrescoView:1.5'
 }
