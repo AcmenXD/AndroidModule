@@ -12,49 +12,47 @@ import com.acmenxd.logger.Logger;
  * @date 2017/6/2 15:35
  * @detail 抓取蹦极日志工具类
  */
-public final class CrashUtils {
-    public final static class CrashManager implements Thread.UncaughtExceptionHandler {
-        public static final String TAG = "CrashManager";
+public final class CrashUtils implements Thread.UncaughtExceptionHandler {
+    public static final String TAG = "CrashUtils";
 
-        private static CrashManager instance;
-        // 程序的Context对象
-        private FrameApplication mApplication;
-        // 系统默认的UncaughtException处理类
-        private Thread.UncaughtExceptionHandler mDefaultHandler;
+    private static CrashUtils instance;
+    // 程序的Context对象
+    private FrameApplication mApplication;
+    // 系统默认的UncaughtException处理类
+    private Thread.UncaughtExceptionHandler mDefaultHandler;
 
-        /**
-         * 获取CrashHandler实例 ,单例模式
-         */
-        public static CrashManager getInstance(@NonNull FrameApplication pApplication) {
-            if (instance == null) {
-                synchronized (CrashManager.class) {
-                    instance = new CrashManager(pApplication);
-                }
+    /**
+     * 获取CrashHandler实例 ,单例模式
+     */
+    public static CrashUtils getInstance(@NonNull FrameApplication pApplication) {
+        if (instance == null) {
+            synchronized (CrashUtils.class) {
+                instance = new CrashUtils(pApplication);
             }
-            return instance;
         }
+        return instance;
+    }
 
-        /**
-         * 保证只有一个CrashHandler实例
-         */
-        private CrashManager(@NonNull FrameApplication pApplication) {
-            mApplication = pApplication;
-            mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-            Thread.setDefaultUncaughtExceptionHandler(this);
-        }
+    /**
+     * 保证只有一个CrashHandler实例
+     */
+    private CrashUtils(@NonNull FrameApplication pApplication) {
+        mApplication = pApplication;
+        mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+        Thread.setDefaultUncaughtExceptionHandler(this);
+    }
 
-        /**
-         * 当UncaughtException发生时会转入该函数来处理
-         */
-        @Override
-        public void uncaughtException(@NonNull Thread pThread, @NonNull Throwable pE) {
-            try {
-                mApplication.crashException("填入项目信息", pThread, pE);
-            } catch (Exception e) {
-                Logger.e(e, "crash is error!");
-            } finally {
-                mDefaultHandler.uncaughtException(pThread, pE);
-            }
+    /**
+     * 当UncaughtException发生时会转入该函数来处理
+     */
+    @Override
+    public void uncaughtException(@NonNull Thread pThread, @NonNull Throwable pE) {
+        try {
+            mApplication.crashException("填入项目信息", pThread, pE);
+        } catch (Exception e) {
+            Logger.e(e, "crash is error!");
+        } finally {
+            mDefaultHandler.uncaughtException(pThread, pE);
         }
     }
 }

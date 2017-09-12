@@ -86,7 +86,7 @@ public abstract class FrameApplication extends Application {
         // 初始化网络监听配置
         Monitor.init();
         // 崩溃异常捕获
-        CrashUtils.CrashManager.getInstance(instance());
+        CrashUtils.getInstance(instance());
     }
 
     /**
