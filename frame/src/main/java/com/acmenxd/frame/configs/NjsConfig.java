@@ -26,8 +26,6 @@ public final class NjsConfig extends BaseConfig {
         LOG_DIR = BASE_DIR + "Logger/";
         spAll = new String[]{SP_Cookie, SP_Device, SP_Config, SP_User};
 
-        TOAST_NEED_WAIT = ToastNW.No_NEED_WAIT;
-
         initNetURL();
     }
 
