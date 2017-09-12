@@ -123,12 +123,12 @@ public abstract class FrameApplication extends Application {
             Logger.e("crashException:" + pE1.getMessage());
         }
         Logger.file(LogTag.mk("crashException"), fileName, pE, sb.toString());
-        // 内存溢出类型崩溃,生成.hprof文件
+        // 内存溢出类型崩溃,生成.hprof文件 - 由于文件较大,会造成app崩溃时卡顿,所以暂时关闭此功能
         // crashOutOfMemory(pE, fileName.replace(".txt", ".hprof"));
     }
 
     /**
-     * 保存内存溢出日志文件 - 由于文件较大,会造成app崩溃时卡顿,所以暂时关闭此功能
+     * 保存内存溢出日志文件
      */
     private final void crashOutOfMemory(@NonNull Throwable pE, @NonNull String fileName) {
         boolean result = false;
