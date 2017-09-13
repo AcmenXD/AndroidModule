@@ -293,14 +293,17 @@ public class RecyclerBannerView extends RelativeLayout implements View.OnTouchLi
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
             int index = position % realCount;
-            ViewGroup item = mOnListener.getItemView(index, datas.get(index));
-            item.setOnTouchListener(RecyclerBannerView.this);
-            ViewGroup parent = (ViewGroup) item.getParent();
-            if (parent != null) {
-                parent.removeView(item);
+            if(index < datas.size()) {
+                ViewGroup item = mOnListener.getItemView(index, datas.get(index));
+                item.setOnTouchListener(RecyclerBannerView.this);
+                ViewGroup parent = (ViewGroup) item.getParent();
+                if (parent != null) {
+                    parent.removeView(item);
+                }
+                container.addView(item);
+                return item;
             }
-            container.addView(item);
-            return item;
+            return null;
         }
 
         @Override
