@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frame.utils.RxUtils;
@@ -23,6 +24,7 @@ import com.acmenxd.mvp.utils.ViewUtils;
 import com.acmenxd.retrofit.HttpEntity;
 import com.acmenxd.retrofit.HttpGenericityEntity;
 import com.acmenxd.retrofit.exception.HttpException;
+import com.acmenxd.toaster.Toaster;
 
 import java.io.File;
 import java.io.IOException;
@@ -234,6 +236,10 @@ public class RetrofitActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         String path = Utils.showFileChooser_onActivityResult(this, requestCode, resultCode, data);
+        if(Utils.isEmpty(path)){
+            Toaster.show("文件获取失败!");
+            return;
+        }
         File file = new File(path);
 
         HashMap<String, String> dataStrs = new HashMap<>();

@@ -128,7 +128,9 @@ public final class Utils {
             } else if ("file".equalsIgnoreCase(uri.getScheme())) {
                 path = uri.getPath();
             }
-            fileName = path.substring(path.lastIndexOf("/") + 1);
+            if(!Utils.isEmpty(path)) {
+                fileName = path.substring(path.lastIndexOf("/") + 1);
+            }
             return path;
         }
         return "";
