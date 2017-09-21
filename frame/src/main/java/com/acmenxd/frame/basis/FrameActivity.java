@@ -111,8 +111,8 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
         ActivityStackManager.INSTANCE.addActivity(this);
         // 修改状态栏高度
         if (isCustomStatusBarBg && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            int customStatusBarHeight = DeviceUtils.getStatusBarHeight(this);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS); // 系统状态栏透明
+            int customStatusBarHeight = DeviceUtils.getStatusBarHeight(this);// 系统状态栏高度
             mCustomStatusBarBg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, customStatusBarHeight));
             setCustomStatusBarBgResId(customStatusBarBgResId);
             setCustomStatusBarBgAlpha(customStatusBarBgAlpha);
