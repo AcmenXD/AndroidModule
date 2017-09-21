@@ -42,7 +42,7 @@ public final class SplashActivity extends BaseActivity {
     @Override
     protected void onCreateBefore(@NonNull Bundle savedInstanceState) {
         super.onCreateBefore(savedInstanceState);
-        isFillStatusBarBg = false;
+        isCustomStatusBarBg = false;
     }
 
     @Override

@@ -78,12 +78,11 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
     private View mErrorView;
     private View mTitleView;
     private Dialog mLoadingDialog;
-    // 状态栏
-    private View mStatusBarBg;
-    protected boolean isFillStatusBarBg = false; // 自定义状态栏 & 系统支持自定义statusBar
-    private int statusBarHeight = 0; // statusBar高度
-    private int statusBarBgResId = R.drawable.status_bar_color; // statusBar填充的色值
-    private float statusBarBgAlpha = 1f; // statusBar透明度
+    // 自定义状态栏
+    private View mCustomStatusBarBg;
+    private int customStatusBarBgResId = R.drawable.status_bar_color; // 自定义状态栏背景色
+    private float customStatusBarBgAlpha = 1f; // 自定义状态栏透明度
+    protected boolean isCustomStatusBarBg = false; // 自定义状态栏 & 系统支持自定义状态栏
     // Fragment取消预加载后的显隐处理
     private boolean viewPagerFragmentVisible;
     // Fragment取消预加载后的首次显示处理
@@ -119,19 +118,19 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
         mLoadingLayout = getView(R.id.activity_frame_loadingLayout);
         mErrorLayout = getView(R.id.activity_frame_errorLayout);
         mTitleLayout = getView(R.id.activity_frame_titleLayout);
-        mStatusBarBg = getView(R.id.activity_frame_statusBarBg);
+        mCustomStatusBarBg = getView(R.id.activity_frame_customStatusBarBg);
         // 默认显示内容视图
         showContentView();
         // 设置内容视图
         setContentView(onCreateView(LayoutInflater.from(mActivity), savedInstanceState));
         // 修改状态栏高度
-        statusBarHeight = DeviceUtils.getStatusBarHeight(mActivity);
-        if (!mActivity.isFillStatusBarBg && isFillStatusBarBg && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mStatusBarBg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, statusBarHeight));
-            setStatusBarBgResId(statusBarBgResId);
-            setStatusBarBgAlpha(statusBarBgAlpha);
+        if (!mActivity.isCustomStatusBarBg && isCustomStatusBarBg && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            int statusBarHeight = DeviceUtils.getStatusBarHeight(mActivity); // 系统状态栏高度
+            mCustomStatusBarBg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, statusBarHeight));
+            setCustomStatusBarBgResId(customStatusBarBgResId);
+            setCustomStatusBarBgAlpha(customStatusBarBgAlpha);
         } else {
-            isFillStatusBarBg = false;
+            isCustomStatusBarBg = false;
         }
         return mRootView;
     }
@@ -206,25 +205,25 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
     //------------------------------------子类可使用的工具函数 -> 私有
 
     /**
-     * statusBarBg填充的色值
+     * 自定义状态栏背景色
      */
-    public final void setStatusBarBgResId(@DrawableRes int pStatusBarBgResId) {
-        if (isFillStatusBarBg) {
-            this.statusBarBgResId = pStatusBarBgResId;
-            if (mStatusBarBg != null) {
-                mStatusBarBg.setBackgroundResource(pStatusBarBgResId);
+    public final void setCustomStatusBarBgResId(@DrawableRes int pCustomStatusBarBgResId) {
+        if (isCustomStatusBarBg) {
+            this.customStatusBarBgResId = pCustomStatusBarBgResId;
+            if (mCustomStatusBarBg != null) {
+                mCustomStatusBarBg.setBackgroundResource(pCustomStatusBarBgResId);
             }
         }
     }
 
     /**
-     * statusBarBg透明度
+     * 自定义状态栏透明度
      */
-    public final void setStatusBarBgAlpha(@FloatRange(from = 0, to = 1) float pStatusBarBgAlpha) {
-        if (isFillStatusBarBg) {
-            this.statusBarBgAlpha = pStatusBarBgAlpha;
-            if (mStatusBarBg != null) {
-                mStatusBarBg.setAlpha(pStatusBarBgAlpha);
+    public final void setCustomStatusBarBgAlpha(@FloatRange(from = 0, to = 1) float pCustomStatusBarBgAlpha) {
+        if (isCustomStatusBarBg) {
+            this.customStatusBarBgAlpha = pCustomStatusBarBgAlpha;
+            if (mCustomStatusBarBg != null) {
+                mCustomStatusBarBg.setAlpha(pCustomStatusBarBgAlpha);
             }
         }
     }

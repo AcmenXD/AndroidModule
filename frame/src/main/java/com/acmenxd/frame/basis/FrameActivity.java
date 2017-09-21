@@ -74,12 +74,11 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
     private View mErrorView;
     private View mTitleView;
     private Dialog mLoadingDialog;
-    // 状态栏
-    private View mStatusBarBg;
-    protected boolean isFillStatusBarBg = true; // 自定义状态栏 & 系统支持自定义statusBar
-    private int statusBarHeight = 0; // statusBar高度
-    private int statusBarBgResId = R.drawable.status_bar_color; // statusBar填充的色值
-    private float statusBarBgAlpha = 1f; // statusBar透明度
+    // 自定义状态栏
+    private View mCustomStatusBarBg;
+    private int customStatusBarBgResId = R.drawable.status_bar_color; // 自定义状态栏背景色
+    private float customStatusBarBgAlpha = 1f; // 自定义状态栏透明度
+    protected boolean isCustomStatusBarBg = false; // 自定义状态栏 & 系统支持自定义状态栏
     // 网络状态监控
     IMonitorListener mNetListener = new IMonitorListener() {
         @Override
@@ -91,7 +90,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
     @CallSuper
     @Override
     protected void onCreate(@NonNull Bundle savedInstanceState) {
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         super.onCreate(savedInstanceState);
         // 子类onCreate之前调用
         onCreateBefore(savedInstanceState);
@@ -106,19 +104,20 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
         mLoadingLayout = getView(R.id.activity_frame_loadingLayout);
         mErrorLayout = getView(R.id.activity_frame_errorLayout);
         mTitleLayout = getView(R.id.activity_frame_titleLayout);
-        mStatusBarBg = getView(R.id.activity_frame_statusBarBg);
+        mCustomStatusBarBg = getView(R.id.activity_frame_customStatusBarBg);
         // 默认显示内容视图
         showContentView();
         // 将此Activity添加到ActivityStackManager中管理
         ActivityStackManager.INSTANCE.addActivity(this);
         // 修改状态栏高度
-        statusBarHeight = DeviceUtils.getStatusBarHeight(this);
-        if (isFillStatusBarBg && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mStatusBarBg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, statusBarHeight));
-            setStatusBarBgResId(statusBarBgResId);
-            setStatusBarBgAlpha(statusBarBgAlpha);
+        if (isCustomStatusBarBg && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            int customStatusBarHeight = DeviceUtils.getStatusBarHeight(this);
+            mCustomStatusBarBg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, customStatusBarHeight));
+            setCustomStatusBarBgResId(customStatusBarBgResId);
+            setCustomStatusBarBgAlpha(customStatusBarBgAlpha);
         } else {
-            isFillStatusBarBg = false;
+            isCustomStatusBarBg = false;
         }
     }
 
@@ -172,25 +171,25 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
     //------------------------------------子类可使用的工具函数 -> 私有
 
     /**
-     * statusBarBg填充的色值
+     * 自定义状态栏背景色
      */
-    public final void setStatusBarBgResId(@DrawableRes int pStatusBarBgResId) {
-        if (isFillStatusBarBg) {
-            this.statusBarBgResId = pStatusBarBgResId;
-            if (mStatusBarBg != null) {
-                mStatusBarBg.setBackgroundResource(pStatusBarBgResId);
+    public final void setCustomStatusBarBgResId(@DrawableRes int pCustomStatusBarBgResId) {
+        if (isCustomStatusBarBg) {
+            this.customStatusBarBgResId = pCustomStatusBarBgResId;
+            if (mCustomStatusBarBg != null) {
+                mCustomStatusBarBg.setBackgroundResource(pCustomStatusBarBgResId);
             }
         }
     }
 
     /**
-     * statusBarBg透明度
+     * 自定义状态栏透明度
      */
-    public final void setStatusBarBgAlpha(@FloatRange(from = 0, to = 1) float pStatusBarBgAlpha) {
-        if (isFillStatusBarBg) {
-            this.statusBarBgAlpha = pStatusBarBgAlpha;
-            if (mStatusBarBg != null) {
-                mStatusBarBg.setAlpha(pStatusBarBgAlpha);
+    public final void setCustomStatusBarBgAlpha(@FloatRange(from = 0, to = 1) float pCustomStatusBarBgAlpha) {
+        if (isCustomStatusBarBg) {
+            this.customStatusBarBgAlpha = pCustomStatusBarBgAlpha;
+            if (mCustomStatusBarBg != null) {
+                mCustomStatusBarBg.setAlpha(pCustomStatusBarBgAlpha);
             }
         }
     }
