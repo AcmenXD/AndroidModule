@@ -90,9 +90,9 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
     @CallSuper
     @Override
     protected void onCreate(@NonNull Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         // 子类onCreate之前调用
         onCreateBefore(savedInstanceState);
+        super.onCreate(savedInstanceState);
         // 设置base视图
         super.setContentView(R.layout.activity_frame);
         // 初始化容器
