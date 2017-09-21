@@ -39,7 +39,7 @@ public abstract class FramePresenter<T extends IBView> implements IFrameSubscrip
     // 统一管理Models
     private List<FrameModel> mModels;
     // 网络状态监控
-    IMonitorListener mNetListener = new IMonitorListener() {
+    private IMonitorListener mNetListener = new IMonitorListener() {
         @Override
         public void onConnectionChange(@NonNull NetStatus status) {
             onNetStatusChange(status);

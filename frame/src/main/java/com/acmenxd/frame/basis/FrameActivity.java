@@ -80,7 +80,7 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
     private float customStatusBarBgAlpha = 1f; // 自定义状态栏透明度
     protected boolean isCustomStatusBarBg = false; // 自定义状态栏 & 系统支持自定义状态栏
     // 网络状态监控
-    IMonitorListener mNetListener = new IMonitorListener() {
+    private IMonitorListener mNetListener = new IMonitorListener() {
         @Override
         public void onConnectionChange(@NonNull NetStatus status) {
             onNetStatusChange(status);

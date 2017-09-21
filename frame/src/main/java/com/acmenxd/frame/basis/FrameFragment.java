@@ -90,7 +90,7 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
     // Fragment取消预加载后的显示计数(第一次显示计数为1)
     private int viewPagerFragmentVisibleIndex;
     // 网络状态监控
-    IMonitorListener mNetListener = new IMonitorListener() {
+    private IMonitorListener mNetListener = new IMonitorListener() {
         @Override
         public void onConnectionChange(@NonNull NetStatus status) {
             onNetStatusChange(status);

@@ -34,7 +34,7 @@ public abstract class FrameModel implements IFrameSubscription, IFrameNet {
     // 统一持有Subscription
     private CompositeSubscription mSubscription;
     // 网络状态监控
-    IMonitorListener mNetListener = new IMonitorListener() {
+    private IMonitorListener mNetListener = new IMonitorListener() {
         @Override
         public void onConnectionChange(@NonNull NetStatus status) {
             onNetStatusChange(status);

@@ -53,7 +53,7 @@ public abstract class FrameService extends Service implements IFrameSubscription
     // 布局容器
     private Dialog mLoadingDialog;
     // 网络状态监控
-    IMonitorListener mNetListener = new IMonitorListener() {
+    private IMonitorListener mNetListener = new IMonitorListener() {
         @Override
         public void onConnectionChange(@NonNull NetStatus status) {
             onNetStatusChange(status);
