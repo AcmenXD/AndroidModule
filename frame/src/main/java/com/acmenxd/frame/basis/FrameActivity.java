@@ -20,7 +20,6 @@ import android.text.SpannableString;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.acmenxd.frame.R;
@@ -30,6 +29,7 @@ import com.acmenxd.frame.basis.impl.IFrameSubscription;
 import com.acmenxd.frame.basis.impl.IFrameUtils;
 import com.acmenxd.frame.basis.impl.IFrameView;
 import com.acmenxd.frame.utils.DeviceUtils;
+import com.acmenxd.frame.utils.StatusBarUtils;
 import com.acmenxd.frame.utils.Utils;
 import com.acmenxd.frame.utils.net.IMonitorListener;
 import com.acmenxd.frame.utils.net.Monitor;
@@ -92,6 +92,9 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
     protected void onCreate(@NonNull Bundle savedInstanceState) {
         // 子类onCreate之前调用
         onCreateBefore(savedInstanceState);
+        if (isCustomStatusBarBg) {
+            StatusBarUtils.setStatusBarTranslucent(this);
+        }
         super.onCreate(savedInstanceState);
         // 设置base视图
         super.setContentView(R.layout.activity_frame);
@@ -105,13 +108,9 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
         mErrorLayout = getView(R.id.activity_frame_errorLayout);
         mTitleLayout = getView(R.id.activity_frame_titleLayout);
         mCustomStatusBarBg = getView(R.id.activity_frame_customStatusBarBg);
-        // 默认显示内容视图
-        showContentView();
-        // 将此Activity添加到ActivityStackManager中管理
-        ActivityStackManager.INSTANCE.addActivity(this);
         // 修改状态栏高度
         if (isCustomStatusBarBg && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS); // 系统状态栏透明
+            // 4.4 以上系统支持状态栏修改
             int customStatusBarHeight = DeviceUtils.getStatusBarHeight(this);// 系统状态栏高度
             mCustomStatusBarBg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, customStatusBarHeight));
             setCustomStatusBarBgResId(customStatusBarBgResId);
@@ -119,6 +118,10 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
         } else {
             isCustomStatusBarBg = false;
         }
+        // 默认显示内容视图
+        showContentView();
+        // 将此Activity添加到ActivityStackManager中管理
+        ActivityStackManager.INSTANCE.addActivity(this);
     }
 
     @CallSuper
