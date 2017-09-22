@@ -25,7 +25,7 @@ public abstract class BaseActivity extends FrameActivity implements IBaseNet {
     protected void onCreateBefore(@NonNull Bundle savedInstanceState) {
         super.onCreateBefore(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        isCustomStatusBarBg = true;
+        customStatusBarMode = 1;
     }
 
     @Override
