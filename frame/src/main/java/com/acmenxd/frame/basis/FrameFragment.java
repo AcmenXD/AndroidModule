@@ -870,7 +870,7 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
         }
         if (mLoadingDialog == null || !mLoadingDialog.isShowing()) {
             mLoadingDialog = new Dialog(mActivity);
-            mLoadingDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+            mLoadingDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             mLoadingDialog.setContentView(FrameActivityFragmentViewHelper.getLoadingDialogView(mActivity));
             mLoadingDialog.show();
         }

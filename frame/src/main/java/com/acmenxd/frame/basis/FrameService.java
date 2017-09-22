@@ -517,7 +517,7 @@ public abstract class FrameService extends Service implements IFrameSubscription
         }
         if (mLoadingDialog == null || !mLoadingDialog.isShowing()) {
             mLoadingDialog = new Dialog(this);
-            mLoadingDialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+            mLoadingDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             mLoadingDialog.setContentView(FrameActivityFragmentViewHelper.getLoadingDialogView(this));
             mLoadingDialog.show();
         }

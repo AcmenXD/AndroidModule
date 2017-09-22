@@ -260,7 +260,7 @@ public class Dialog extends android.app.Dialog {
         public Dialog build() {
             // 配置Dialog
             final Dialog dialog = new Dialog(mContext);
-            dialog.getWindow().setBackgroundDrawableResource(R.color.transparent);
+            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
             dialog.setContentView(R.layout.widget_dialog);
             dialog.setCancelable(isCancelable);
             dialog.setCanceledOnTouchOutside(isCanceledOnTouchOutside);
