@@ -75,10 +75,13 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
     private View mTitleView;
     private Dialog mLoadingDialog;
     // 自定义状态栏
-    private View mCustomStatusBarBg;
-    private int customStatusBarBgResId = R.drawable.status_bar_color; // 自定义状态栏背景色
+    private View customStatusBarView;
     private float customStatusBarBgAlpha = 1f; // 自定义状态栏透明度
-    protected boolean isCustomStatusBarBg = false; // 自定义状态栏 & 系统支持自定义状态栏
+    private int customStatusBarColorId_can = 0; // 自定义状态栏背景色 - 可行时
+    private int customStatusBarColorId_noCan = 0; // 自定义状态栏背景色 - 不可行时
+    private boolean isCanCustomStatusBarColor = false; // 是否支持自定义状态栏
+    protected int customStatusBarMode = 0; // 状态栏模式 : 0-跟随系统  1-自定义背景色  2-浅色模式+自定义背景色  3-深色模式+自定义背景色
+
     // 网络状态监控
     private IMonitorListener mNetListener = new IMonitorListener() {
         @Override
@@ -92,8 +95,40 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
     protected void onCreate(@NonNull Bundle savedInstanceState) {
         // 子类onCreate之前调用
         onCreateBefore(savedInstanceState);
-        if (isCustomStatusBarBg) {
+        // 设置状态栏
+        if (customStatusBarMode == 1) {
             StatusBarUtils.setStatusBarTranslucent(this);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                isCanCustomStatusBarColor = true;
+            }
+            if (customStatusBarColorId_can == 0) {
+                customStatusBarColorId_can = R.drawable.status_bar_color_dark;
+            }
+            if (customStatusBarColorId_noCan == 0) {
+                customStatusBarColorId_noCan = R.drawable.status_bar_color_dark;
+            }
+        } else if (customStatusBarMode == 2) {
+            StatusBarUtils.setStatusBarTranslucent(this);
+            if (StatusBarUtils.setModeStatusBar(this, false)) {
+                isCanCustomStatusBarColor = true;
+            }
+            if (customStatusBarColorId_can == 0) {
+                customStatusBarColorId_can = R.drawable.status_bar_color_dark;
+            }
+            if (customStatusBarColorId_noCan == 0) {
+                customStatusBarColorId_noCan = R.drawable.status_bar_color_dark;
+            }
+        } else if (customStatusBarMode == 3) {
+            StatusBarUtils.setStatusBarTranslucent(this);
+            if (StatusBarUtils.setModeStatusBar(this, true)) {
+                isCanCustomStatusBarColor = true;
+            }
+            if (customStatusBarColorId_can == 0) {
+                customStatusBarColorId_can = R.drawable.status_bar_color_light;
+            }
+            if (customStatusBarColorId_noCan == 0) {
+                customStatusBarColorId_noCan = R.drawable.status_bar_color_dark;
+            }
         }
         super.onCreate(savedInstanceState);
         // 设置base视图
@@ -107,17 +142,9 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
         mLoadingLayout = getView(R.id.activity_frame_loadingLayout);
         mErrorLayout = getView(R.id.activity_frame_errorLayout);
         mTitleLayout = getView(R.id.activity_frame_titleLayout);
-        mCustomStatusBarBg = getView(R.id.activity_frame_customStatusBarBg);
-        // 修改状态栏高度
-        if (isCustomStatusBarBg && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // 4.4 以上系统支持状态栏修改
-            int customStatusBarHeight = DeviceUtils.getStatusBarHeight(this);// 系统状态栏高度
-            mCustomStatusBarBg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, customStatusBarHeight));
-            setCustomStatusBarBgResId(customStatusBarBgResId);
-            setCustomStatusBarBgAlpha(customStatusBarBgAlpha);
-        } else {
-            isCustomStatusBarBg = false;
-        }
+        customStatusBarView = getView(R.id.activity_frame_customStatusBarView);
+        // 显示自定义状态栏
+        showCustomStatusBar();
         // 默认显示内容视图
         showContentView();
         // 将此Activity添加到ActivityStackManager中管理
@@ -174,25 +201,65 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
     //------------------------------------子类可使用的工具函数 -> 私有
 
     /**
-     * 自定义状态栏背景色
+     * 显示自定义状态栏
      */
-    public final void setCustomStatusBarBgResId(@DrawableRes int pCustomStatusBarBgResId) {
-        if (isCustomStatusBarBg) {
-            this.customStatusBarBgResId = pCustomStatusBarBgResId;
-            if (mCustomStatusBarBg != null) {
-                mCustomStatusBarBg.setBackgroundResource(pCustomStatusBarBgResId);
+    public final void showCustomStatusBar() {
+        if ((customStatusBarMode == 1 || customStatusBarMode == 2 || customStatusBarMode == 3)
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            // 4.4 以上系统支持状态栏修改
+            int customStatusBarHeight = DeviceUtils.getStatusBarHeight(this);// 系统状态栏高度
+            customStatusBarView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, customStatusBarHeight));
+            setCustomStatusBarBgAlpha(customStatusBarBgAlpha);
+            if (isCanCustomStatusBarColor) {
+                setCustomStatusBarColorId_can(customStatusBarColorId_can);
+            } else {
+                setCustomStatusBarColorId_noCan(customStatusBarColorId_noCan);
             }
         }
     }
 
     /**
-     * 自定义状态栏透明度
+     * 隐藏自定义状态栏
+     */
+    public final void hideCustomStatusBar() {
+        customStatusBarView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
+    }
+
+    /**
+     * 设置状态栏透明度
      */
     public final void setCustomStatusBarBgAlpha(@FloatRange(from = 0, to = 1) float pCustomStatusBarBgAlpha) {
-        if (isCustomStatusBarBg) {
+        if ((customStatusBarMode == 1 || customStatusBarMode == 2 || customStatusBarMode == 3)
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             this.customStatusBarBgAlpha = pCustomStatusBarBgAlpha;
-            if (mCustomStatusBarBg != null) {
-                mCustomStatusBarBg.setAlpha(pCustomStatusBarBgAlpha);
+            if (customStatusBarView != null) {
+                customStatusBarView.setAlpha(pCustomStatusBarBgAlpha);
+            }
+        }
+    }
+
+    /**
+     * 设置状态栏背景色 - 可行时
+     */
+    public final void setCustomStatusBarColorId_can(@DrawableRes int pCustomStatusBarColorId_can) {
+        if ((customStatusBarMode == 1 || customStatusBarMode == 2 || customStatusBarMode == 3)
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            this.customStatusBarColorId_can = pCustomStatusBarColorId_can;
+            if (customStatusBarView != null) {
+                customStatusBarView.setBackgroundResource(pCustomStatusBarColorId_can);
+            }
+        }
+    }
+
+    /**
+     * 设置状态栏背景色 - 不可行时
+     */
+    public final void setCustomStatusBarColorId_noCan(@DrawableRes int pCustomStatusBarColorId_noCan) {
+        if ((customStatusBarMode == 1 || customStatusBarMode == 2 || customStatusBarMode == 3)
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            this.customStatusBarColorId_noCan = pCustomStatusBarColorId_noCan;
+            if (customStatusBarView != null) {
+                customStatusBarView.setBackgroundResource(pCustomStatusBarColorId_noCan);
             }
         }
     }
