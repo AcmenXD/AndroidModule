@@ -53,11 +53,21 @@ dependencies {
      */
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar'
     /**
-     * 图片加载处理库
+     * 图片加载处理库 -> glide
      */
     compile 'com.github.bumptech.glide:glide:3.7.0'
     /**
-     * 自处理的图片库
+     * 图片加载处理库 -> facebook推出的图片处理库
      */
-    compile 'com.github.AcmenXD:FrescoView:2.0'
+    compile 'com.facebook.fresco:fresco:1.0.1'
+    //支持okhttp3网络库请求
+    compile 'com.facebook.fresco:imagepipeline-okhttp3:1.0.1'
+    //支持gif时需要添加
+    compile 'com.facebook.fresco:animated-gif:1.0.1'
+    //支持 WebP （静态图+动图），需要添加
+    compile 'com.facebook.fresco:animated-webp:1.0.1'
+    //在 API < 14(4.0) 上的机器支持 WebP 时，需要添加
+    //compile 'com.facebook.fresco:animated-base-support:1.0.1'
+    //支持 WebP 静态图，需要添加
+    //compile 'com.facebook.fresco:webpsupport:1.0.1'
 }
