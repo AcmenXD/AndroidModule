@@ -80,7 +80,7 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
     private int customStatusBarColorId_can = 0; // 自定义状态栏背景色 - 可行时
     private int customStatusBarColorId_noCan = 0; // 自定义状态栏背景色 - 不可行时
     private boolean isCanCustomStatusBarColor = false; // 是否支持自定义状态栏
-    protected int customStatusBarMode = 0; // 状态栏模式 : 0-跟随系统  1-自定义背景色  2-浅色模式+自定义背景色  3-深色模式+自定义背景色
+    protected int customStatusBarMode = 0; // 状态栏模式 : 0-跟随系统  1-自定义背景色(4.4以上)  2-浅色模式+自定义背景色(6.0以上)  3-深色模式+自定义背景色(6.0以上)
 
     // 网络状态监控
     private IMonitorListener mNetListener = new IMonitorListener() {
