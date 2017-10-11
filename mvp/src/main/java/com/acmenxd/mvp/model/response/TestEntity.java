@@ -7,7 +7,7 @@ import com.acmenxd.retrofit.HttpEntity;
  * @version v1.0
  * @github https://github.com/AcmenXD
  * @date 2017/8/14 18:07
- * @detail something
+ * @detail 测试实体类
  */
 public class TestEntity extends HttpEntity {
 
