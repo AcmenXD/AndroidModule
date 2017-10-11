@@ -102,8 +102,8 @@
 ---
 **presenter**
 ```java
--> ILogin         : 模拟登录模块mvp接口定义
--> LoginPresenter : 模拟登录模块p层实现
+-> ITest         : 模拟登录模块mvp接口定义
+-> TestPresenter : 模拟登录模块p层实现
 
 ```
 ---

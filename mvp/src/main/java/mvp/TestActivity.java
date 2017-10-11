@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.acmenxd.mvp.R;
 import com.acmenxd.mvp.base.BaseActivity;
-import com.acmenxd.mvp.model.response.TestHttpEntity;
+import com.acmenxd.mvp.model.response.TestEntity;
 
 /**
  * @author AcmenXD
@@ -18,10 +18,10 @@ import com.acmenxd.mvp.model.response.TestHttpEntity;
  * @date 2017/8/3 11:37
  * @detail something
  */
-public class TestActivity extends BaseActivity implements ITest.IView {
+public class TestActivity extends BaseActivity implements IPTest.IView {
 
     private TextView tv;
-    private ITest.IPresenter mPresenter = new TestPresenter(this);
+    private IPTest.IPresenter mPresenter = new TestPresenter(this);
 
     @Override
     protected void onCreate(@NonNull Bundle savedInstanceState) {
@@ -40,7 +40,7 @@ public class TestActivity extends BaseActivity implements ITest.IView {
     }
 
     @Override
-    public void refreshView(TestHttpEntity bean) {
+    public void refreshView(TestEntity bean) {
         if (bean != null) {
             tv.setText(bean.data.url);
         } else {

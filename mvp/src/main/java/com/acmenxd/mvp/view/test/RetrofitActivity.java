@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frame.utils.RxUtils;
@@ -19,7 +18,6 @@ import com.acmenxd.mvp.http.IDownloadRequest;
 import com.acmenxd.mvp.http.IUploadRequest;
 import com.acmenxd.mvp.http.LoadHelper;
 import com.acmenxd.mvp.model.response.TestEntity;
-import com.acmenxd.mvp.model.response.TestHttpEntity;
 import com.acmenxd.mvp.utils.ViewUtils;
 import com.acmenxd.retrofit.HttpEntity;
 import com.acmenxd.retrofit.HttpGenericityEntity;
@@ -63,12 +61,12 @@ public class RetrofitActivity extends BaseActivity {
          * 同步请求
          * 注意的是网络请求一定要在子线程中完成，不能直接在UI线程执行
          */
-        final Call<TestHttpEntity> call = request().get("token...");
+        final Call<TestEntity> call = request().get("param...");
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    final TestHttpEntity response = call.execute().body();
+                    final TestEntity response = call.execute().body();
                     if (response != null) {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -87,10 +85,10 @@ public class RetrofitActivity extends BaseActivity {
      * get请求
      */
     public void getClick(View view) {
-        request().get("token...")
-                .enqueue(new BindCallback<TestHttpEntity>() {
+        request().get("param...")
+                .enqueue(new BindCallback<TestEntity>() {
                     @Override
-                    public void succeed(@NonNull TestHttpEntity pData) {
+                    public void succeed(@NonNull TestEntity pData) {
                         int code = pData.getCode();
                         String msg = pData.getMsg();
                         Logger.i("请求成功 -> url:" + pData.data.url);
@@ -106,10 +104,10 @@ public class RetrofitActivity extends BaseActivity {
      * options获取服务器支持的http请求方式
      */
     public void optionsClick(View view) {
-        request().options("token...")
-                .enqueue(new BindCallback<TestHttpEntity>() {
+        request().options("param...")
+                .enqueue(new BindCallback<TestEntity>() {
                     @Override
-                    public void succeed(@NonNull TestHttpEntity pData) {
+                    public void succeed(@NonNull TestEntity pData) {
                         Logger.i("请求成功 -> url:");
                     }
 
@@ -128,7 +126,7 @@ public class RetrofitActivity extends BaseActivity {
      * post请求
      */
     public void postClick(View view) {
-        Subscription subscription = request().post("token...")
+        Subscription subscription = request().postRx("param...")
                 .compose(RxUtils.<HttpGenericityEntity<TestEntity>>applySchedulers())
                 //上面一行代码,等同于下面的这两行代码
                 //.subscribeOn(Schedulers.io())
@@ -159,7 +157,7 @@ public class RetrofitActivity extends BaseActivity {
      * put用法同post主要用于创建资源
      */
     public void putClick(View view) {
-        request().put("token...", new TestEntity())
+        request().put("param...", new TestEntity())
                 .enqueue(new BindCallback<HttpGenericityEntity<TestEntity>>() {
                     @Override
                     public void succeed(@NonNull HttpGenericityEntity<TestEntity> pData) {
@@ -200,7 +198,7 @@ public class RetrofitActivity extends BaseActivity {
      * bitmap请求
      */
     public void bitmapClick(View view) {
-        request().image("token...")
+        request().downImage("param...")
                 .enqueue(new BindCallback<Bitmap>() {
                     @Override
                     public void succeed(@NonNull Bitmap pData) {
@@ -214,7 +212,7 @@ public class RetrofitActivity extends BaseActivity {
      */
     public void upBitmapClick(View view) {
         Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher);
-        request().upImage("token...", bitmap)
+        request().upImage("param...", bitmap)
                 .enqueue(new BindCallback<HttpEntity>() {
                     @Override
                     public void succeed(@NonNull HttpEntity pData) {

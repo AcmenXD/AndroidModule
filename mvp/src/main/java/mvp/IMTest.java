@@ -9,6 +9,6 @@ import com.acmenxd.frame.basis.RequestCallback;
  * @date 2017/8/3 14:14
  * @detail something
  */
-public interface ITestM {
+public interface IMTest {
     void getData(final RequestCallback callback);
 }

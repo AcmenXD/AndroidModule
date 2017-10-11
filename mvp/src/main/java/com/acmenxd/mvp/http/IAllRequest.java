@@ -3,7 +3,6 @@ package com.acmenxd.mvp.http;
 import android.graphics.Bitmap;
 
 import com.acmenxd.mvp.model.response.TestEntity;
-import com.acmenxd.mvp.model.response.TestHttpEntity;
 import com.acmenxd.retrofit.HttpEntity;
 import com.acmenxd.retrofit.HttpGenericityEntity;
 
@@ -27,42 +26,60 @@ import rx.Observable;
  * @detail 服务接口定义
  */
 public interface IAllRequest {
+    //----------------------------------------正式请求----------------------------------
+
+
+    //----------------------------------------模拟请求----------------------------------
+
     /**
      * get请求
      */
     @GET("method")
-    Call<TestHttpEntity> get(@Query("token") String token);
+    Call<TestEntity> get(@Query("param") String param);
 
     /**
-     * options请求
+     * get请求 - rx
      */
-    @OPTIONS("method")
-    Call<TestHttpEntity> options(@Query("token") String token);
+    @GET("method")
+    Observable<TestEntity> getRx(@Query("param") String param);
 
     /**
      * post请求
      */
     @FormUrlEncoded
     @POST("method")
-    Observable<HttpGenericityEntity<TestEntity>> post(@Field("token") String token);
+    Call<HttpGenericityEntity<TestEntity>> post(@Field("param") String param);
+
+    /**
+     * post请求 - rx
+     */
+    @FormUrlEncoded
+    @POST("method")
+    Observable<HttpGenericityEntity<TestEntity>> postRx(@Field("param") String param);
+
+    /**
+     * options请求
+     */
+    @OPTIONS("method")
+    Call<TestEntity> options(@Query("param") String param);
 
     /**
      * put请求
      */
     @PUT("method")
-    Call<HttpGenericityEntity<TestEntity>> put(@Query("token") String token, @Body TestEntity str);
+    Call<HttpGenericityEntity<TestEntity>> put(@Query("param") String param, @Body TestEntity str);
 
     /**
      * Post请求 -> 图片
      */
     @Streaming
     @POST("image")
-    Call<Bitmap> image(@Query("token") String token);
+    Call<Bitmap> downImage(@Query("param") String param);
 
     /**
      * post请求 -> 上传图片
      */
     @POST("upload")
-    Call<HttpEntity> upImage(@Query("token") String token, @Body Bitmap str);
+    Call<HttpEntity> upImage(@Query("param") String param, @Body Bitmap bitmap);
 
 }

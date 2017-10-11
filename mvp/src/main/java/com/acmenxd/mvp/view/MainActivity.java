@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity {
         Logger.w("App进入MainActivity!");
         setContentView(R.layout.activity_main);
         setTitleView(R.layout.layout_title);
-        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title", "Android框架设计"), null);
+        ViewUtils.initTitleView(getTitleView(), "Android框架设计", null);
         initData();
 
         lv_main = (ListView) findViewById(R.id.lv_main);

@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.acmenxd.frame.basis.RequestCallback;
 import com.acmenxd.mvp.base.BasePresenter;
-import com.acmenxd.mvp.model.response.TestHttpEntity;
+import com.acmenxd.mvp.model.response.TestEntity;
 import com.acmenxd.retrofit.exception.HttpException;
 
 /**
@@ -14,15 +14,15 @@ import com.acmenxd.retrofit.exception.HttpException;
  * @date 2017/8/3 11:42
  * @detail something
  */
-public class TestPresenter extends BasePresenter<ITest.IView> implements ITest.IPresenter {
-    private ITestM mModel = new TestModel();
+public class TestPresenter extends BasePresenter<IPTest.IView> implements IPTest.IPresenter {
+    private IMTest mModel = new TestModel();
 
     /**
      * 构造器,传入BaseView实例
      *
      * @param pView
      */
-    public TestPresenter(ITest.IView pView) {
+    public TestPresenter(IPTest.IView pView) {
         super(pView);
     }
 
@@ -30,9 +30,9 @@ public class TestPresenter extends BasePresenter<ITest.IView> implements ITest.I
      * 请求数据
      */
     public void requestData() {
-        mModel.getData(new RequestCallback<TestHttpEntity>(mView) {
+        mModel.getData(new RequestCallback<TestEntity>(mView) {
             @Override
-            public void succeed(@NonNull TestHttpEntity pData) {
+            public void succeed(@NonNull TestEntity pData) {
                 super.succeed(pData);
                 mView.refreshView(pData);
             }

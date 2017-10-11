@@ -1,7 +1,6 @@
 package com.acmenxd.mvp.http;
 
 import com.acmenxd.mvp.model.response.TestEntity;
-import com.acmenxd.mvp.model.response.TestHttpEntity;
 
 import java.util.List;
 import java.util.Map;
@@ -45,7 +44,7 @@ public interface IRequestDoc {
      * @Url 假如某一个请求不是以base_url开头, 此方式传递完整的url地址
      */
     @GET("method")
-    Call<TestHttpEntity> test6(
+    Call<TestEntity> test6(
             @Url String url
     );
 
@@ -57,7 +56,7 @@ public interface IRequestDoc {
     @Headers("Cache-Control: max-age=640000")
     @GET("method/{id}")
     //http://server.jeasonlzy.com/OkHttpUtils/method/1003078
-    Call<TestHttpEntity> test5(
+    Call<TestEntity> test5(
             @Path("id") String id,
             @Query("name") String name,
             @Query("age") int age
@@ -72,7 +71,7 @@ public interface IRequestDoc {
             "User-Agent: Your-App-Name"
     })
     @GET("method")
-    Call<TestHttpEntity> test4(
+    Call<TestEntity> test4(
             @QueryMap Map<String, String> params
     );
 
@@ -81,7 +80,7 @@ public interface IRequestDoc {
      * @Query 相同Key值，但是value却有多个的情况
      */
     @GET("method")
-    Call<TestHttpEntity> test3(
+    Call<TestEntity> test3(
             @Header("Content-Range") String contentRange,
             @Query("params") List<String> params
     );
@@ -96,7 +95,7 @@ public interface IRequestDoc {
      */
     @FormUrlEncoded
     @POST("method")
-    Call<TestHttpEntity> test2(
+    Call<TestEntity> test2(
             @Field(value = "book", encoded = true) String bookId,
             @Field("title") String title
     );
@@ -106,13 +105,13 @@ public interface IRequestDoc {
      */
     @FormUrlEncoded
     @POST("method")
-    Call<TestHttpEntity> test1(@FieldMap Map<String, String> fields);
+    Call<TestEntity> test1(@FieldMap Map<String, String> fields);
 
     /**
      * @Body 参数统一封装到类中会更好，这样维护起来会非常方便
      */
     @POST("method")
-    Call<TestHttpEntity> test(@Body TestEntity pTestEntity);
+    Call<TestEntity> test(@Body TestEntity pTestEntity);
 
     // 上传部分
     @Multipart

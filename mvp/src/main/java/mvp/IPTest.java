@@ -1,22 +1,22 @@
-package com.acmenxd.mvp.presenter;
+package mvp;
 
 import com.acmenxd.frame.basis.IBPresenter;
 import com.acmenxd.frame.basis.IBView;
-import com.acmenxd.mvp.model.response.TestHttpEntity;
+import com.acmenxd.mvp.model.response.TestEntity;
 
 /**
  * @author AcmenXD
  * @version v1.0
  * @github https://github.com/AcmenXD
- * @date 2017/3/16 16:07
- * @detail 模拟登陆的MVP接口定义
+ * @date 2017/8/3 11:39
+ * @detail something
  */
-public interface ILogin {
+public interface IPTest {
     interface IView extends IBView {
-        void loginSuccess(TestHttpEntity data);
+        void refreshView(TestEntity bean);
     }
 
     interface IPresenter extends IBPresenter {
-        void login();
+        void requestData();
     }
 }

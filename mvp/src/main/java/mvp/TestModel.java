@@ -10,9 +10,9 @@ import com.acmenxd.mvp.base.BaseModel;
  * @date 2017/8/3 11:45
  * @detail something
  */
-public class TestModel extends BaseModel implements ITestM {
+public class TestModel extends BaseModel implements IMTest {
 
     public void getData(final RequestCallback pCallback) {
-        request().get("token").enqueue(pCallback);
+        request().get("param").enqueue(pCallback);
     }
 }
