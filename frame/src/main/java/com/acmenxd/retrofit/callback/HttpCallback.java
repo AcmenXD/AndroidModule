@@ -150,6 +150,7 @@ public abstract class HttpCallback<T> implements Callback<T>, IHttpProgress {
         else {
             onFailure(call, new HttpResponseException(code, "http response error : " + response.raw().toString()));
         }
+        finish();
     }
 
     public final void onFailure2(@NonNull Call<T> call, @NonNull Throwable pE) {
@@ -170,7 +171,6 @@ public abstract class HttpCallback<T> implements Callback<T>, IHttpProgress {
         succeed(pData);
         succeed(pResponse, pData);
         succeed(pCall, pResponse, pData);
-        finish();
     }
 
     /**
@@ -179,7 +179,6 @@ public abstract class HttpCallback<T> implements Callback<T>, IHttpProgress {
      */
     private final void fail(@NonNull HttpException pE) {
         failed(pE);
-        finish();
     }
 
     /**
