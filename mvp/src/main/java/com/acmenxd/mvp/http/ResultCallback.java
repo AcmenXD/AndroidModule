@@ -35,13 +35,6 @@ public final class ResultCallback extends HttpResultCallback {
     @Override
     public boolean fail(HttpException exception) {
         Toaster.show(exception.getMsg());
-        return true;
-    }
-
-    /**
-     * 解析code码
-     */
-    public void parseCode(int code, String msg) {
-
+        return false;
     }
 }
