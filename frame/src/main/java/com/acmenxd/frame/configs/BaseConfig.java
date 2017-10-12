@@ -111,7 +111,7 @@ public abstract class BaseConfig {
     // 网络缓存大小(MB)
     protected int NET_CACHE_SIZE = 0;
     // 网络连接超时时间(秒)
-    protected int CONNECT_TIMEOUT = 10;
+    protected int CONNECT_TIMEOUT = 30;
     // 写入超时时间(秒)
     protected int WRITE_TIMEOUT = 30;
     // 读取超时时间(秒)
