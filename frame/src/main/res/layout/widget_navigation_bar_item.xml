@@ -33,7 +33,7 @@
             android:layout_height="16dp"
             android:layout_marginLeft="-8dp"
             android:layout_toRightOf="@id/navigation_bar_item_tv_name"
-            android:background="@mipmap/navigation_bar_red_point"
+            android:background="@drawable/navigation_bar_red_point"
             android:gravity="center"
             android:textColor="#fff"
             android:textSize="10sp"/>
