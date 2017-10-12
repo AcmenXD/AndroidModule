@@ -234,7 +234,7 @@ public class RetrofitActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         String path = Utils.showFileChooser_onActivityResult(this, requestCode, resultCode, data);
-        if(Utils.isEmpty(path)){
+        if (Utils.isEmpty(path)) {
             Toaster.show("文件获取失败!");
             return;
         }

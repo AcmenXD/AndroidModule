@@ -29,9 +29,9 @@ import retrofit2.Response;
  */
 public abstract class HttpCallback<T> implements Callback<T>, IHttpProgress {
     /**
-     * 是否自行处理返回的数据 或 非已定义的NetEntity和Bitmap 类型 需设置此变量为true
+     * 是否自行处理返回的数据 或 非已定义的HttpEntity和Bitmap 类型 需设置此变量为true
      * * 如为true, 则onResponse会直接回调succeed, 忽略对错误的处理
-     * * 所以在succeed函数中需手动调用NetCode.parseNetCode处理服务器返回的异常
+     * * 所以在succeed函数中需手动处理服务器返回的异常
      */
     private boolean isAlreadyOperationData = false;
 
