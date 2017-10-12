@@ -106,6 +106,7 @@ public final class AppConfig {
             public Map<String, String> getParameters(String url) {
                 Map<String, String> maps = new HashMap<>();
                 maps.put("version", VERSION_NAME);
+                maps.put("versionCode", String.valueOf(VERSION_CODE));
                 maps.put("channel", MARKET);
                 maps.put("imei", IMEI);
                 return maps;
