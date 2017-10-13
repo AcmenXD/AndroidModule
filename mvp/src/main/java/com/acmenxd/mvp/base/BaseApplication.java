@@ -29,10 +29,6 @@ public final class BaseApplication extends FrameApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        //内存泄露检测
-        //LeakCanary.install(this);
-
         Logger.w("App已启动!");
         startTime = System.currentTimeMillis();
 
