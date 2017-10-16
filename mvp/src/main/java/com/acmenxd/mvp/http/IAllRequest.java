@@ -26,9 +26,6 @@ import rx.Observable;
  * @detail 服务接口定义
  */
 public interface IAllRequest {
-    //----------------------------------------正式请求----------------------------------
-
-
     //----------------------------------------模拟请求----------------------------------
 
     /**
@@ -81,5 +78,8 @@ public interface IAllRequest {
      */
     @POST("upload")
     Call<HttpEntity> upImage(@Query("param") String param, @Body Bitmap bitmap);
+
+    //----------------------------------------正式请求----------------------------------
+
 
 }
