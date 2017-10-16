@@ -201,6 +201,13 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
     //------------------------------------子类可使用的工具函数 -> 私有
 
     /**
+     * 隐藏自定义状态栏
+     */
+    public final void hideCustomStatusBar() {
+        customStatusBarView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
+    }
+
+    /**
      * 显示自定义状态栏
      */
     public final void showCustomStatusBar() {
@@ -216,13 +223,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
                 setCustomStatusBarColorId_noCan(customStatusBarColorId_noCan);
             }
         }
-    }
-
-    /**
-     * 隐藏自定义状态栏
-     */
-    public final void hideCustomStatusBar() {
-        customStatusBarView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
     }
 
     /**

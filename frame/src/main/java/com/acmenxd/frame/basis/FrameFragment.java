@@ -85,7 +85,7 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
     private int customStatusBarColorId_can = 0; // 自定义状态栏背景色 - 可行时
     private int customStatusBarColorId_noCan = 0; // 自定义状态栏背景色 - 不可行时
     private boolean isCanCustomStatusBarColor = false; // 是否支持自定义状态栏
-    protected int customStatusBarMode = 0; // 状态栏模式 : 0-跟随系统  1-自定义背景色  2-浅色模式+自定义背景色  3-深色模式+自定义背景色
+    protected int customStatusBarMode = 0; // 状态栏模式 : 0-跟随父Activity  1-自定义背景色  2-浅色模式+自定义背景色  3-深色模式+自定义背景色
     // Fragment取消预加载后的显隐处理
     private boolean viewPagerFragmentVisible;
     // Fragment取消预加载后的首次显示处理
@@ -127,41 +127,43 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
         // 设置内容视图
         setContentView(onCreateView(LayoutInflater.from(mActivity), savedInstanceState));
         // 显示自定义状态栏
-        if (mActivity.customStatusBarMode == 1 || mActivity.customStatusBarMode == 2 || mActivity.customStatusBarMode == 3) {
-            mActivity.hideCustomStatusBar();
-            if (customStatusBarMode == 1) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    isCanCustomStatusBarColor = true;
+        if (customStatusBarMode > 0) {
+            if (mActivity.customStatusBarMode == 1 || mActivity.customStatusBarMode == 2 || mActivity.customStatusBarMode == 3) {
+                mActivity.hideCustomStatusBar();
+                if (customStatusBarMode == 1) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        isCanCustomStatusBarColor = true;
+                    }
+                    if (customStatusBarColorId_can == 0) {
+                        customStatusBarColorId_can = R.drawable.status_bar_color_dark;
+                    }
+                    if (customStatusBarColorId_noCan == 0) {
+                        customStatusBarColorId_noCan = R.drawable.status_bar_color_dark;
+                    }
+                } else if (customStatusBarMode == 2) {
+                    if (StatusBarUtils.setModeStatusBar(mActivity, false)) {
+                        isCanCustomStatusBarColor = true;
+                    }
+                    if (customStatusBarColorId_can == 0) {
+                        customStatusBarColorId_can = R.drawable.status_bar_color_dark;
+                    }
+                    if (customStatusBarColorId_noCan == 0) {
+                        customStatusBarColorId_noCan = R.drawable.status_bar_color_dark;
+                    }
+                } else if (customStatusBarMode == 3) {
+                    if (StatusBarUtils.setModeStatusBar(mActivity, true)) {
+                        isCanCustomStatusBarColor = true;
+                    }
+                    if (customStatusBarColorId_can == 0) {
+                        customStatusBarColorId_can = R.drawable.status_bar_color_light;
+                    }
+                    if (customStatusBarColorId_noCan == 0) {
+                        customStatusBarColorId_noCan = R.drawable.status_bar_color_dark;
+                    }
                 }
-                if (customStatusBarColorId_can == 0) {
-                    customStatusBarColorId_can = R.drawable.status_bar_color_dark;
-                }
-                if (customStatusBarColorId_noCan == 0) {
-                    customStatusBarColorId_noCan = R.drawable.status_bar_color_dark;
-                }
-            } else if (customStatusBarMode == 2) {
-                if (StatusBarUtils.setModeStatusBar(mActivity, false)) {
-                    isCanCustomStatusBarColor = true;
-                }
-                if (customStatusBarColorId_can == 0) {
-                    customStatusBarColorId_can = R.drawable.status_bar_color_dark;
-                }
-                if (customStatusBarColorId_noCan == 0) {
-                    customStatusBarColorId_noCan = R.drawable.status_bar_color_dark;
-                }
-            } else if (customStatusBarMode == 3) {
-                if (StatusBarUtils.setModeStatusBar(mActivity, true)) {
-                    isCanCustomStatusBarColor = true;
-                }
-                if (customStatusBarColorId_can == 0) {
-                    customStatusBarColorId_can = R.drawable.status_bar_color_light;
-                }
-                if (customStatusBarColorId_noCan == 0) {
-                    customStatusBarColorId_noCan = R.drawable.status_bar_color_dark;
-                }
+                // 显示自定义状态栏
+                showCustomStatusBar();
             }
-            // 显示自定义状态栏
-            showCustomStatusBar();
         }
         return mRootView;
     }
@@ -236,6 +238,13 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
     //------------------------------------子类可使用的工具函数 -> 私有
 
     /**
+     * 隐藏自定义状态栏
+     */
+    public final void hideCustomStatusBar() {
+        customStatusBarView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
+    }
+
+    /**
      * 显示自定义状态栏
      */
     public final void showCustomStatusBar() {
@@ -253,13 +262,6 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
                 }
             }
         }
-    }
-
-    /**
-     * 隐藏自定义状态栏
-     */
-    public final void hideCustomStatusBar() {
-        customStatusBarView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
     }
 
     /**
