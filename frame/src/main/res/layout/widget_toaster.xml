@@ -5,13 +5,15 @@
              android:layout_gravity="center">
 
     <RelativeLayout
-        android:layout_gravity="center"
         android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:background="@drawable/widget_toaster_bg"
         android:gravity="center"
+        android:paddingBottom="10dp"
         android:paddingLeft="15dp"
-        android:paddingRight="15dp">
+        android:paddingRight="15dp"
+        android:paddingTop="10dp">
 
         <TextView
             android:id="@+id/widget_toaster_tvContent"
