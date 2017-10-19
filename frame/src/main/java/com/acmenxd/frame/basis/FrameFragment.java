@@ -241,7 +241,9 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
      * 隐藏自定义状态栏
      */
     public final void hideCustomStatusBar() {
-        customStatusBarView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
+        if (customStatusBarView != null) {
+            customStatusBarView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 0));
+        }
     }
 
     /**
