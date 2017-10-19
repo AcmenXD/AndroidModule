@@ -201,6 +201,13 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
     //------------------------------------子类可使用的工具函数 -> 私有
 
     /**
+     * 是否支持自定义状态栏
+     */
+    public boolean isCanCustomStatusBarColor() {
+        return isCanCustomStatusBarColor;
+    }
+
+    /**
      * 隐藏自定义状态栏
      */
     public final void hideCustomStatusBar() {
