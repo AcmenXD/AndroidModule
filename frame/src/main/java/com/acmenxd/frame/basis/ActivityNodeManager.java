@@ -83,7 +83,7 @@ public enum ActivityNodeManager {
     }
 
     /**
-     * 添加一个节点
+     * 添加第一个节点
      */
     public synchronized void addFirstNode(@NonNull Class<? extends FrameActivity> node, Bundle pBundle) {
         activityNode.clear();

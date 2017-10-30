@@ -636,7 +636,7 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
     @Override
     public final void showContentView(boolean animat) {
         if (animat) {
-            FrameActivityFragmentViewHelper.layoutCancelInOutAnimation(mActivity, mContentLayout, mContentLayout, mLoadingLayout, mErrorLayout);
+            FrameActivityFragmentViewHelper.layoutRestartInOutAnimation(mActivity, mContentLayout, mContentLayout, mLoadingLayout, mErrorLayout);
         } else {
             FrameActivityFragmentViewHelper.layouts$setVisibility(mContentLayout, mContentLayout, mLoadingLayout, mErrorLayout);
         }
@@ -671,7 +671,7 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
         mLoadingLayout.removeAllViews();
         mLoadingLayout.addView(mLoadingView);
         if (animat) {
-            FrameActivityFragmentViewHelper.layoutCancelInOutAnimation(mActivity, mLoadingLayout, mContentLayout, mLoadingLayout, mErrorLayout);
+            FrameActivityFragmentViewHelper.layoutRestartInOutAnimation(mActivity, mLoadingLayout, mContentLayout, mLoadingLayout, mErrorLayout);
         } else {
             FrameActivityFragmentViewHelper.layouts$setVisibility(mLoadingLayout, mContentLayout, mLoadingLayout, mErrorLayout);
         }
@@ -722,7 +722,7 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
         mErrorLayout.addView(mErrorView);
         mErrorLayout.setOnClickListener(pListener);
         if (animat) {
-            FrameActivityFragmentViewHelper.layoutCancelInOutAnimation(mActivity, mErrorLayout, mContentLayout, mLoadingLayout, mErrorLayout);
+            FrameActivityFragmentViewHelper.layoutRestartInOutAnimation(mActivity, mErrorLayout, mContentLayout, mLoadingLayout, mErrorLayout);
         } else {
             FrameActivityFragmentViewHelper.layouts$setVisibility(mErrorLayout, mContentLayout, mLoadingLayout, mErrorLayout);
         }

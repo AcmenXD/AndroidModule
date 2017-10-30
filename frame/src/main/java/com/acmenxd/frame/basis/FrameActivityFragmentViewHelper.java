@@ -111,9 +111,9 @@ public final class FrameActivityFragmentViewHelper {
     }
 
     /**
-     * 关闭掉所有动画后,执行in&out动画
+     * 关闭掉所有动画后,重新执行in&out动画
      */
-    public static void layoutCancelInOutAnimation(@NonNull final Context pContext, @NonNull final View pInView, @NonNull final View... pViews) {
+    public static void layoutRestartInOutAnimation(@NonNull final Context pContext, @NonNull final View pInView, @NonNull final View... pViews) {
         boolean hasNoEnd = false; // 是否有动画没有执行完
         if (pViews != null && pViews.length > 0) {
             for (int i = 0, len = pViews.length; i < len; i++) {
@@ -150,7 +150,7 @@ public final class FrameActivityFragmentViewHelper {
     /**
      * 设置pInView执行in动画,其他视图全部执行out动画
      */
-    public static void layoutStartInOutAnimation(@NonNull final Context pContext, @NonNull final View pInView, @NonNull final View... pViews) {
+    private static void layoutStartInOutAnimation(@NonNull final Context pContext, @NonNull final View pInView, @NonNull final View... pViews) {
         for (int i = 0, len = pViews.length; i < len; i++) {
             if (pViews[i] != pInView && pViews[i].getVisibility() == View.VISIBLE) {
                 Animation outAnimation = FrameActivityFragmentViewHelper.getOutAnimation(pContext);
