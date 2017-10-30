@@ -25,7 +25,7 @@ import rx.Observable;
  * @date 2017/1/3 15:13
  * @detail 服务接口定义
  */
-public interface IAllRequest {
+public interface IRequest {
     //----------------------------------------模拟请求----------------------------------
 
     /**

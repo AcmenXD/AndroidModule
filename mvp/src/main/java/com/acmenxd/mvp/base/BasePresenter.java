@@ -3,7 +3,7 @@ package com.acmenxd.mvp.base;
 import com.acmenxd.frame.basis.FramePresenter;
 import com.acmenxd.frame.basis.IBView;
 import com.acmenxd.mvp.base.impl.IBaseNet;
-import com.acmenxd.mvp.http.IAllRequest;
+import com.acmenxd.mvp.http.IRequest;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -45,12 +45,12 @@ public abstract class BasePresenter<T extends IBView> extends FramePresenter<T> 
     //------------------------------------子类可使用的工具函数 -> IBaseNet
 
     /**
-     * 获取IAllRequest实例
+     * 获取IRequest实例
      * * 开放重写,满足不同需求
      */
     @Override
-    public IAllRequest request() {
-        return request(IAllRequest.class);
+    public IRequest request() {
+        return request(IRequest.class);
     }
 
     /**
@@ -58,8 +58,8 @@ public abstract class BasePresenter<T extends IBView> extends FramePresenter<T> 
      * * 开放重写,满足不同需求
      */
     @Override
-    public IAllRequest newRequest() {
-        return newRequest(IAllRequest.class);
+    public IRequest newRequest() {
+        return newRequest(IRequest.class);
     }
 
     /**
@@ -67,8 +67,8 @@ public abstract class BasePresenter<T extends IBView> extends FramePresenter<T> 
      * * 开放重写,满足不同需求
      */
     @Override
-    public IAllRequest newRequest(int connectTimeout, int readTimeout, int writeTimeout) {
-        return newRequest(IAllRequest.class, connectTimeout, readTimeout, writeTimeout);
+    public IRequest newRequest(int connectTimeout, int readTimeout, int writeTimeout) {
+        return newRequest(IRequest.class, connectTimeout, readTimeout, writeTimeout);
     }
 
 }

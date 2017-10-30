@@ -80,7 +80,7 @@
 **http**
 ```java
 -> IRequestDoc      : Retrofit注解的使用文档
--> IAllRequest      : 默认所有服务器接口的定义
+-> IRequest         : 默认所有服务器接口的定义
 -> IUploadRequest   : 默认上传接口的定义
 -> IDownloadRequest : 默认下载接口的定义
 -> NetCode          : 服务器状态码统一处理类

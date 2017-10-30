@@ -11,7 +11,7 @@ import com.acmenxd.frame.basis.impl.IFrameNet;
  */
 public interface IBaseNet extends IFrameNet {
     /**
-     * 获取IAllRequest实例
+     * 获取IRequest实例
      */
     <T> T request();
 
