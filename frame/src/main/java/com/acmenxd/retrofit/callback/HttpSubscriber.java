@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 
 import com.acmenxd.retrofit.HttpEntity;
 import com.acmenxd.retrofit.HttpError;
-import com.acmenxd.retrofit.HttpGenericityEntity;
 import com.acmenxd.retrofit.HttpManager;
 import com.acmenxd.retrofit.HttpResultCallback;
 import com.acmenxd.retrofit.exception.HttpException;
@@ -100,9 +99,10 @@ public abstract class HttpSubscriber<T> extends Subscriber<T> implements IHttpPr
          */
         if (data != null) {
             // 返回类型NetEntity
-            if (data instanceof HttpEntity || data instanceof HttpGenericityEntity) { // 所有请求成功,下发前统一回调
+            if (data instanceof HttpEntity) {
+                // 所有请求成功,下发前统一回调
                 HttpResultCallback resultCallback = HttpManager.INSTANCE.resultCallback;
-                if (resultCallback == null || !resultCallback.success(((HttpEntity) data).getCode(), ((HttpEntity) data).getMsg())) {
+                if (resultCallback == null || !resultCallback.success(((HttpEntity) data).getCode(), ((HttpEntity) data).getMsg(), ((HttpEntity) data).getJson())) {
                     success(data);
                 }
             }

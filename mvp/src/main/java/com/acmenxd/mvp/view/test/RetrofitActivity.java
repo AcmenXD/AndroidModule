@@ -20,7 +20,6 @@ import com.acmenxd.mvp.http.LoadHelper;
 import com.acmenxd.mvp.model.response.TestEntity;
 import com.acmenxd.mvp.utils.ViewUtils;
 import com.acmenxd.retrofit.HttpEntity;
-import com.acmenxd.retrofit.HttpGenericityEntity;
 import com.acmenxd.retrofit.exception.HttpException;
 import com.acmenxd.toaster.Toaster;
 
@@ -108,7 +107,7 @@ public class RetrofitActivity extends BaseActivity {
                 .enqueue(new BindCallback<TestEntity>() {
                     @Override
                     public void succeed(@NonNull TestEntity pData) {
-                        Logger.i("请求成功 -> url:");
+                        Logger.i("请求成功 -> url:" + pData.data.url);
                     }
 
                     @Override
@@ -127,16 +126,16 @@ public class RetrofitActivity extends BaseActivity {
      */
     public void postClick(View view) {
         Subscription subscription = request().postRx("param...")
-                .compose(RxUtils.<HttpGenericityEntity<TestEntity>>applySchedulers())
+                .compose(RxUtils.<TestEntity>applySchedulers())
                 //上面一行代码,等同于下面的这两行代码
                 //.subscribeOn(Schedulers.io())
                 //.observeOn(AndroidSchedulers.mainThread())
-                .map(new Func1<HttpGenericityEntity<TestEntity>, TestEntity>() {
+                .map(new Func1<TestEntity, TestEntity>() {
                     @Override
-                    public TestEntity call(HttpGenericityEntity<TestEntity> pData) {
+                    public TestEntity call(TestEntity pData) {
                         code = pData.getCode();
                         msg = pData.getMsg();
-                        return pData.getData();
+                        return pData;
                     }
                 })
                 // 这里的true表示请求期间对数据进行过处理,这样Retrofit无法识别处理后的数据,所以需要开发者手动处理错误异常
@@ -158,12 +157,12 @@ public class RetrofitActivity extends BaseActivity {
      */
     public void putClick(View view) {
         request().put("param...", new TestEntity())
-                .enqueue(new BindCallback<HttpGenericityEntity<TestEntity>>() {
+                .enqueue(new BindCallback<TestEntity>() {
                     @Override
-                    public void succeed(@NonNull HttpGenericityEntity<TestEntity> pData) {
+                    public void succeed(@NonNull TestEntity pData) {
                         int code = pData.getCode();
                         String msg = pData.getMsg();
-                        Logger.i("请求成功 -> url:");
+                        Logger.i("请求成功 -> url:" + pData.data.url);
                     }
 
                     @Override

@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 
 import com.acmenxd.mvp.model.response.TestEntity;
 import com.acmenxd.retrofit.HttpEntity;
-import com.acmenxd.retrofit.HttpGenericityEntity;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -45,14 +44,14 @@ public interface IRequest {
      */
     @FormUrlEncoded
     @POST("method")
-    Call<HttpGenericityEntity<TestEntity>> post(@Field("param") String param);
+    Call<TestEntity> post(@Field("param") String param);
 
     /**
      * post请求 - rx
      */
     @FormUrlEncoded
     @POST("method")
-    Observable<HttpGenericityEntity<TestEntity>> postRx(@Field("param") String param);
+    Observable<TestEntity> postRx(@Field("param") String param);
 
     /**
      * options请求
@@ -64,7 +63,7 @@ public interface IRequest {
      * put请求
      */
     @PUT("method")
-    Call<HttpGenericityEntity<TestEntity>> put(@Query("param") String param, @Body TestEntity str);
+    Call<TestEntity> put(@Query("param") String param, @Body TestEntity str);
 
     /**
      * Post请求 -> 图片

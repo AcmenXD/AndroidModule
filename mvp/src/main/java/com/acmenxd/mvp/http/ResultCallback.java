@@ -24,7 +24,7 @@ public final class ResultCallback extends HttpResultCallback {
     public static final int ERROR = -1; // 数据异常
 
     @Override
-    public boolean success(int code, @NonNull String msg) {
+    public boolean success(int code, @NonNull String msg, @NonNull String json) {
         if (code == ERROR) {
             Toaster.show(msg);
             return true;

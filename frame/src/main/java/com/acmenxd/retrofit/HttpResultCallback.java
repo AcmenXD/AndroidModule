@@ -17,7 +17,7 @@ public abstract class HttpResultCallback {
      *
      * @return 是否拦截下发
      */
-    public abstract boolean success(int code, @NonNull String msg);
+    public abstract boolean success(int code, @NonNull String msg, @NonNull String json);
 
     /**
      * 所有请求错误,下发前统一回调
