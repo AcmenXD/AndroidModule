@@ -1,21 +1,16 @@
 package com.acmenxd.frame.basis;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.AnimationDrawable;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.acmenxd.frame.R;
-import com.acmenxd.frame.utils.BitmapUtils;
 import com.acmenxd.frame.utils.Utils;
 
 /**
@@ -32,12 +27,18 @@ public final class FrameActivityFragmentViewHelper {
      */
     public static View getLoadingView(@NonNull Context pContext) {
         LinearLayout loadLayout = new LinearLayout(pContext);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        params.gravity = Gravity.CENTER;
-        loadLayout.setLayoutParams(params);
+        loadLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        loadLayout.setOrientation(LinearLayout.VERTICAL);
         loadLayout.setGravity(Gravity.CENTER);
-        loadLayout.setBackgroundResource(R.drawable.loading);
-        ((AnimationDrawable) loadLayout.getBackground()).start();
+        // 文本
+        int pading = (int) Utils.dp2px(pContext, 10);
+        TextView loadTV = new TextView(pContext);
+        loadTV.setGravity(Gravity.CENTER);
+        loadTV.setTextSize(16);
+        loadTV.setTextColor(Color.BLACK);
+        loadTV.setText("正在加载...");
+        loadTV.setPadding(pading, pading, pading, pading);
+        loadLayout.addView(loadTV);
         return loadLayout;
     }
 
@@ -49,18 +50,14 @@ public final class FrameActivityFragmentViewHelper {
         errorLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         errorLayout.setOrientation(LinearLayout.VERTICAL);
         errorLayout.setGravity(Gravity.CENTER);
-        // 图片
-        ImageView iv = new ImageView(pContext);
-        iv.setImageResource(R.mipmap.no_wifi);
-        errorLayout.addView(iv);
         // 文本
-        TextView loadTV = new TextView(pContext);
-        loadTV.setGravity(Gravity.CENTER);
-        loadTV.setTextSize(15);
-        loadTV.setTextColor(Color.BLACK);
-        loadTV.setText("请求失败，请检查网络！");
-        loadTV.setPadding(0, (int) Utils.dp2px(pContext, 5), 0, 0);
-        errorLayout.addView(loadTV);
+        TextView errorTV = new TextView(pContext);
+        errorTV.setGravity(Gravity.CENTER);
+        errorTV.setTextSize(16);
+        errorTV.setTextColor(Color.BLACK);
+        errorTV.setText("请求失败，请检查网络！");
+        errorTV.setPadding(0, (int) Utils.dp2px(pContext, 10), 0, 0);
+        errorLayout.addView(errorTV);
         return errorLayout;
     }
 
@@ -69,15 +66,19 @@ public final class FrameActivityFragmentViewHelper {
      */
     public static View getLoadingDialogView(@NonNull Context pContext) {
         LinearLayout loadLayout = new LinearLayout(pContext);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.gravity = Gravity.CENTER;
-        loadLayout.setLayoutParams(params);
+        loadLayout.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        loadLayout.setOrientation(LinearLayout.VERTICAL);
         loadLayout.setGravity(Gravity.CENTER);
-        // loading动画
-        ImageView iv = new ImageView(pContext);
-        iv.setImageResource(R.drawable.loading);
-        ((AnimationDrawable) iv.getDrawable()).start();
-        loadLayout.addView(iv);
+        loadLayout.setBackgroundColor(Color.BLACK);
+        // 文本
+        int pading = (int) Utils.dp2px(pContext, 10);
+        TextView loadTV = new TextView(pContext);
+        loadTV.setGravity(Gravity.CENTER);
+        loadTV.setTextSize(16);
+        loadTV.setTextColor(Color.WHITE);
+        loadTV.setText("正在加载...");
+        loadTV.setPadding(pading, pading, pading, pading);
+        loadLayout.addView(loadTV);
         return loadLayout;
     }
 

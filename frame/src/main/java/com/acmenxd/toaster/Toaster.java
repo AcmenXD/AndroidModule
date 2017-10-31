@@ -330,7 +330,7 @@ public final class Toaster {
         } else if (msgs != null & msgs.length > 0) {
             // view等于null时, 不显示view ,而显示内容
             String msgStr = Utils.appendStrs(msgs);
-            View layout = LayoutInflater.from(sContext).inflate(R.layout.widget_toaster, null);
+            View layout = LayoutInflater.from(sContext).inflate(R.layout.toaster, null);
             ((TextView) layout.findViewById(R.id.widget_toaster_tvContent)).setText(msgStr);
             toast2.setText(String.valueOf(mTId));
             toast2.setView(layout);
