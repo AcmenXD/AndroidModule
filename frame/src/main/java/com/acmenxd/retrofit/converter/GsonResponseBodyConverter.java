@@ -6,7 +6,11 @@ import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.io.StringReader;
 
 import okhttp3.ResponseBody;
 import retrofit2.Converter;
@@ -29,9 +33,18 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
 
     @Override
     public T convert(ResponseBody value) throws IOException {
-        JsonReader jsonReader = gson.newJsonReader(value.charStream());
+        String json = value.string();
         try {
-            return adapter.read(jsonReader);
+            JSONObject newJson = new JSONObject(json);
+            newJson.put("json", json);
+            json = newJson.toString();
+        } catch (JSONException pE) {
+            pE.printStackTrace();
+        }
+        JsonReader jsonReader = gson.newJsonReader(new StringReader(json));
+        try {
+            T data = adapter.read(jsonReader);
+            return data;
         } finally {
             value.close();
         }

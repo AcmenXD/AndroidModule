@@ -15,6 +15,7 @@ public class HttpEntity implements Serializable {
 
     private int code;
     private String msg;
+    private String json;
 
     public int getCode() {
         return code;
@@ -32,4 +33,11 @@ public class HttpEntity implements Serializable {
         this.msg = msg;
     }
 
+    public String getJson() {
+        return json;
+    }
+
+    public void setJson(String pJson) {
+        json = pJson;
+    }
 }
