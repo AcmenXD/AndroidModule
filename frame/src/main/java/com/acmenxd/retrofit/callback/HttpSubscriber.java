@@ -120,12 +120,12 @@ public abstract class HttpSubscriber<T> extends Subscriber<T> implements IHttpPr
             }
             // 返回类型无定义,统一处理为NetNoDataTypeException异常
             else {
-                onError(new HttpNoDataTypeException("http error -> no type error"));
+                onError2(new HttpNoDataTypeException("http error -> no type error"));
             }
         }
         // data空,统一处理为解析异常:NetNoDataBodyException
         else {
-            onError(new HttpNoDataBodyException("http error -> response body null error"));
+            onError2(new HttpNoDataBodyException("http error -> response body null error"));
         }
     }
 
