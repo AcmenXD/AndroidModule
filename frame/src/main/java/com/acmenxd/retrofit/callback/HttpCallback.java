@@ -95,11 +95,13 @@ public abstract class HttpCallback<T> implements Callback<T>, IHttpProgress {
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
         onResponse2(call, response);
+        finish();
     }
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
         onFailure2(call, t);
+        finish();
     }
 
     public final void onResponse2(@NonNull final Call<T> call, @NonNull final Response<T> response) {
@@ -137,19 +139,18 @@ public abstract class HttpCallback<T> implements Callback<T>, IHttpProgress {
                 }
                 // 返回类型无定义,统一处理为NetNoDataTypeException异常
                 else {
-                    onFailure(call, new HttpNoDataTypeException("http error -> no type error"));
+                    onFailure2(call, new HttpNoDataTypeException("http error -> no type error"));
                 }
             }
             // data空,统一处理为解析异常:NetNoDataBodyException
             else {
-                onFailure(call, new HttpNoDataBodyException("http error -> response body null error"));
+                onFailure2(call, new HttpNoDataBodyException("http error -> response body null error"));
             }
         }
         // 服务器或请求过程没有正常响应,统一处理为响应异常:NetResponseException
         else {
-            onFailure(call, new HttpResponseException(code, "http response error : " + response.raw().toString()));
+            onFailure2(call, new HttpResponseException(code, "http response error : " + response.raw().toString()));
         }
-        finish();
     }
 
     public final void onFailure2(@NonNull Call<T> call, @NonNull Throwable pE) {
