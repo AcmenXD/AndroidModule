@@ -61,5 +61,4 @@
             android:name="com.acmenxd.glide.GlideManager"
             android:value="GlideModule"/>
     </application>
-
 </manifest>
