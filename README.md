@@ -48,12 +48,6 @@
 -> ...      : 各种工具类,具体功能请查看源码
 ```
 ---
-**widget**
-```java
--> CircleProgress : 圆形进度条
--> ...            : 各种自定义组件 & 自定义View 等
-```
----
 ### 结构说明 -> mvp 示例Module
 ---
 **base**
@@ -84,6 +78,12 @@
 -> IUploadRequest   : 默认上传接口的定义
 -> IDownloadRequest : 默认下载接口的定义
 -> NetCode          : 服务器状态码统一处理类
+```
+---
+**widget**
+```java
+-> CircleProgress : 圆形进度条
+-> ...            : 各种自定义组件 & 自定义View 等
 ```
 ---
 **model**
