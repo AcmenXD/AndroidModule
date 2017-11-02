@@ -15,7 +15,7 @@ import com.acmenxd.retrofit.exception.HttpException;
  * @detail something
  */
 public class TestPresenter extends BasePresenter<IPTest.IView> implements IPTest.IPresenter {
-    private IMTest mModel = new TestModel();
+    private TestModel mModel ;
 
     /**
      * 构造器,传入BaseView实例
@@ -24,6 +24,8 @@ public class TestPresenter extends BasePresenter<IPTest.IView> implements IPTest
      */
     public TestPresenter(IPTest.IView pView) {
         super(pView);
+        mModel = new TestModel();
+        addModels(mModel);
     }
 
     /**
@@ -44,5 +46,4 @@ public class TestPresenter extends BasePresenter<IPTest.IView> implements IPTest
             }
         });
     }
-
 }
