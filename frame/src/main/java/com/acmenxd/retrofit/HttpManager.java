@@ -262,9 +262,6 @@ public enum HttpManager {
 //         */
 //        mBuilder.certificatePinner(new CertificatePinner.Builder()
 //                .add("YOU API.com", "sha1/DmxUShsZuNiqPQsX2Oi9uv2sCnw=")
-//                .add("YOU API..com", "sha1/SXxoaOSEzPC6BgGmxAt/EAcsajw=")
-//                .add("YOU API..com", "sha1/blhOM3W9V/bVQhsWAcLYwPU6n24=")
-//                .add("YOU API..com", "sha1/T5x9IXmcrQ7YuQxXnxoCmeeQ84c=")
 //                .build());
 //        /**
 //         * 设置代理
