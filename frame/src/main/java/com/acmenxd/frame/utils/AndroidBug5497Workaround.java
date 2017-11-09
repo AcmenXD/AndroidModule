@@ -44,8 +44,7 @@ public class AndroidBug5497Workaround {
                 possiblyResizeChildOfContent();
             }
         });
-        frameLayoutParams = (FrameLayout.LayoutParams)
-                mChildOfContent.getLayoutParams();
+        frameLayoutParams = (FrameLayout.LayoutParams) mChildOfContent.getLayoutParams();
     }
 
     //重新调整跟布局的高度
@@ -67,7 +66,6 @@ public class AndroidBug5497Workaround {
             } else {
                 frameLayoutParams.height = contentHeight;
             }
-
             mChildOfContent.requestLayout();
             usableHeightPrevious = usableHeightNow;
         }
