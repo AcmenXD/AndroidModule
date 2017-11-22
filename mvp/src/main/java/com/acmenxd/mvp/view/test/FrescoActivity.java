@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import com.acmenxd.frame.utils.Utils;
+import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.frescoview.FrescoCallback;
 import com.acmenxd.frescoview.FrescoView;
 import com.acmenxd.logger.Logger;
@@ -61,10 +61,10 @@ public class FrescoActivity extends BaseActivity {
                 Logger.e("onSuccess");
                 if (imageInfo != null) {
                     QualityInfo qualityInfo = imageInfo.getQualityInfo();
-                    Logger.e(Utils.appendStrs("Size: ", imageInfo.getWidth(), " x ", imageInfo.getHeight()));
-                    Logger.e(Utils.appendStrs("Quality level: ", qualityInfo.getQuality()));
-                    Logger.e(Utils.appendStrs("good enough: ", qualityInfo.isOfGoodEnoughQuality()));
-                    Logger.e(Utils.appendStrs("full quality: ", qualityInfo.isOfFullQuality()));
+                    Logger.e(StringUtils.appendStrs("Size: ", imageInfo.getWidth(), " x ", imageInfo.getHeight()));
+                    Logger.e(StringUtils.appendStrs("Quality level: ", qualityInfo.getQuality()));
+                    Logger.e(StringUtils.appendStrs("good enough: ", qualityInfo.isOfGoodEnoughQuality()));
+                    Logger.e(StringUtils.appendStrs("full quality: ", qualityInfo.isOfFullQuality()));
                 }
                 if (animatable != null) {
                     animatable.start();

@@ -92,4 +92,42 @@ public final class PinYinUtils {
         return false;
     }
 
+    /**
+     * 检查字符串中包含多少个英文字符(中文算2个)
+     */
+    public static int charNum(String inStr) {
+        char[] c = inStr.toCharArray();
+        int index = 0;
+        for (int i = 0, len = c.length; i < len; i++) {
+            if (isChinese(c[i])) {
+                index += 2;
+            } else {
+                index += 1;
+            }
+        }
+        return index;
+    }
+
+    /**
+     * 检查字符串中包含多少个中文字符
+     */
+    public static int chineseNum(String inStr) {
+        char[] c = inStr.toCharArray();
+        int index = 0;
+        for (int i = 0, len = c.length; i < len; i++) {
+            if (isChinese(c[i])) {
+                index += 1;
+            }
+        }
+        return index;
+    }
+
+    /**
+     * 检查字符串中包含多少个中文字符
+     */
+    public static int chineseNum2(String inStr) {
+        String regEx = "[\\u4e00-\\u9fa5]";
+        String tempStr = inStr.replaceAll(regEx, "xx");
+        return tempStr.length() - inStr.length();
+    }
 }

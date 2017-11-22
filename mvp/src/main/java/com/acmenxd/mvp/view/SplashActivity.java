@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 import android.view.KeyEvent;
 
 import com.acmenxd.frame.utils.PermissionsUtils;
-import com.acmenxd.frame.utils.Utils;
+import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.R;
 import com.acmenxd.mvp.base.AppConfig;
@@ -149,7 +149,7 @@ public final class SplashActivity extends BaseActivity {
      */
     private void startNextActivity() {
         if (!nextStarting) {
-            if (!Utils.isEmpty(coopenClickUrl)) {
+            if (!StringUtils.isEmpty(coopenClickUrl)) {
                 /*nextStarting = true;
                 Bundle bundle = new Bundle();
                 bundle.putString(UrlConstans.WEB_URL, coopenClickUrl);

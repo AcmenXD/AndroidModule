@@ -26,16 +26,13 @@ public final class FileLog {
 
     public static void printFile(@NonNull LogTag tag, @NonNull String headString, @NonNull String className, @NonNull String msg, @NonNull File dirFile, @NonNull String fileName) {
         fileName = (TextUtils.isEmpty(fileName)) ? getFileName() : fileName;
-        String str = "";
-        BaseLog.printLine(LogType.FILE, tag, true);
-        BaseLog.printSub(LogType.FILE, tag, "║ " + headString);
+        String str = headString;
         if (save(tag, dirFile, fileName, headString, className, msg)) {
-            str = "\n║ save log success ! location is >> " + dirFile.getAbsolutePath() + "/" + fileName;
+            str += BaseLog.LINE_SEPARATOR + "save log success ! location is >> " + dirFile.getAbsolutePath() + "/" + fileName;
         } else {
-            str = "\n║ save log fails !";
+            str += BaseLog.LINE_SEPARATOR + "save log fails !";
         }
-        BaseLog.printSub(LogType.FILE, tag, str);
-        BaseLog.printLine(LogType.FILE, tag, false);
+        BaseLog.printLog(LogType.FILE, tag, str);
     }
 
     private static boolean save(@NonNull LogTag tag, @NonNull File dir, @NonNull String fileName, @NonNull String headString, @NonNull String className, @NonNull String msg) {
@@ -67,9 +64,9 @@ public final class FileLog {
             outputStream = new FileOutputStream(file, true);
             outputStreamWriter = new OutputStreamWriter(outputStream, "UTF-8");
             outputStreamWriter.write(headString);
-            outputStreamWriter.write("\n* AbsolutePath:" + className);
-            outputStreamWriter.write("\n* Logger : " + dateStr);
-            outputStreamWriter.write("\n* Details:" + msg + "\n\n");
+            outputStreamWriter.write(BaseLog.LINE_SEPARATOR + "* AbsolutePath:" + className);
+            outputStreamWriter.write(BaseLog.LINE_SEPARATOR + "* Logger : " + dateStr);
+            outputStreamWriter.write(BaseLog.LINE_SEPARATOR + "* Details:" + msg + BaseLog.LINE_SEPARATOR + BaseLog.LINE_SEPARATOR);
             outputStreamWriter.flush();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frame.utils.RxUtils;
+import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.frame.utils.Utils;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.R;
@@ -233,7 +234,7 @@ public class RetrofitActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         String path = Utils.showFileChooser_onActivityResult(this, requestCode, resultCode, data);
-        if (Utils.isEmpty(path)) {
+        if (StringUtils.isEmpty(path)) {
             Toaster.show("文件获取失败!");
             return;
         }

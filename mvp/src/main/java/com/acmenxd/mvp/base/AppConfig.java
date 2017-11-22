@@ -7,7 +7,7 @@ import android.telephony.TelephonyManager;
 
 import com.acmenxd.frame.configs.MvpConfig;
 import com.acmenxd.frame.utils.RandomUtils;
-import com.acmenxd.frame.utils.Utils;
+import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.marketer.Marketer;
 import com.acmenxd.mvp.BuildConfig;
@@ -130,14 +130,14 @@ public final class AppConfig {
     public static synchronized void permissionsAfterInit() {
         SpTool spTool = SpManager.getCommonSp(config.SP_Device);
         String tempIMEI = spTool.getString("imei", "");
-        if (Utils.isEmpty(tempIMEI)) {
+        if (StringUtils.isEmpty(tempIMEI)) {
             BaseApplication app = BaseApplication.instance();
             try {
                 tempIMEI = ((TelephonyManager) app.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
             } catch (Exception pE) {
                 Logger.e(pE);
             }
-            if (Utils.isEmpty(tempIMEI) || tempIMEI.equals("000000000000000")) {
+            if (StringUtils.isEmpty(tempIMEI) || tempIMEI.equals("000000000000000")) {
                 tempIMEI = String.valueOf(System.currentTimeMillis());
                 int x = (int) Math.pow(10, 15 - tempIMEI.length());
                 tempIMEI = tempIMEI + RandomUtils.randomByMinMax(x / 10, x - 1);

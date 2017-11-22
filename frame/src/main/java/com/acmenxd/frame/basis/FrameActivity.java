@@ -30,6 +30,7 @@ import com.acmenxd.frame.basis.impl.IFrameUtils;
 import com.acmenxd.frame.basis.impl.IFrameView;
 import com.acmenxd.frame.utils.DeviceUtils;
 import com.acmenxd.frame.utils.StatusBarUtils;
+import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.frame.utils.Utils;
 import com.acmenxd.frame.utils.net.IMonitorListener;
 import com.acmenxd.frame.utils.net.Monitor;
@@ -751,7 +752,7 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
      */
     @Override
     public final boolean isEmpty(@Nullable CharSequence str) {
-        return Utils.isEmpty(str);
+        return StringUtils.isEmpty(str);
     }
 
     /**
@@ -762,7 +763,7 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
      */
     @Override
     public final String appendStrs(@NonNull Object... strs) {
-        return Utils.appendStrs(strs);
+        return StringUtils.appendStrs(strs);
     }
 
     /**
@@ -773,12 +774,12 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
      */
     @Override
     public final SpannableString changeStr(@NonNull String str, @IntRange(from = 0) int start, @IntRange(from = 0) int end, @IntRange(from = 0) int dip, @ColorInt int color) {
-        return Utils.changeStr(str, start, end, dip, color);
+        return StringUtils.changeStr(str, start, end, dip, color);
     }
 
     @Override
     public final SpannableString changeStr(@NonNull SpannableString spannableString, @IntRange(from = 0) int start, @IntRange(from = 0) int end, @IntRange(from = 0) int dip, @ColorInt int color) {
-        return Utils.changeStr(spannableString, start, end, dip, color);
+        return StringUtils.changeStr(spannableString, start, end, dip, color);
     }
 
     /**

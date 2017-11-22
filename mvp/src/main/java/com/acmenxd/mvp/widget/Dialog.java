@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.acmenxd.frame.utils.DeviceUtils;
+import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.frame.utils.Utils;
 import com.acmenxd.mvp.R;
 
@@ -287,7 +288,7 @@ public class Dialog extends android.app.Dialog {
             // 填充视图
             CharSequence title = mTitleResId != 0 ? mContext.getString(mTitleResId) : mTitle;
             View customView = mCustomResId != 0 ? LayoutInflater.from(mContext).inflate(mCustomResId, contentLayout, false) : mCustomView;
-            if (Utils.isEmpty(title) && !isChangeWH && customView == null) {
+            if (StringUtils.isEmpty(title) && !isChangeWH && customView == null) {
                 mHeight = (int) Utils.dp2px(mContext, 150);
                 tvMessage.setPadding(0, 0, 0, 0);
             }
@@ -316,7 +317,7 @@ public class Dialog extends android.app.Dialog {
                     }
                 });
             }
-            if (Utils.isEmpty(title)) {
+            if (StringUtils.isEmpty(title)) {
                 tvTitle.setVisibility(View.GONE);
             } else {
                 tvTitle.setText(title);
@@ -327,8 +328,8 @@ public class Dialog extends android.app.Dialog {
                 contentLayout.addView(customView);
             } else {
                 CharSequence message = mMessageResId != 0 ? mContext.getString(mMessageResId) : mMessage;
-                if (Utils.isEmpty(mSpannableMessage)) {
-                    if (Utils.isEmpty(message)) {
+                if (StringUtils.isEmpty(mSpannableMessage)) {
+                    if (StringUtils.isEmpty(message)) {
                         tvMessage.setVisibility(View.GONE);
                     } else {
                         tvMessage.setText(message);
@@ -354,7 +355,7 @@ public class Dialog extends android.app.Dialog {
             if (mBtn1Bool) {
                 btn1Line.setVisibility(View.VISIBLE);
                 btn1.setLayoutParams(new LinearLayout.LayoutParams(btnWidth, LinearLayout.LayoutParams.WRAP_CONTENT));
-                if (!Utils.isEmpty(mBtn1Str)) {
+                if (!StringUtils.isEmpty(mBtn1Str)) {
                     btn1.setText(mBtn1Str);
                 }
                 if (mBtn1Listener != null) {
@@ -380,7 +381,7 @@ public class Dialog extends android.app.Dialog {
             if (mBtn2Bool) {
                 btn2Line.setVisibility(View.VISIBLE);
                 btn2.setLayoutParams(new LinearLayout.LayoutParams(btnWidth, LinearLayout.LayoutParams.WRAP_CONTENT));
-                if (!Utils.isEmpty(mBtn2Str)) {
+                if (!StringUtils.isEmpty(mBtn2Str)) {
                     btn2.setText(mBtn2Str);
                 }
                 if (mBtn2Listener != null) {
@@ -406,7 +407,7 @@ public class Dialog extends android.app.Dialog {
             if (mBtn3Bool) {
                 btn3Line.setVisibility(View.VISIBLE);
                 btn3.setLayoutParams(new LinearLayout.LayoutParams(btnWidth, LinearLayout.LayoutParams.WRAP_CONTENT));
-                if (!Utils.isEmpty(mBtn3Str)) {
+                if (!StringUtils.isEmpty(mBtn3Str)) {
                     btn3.setText(mBtn3Str);
                 }
                 if (mBtn3Listener != null) {

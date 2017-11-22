@@ -15,7 +15,6 @@ import org.json.JSONObject;
  */
 public final class JsonLog {
     private static final int JSON_INDENT = 4; //缩进
-    private static final String LINE_SEPARATOR = System.getProperty("line.separator");//行分隔
 
     public static void printJson(@NonNull LogTag tag, @NonNull String headString, @NonNull String msg) {
         String message;
@@ -24,30 +23,23 @@ public final class JsonLog {
             if (str.startsWith("{")) {
                 JSONObject jsonObject = new JSONObject(msg);
                 message = jsonObject.toString(JSON_INDENT);
-                message = "\n" + message;
+                message = BaseLog.LINE_SEPARATOR + message;
             } else if (str.startsWith("[")) {
                 JSONArray jsonArray = new JSONArray(msg);
                 message = jsonArray.toString(JSON_INDENT);
-                message = "\n" + message;
+                message = BaseLog.LINE_SEPARATOR + message;
             } else {
                 message = msg;
             }
         } catch (JSONException e) {
             message = msg;
         }
-        BaseLog.printLine(LogType.JSON, tag, true);
-        message = headString + LINE_SEPARATOR + message;
-        String[] lines = message.split(LINE_SEPARATOR);
-        for (String line : lines) {
-            if (!BaseLog.isEmpty(line)) {
-                BaseLog.printSub(LogType.JSON, tag, "║ " + line);
-            }
-        }
-        BaseLog.printLine(LogType.JSON, tag, false);
+        message = headString + BaseLog.LINE_SEPARATOR + message;
+        BaseLog.printLog(LogType.JSON, tag, message);
     }
 
     private static String checkStartChar(@NonNull String msg) {
-        if (msg.startsWith("\n") || msg.startsWith("\t")) {
+        if (msg.startsWith(BaseLog.LINE_SEPARATOR)) {
             return checkStartChar(msg.substring(1, msg.length()));
         }
         return msg;

@@ -6,16 +6,8 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
-import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
-import android.text.style.ForegroundColorSpan;
 import android.view.View;
 
 import com.acmenxd.toaster.Toaster;
@@ -128,7 +120,7 @@ public final class Utils {
             } else if ("file".equalsIgnoreCase(uri.getScheme())) {
                 path = uri.getPath();
             }
-            if(!Utils.isEmpty(path)) {
+            if (!StringUtils.isEmpty(path)) {
                 fileName = path.substring(path.lastIndexOf("/") + 1);
             }
             return path;
@@ -138,67 +130,6 @@ public final class Utils {
     //调用文件选择软件来选择文件 ---------------end
 
     //---------------------------------以下函数已被IFrameUtils实现------------------------------
-
-    /**
-     * 字符串是否为空
-     */
-    public static boolean isEmpty(@Nullable CharSequence str) {
-        if (TextUtils.isEmpty(str)) {
-            return true;
-        }
-        for (int i = 0, len = str.length(); i < len; i++) {
-            char c = str.charAt(i);
-            if (c != ' ' && c != '\t' && c != '\r' && c != '\n') {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * 串拼接
-     *
-     * @param strs 可变参数类型
-     * @return 拼接后的字符串
-     */
-    public static String appendStrs(@NonNull Object... strs) {
-        StringBuilder sb = new StringBuilder();
-        if (strs != null && strs.length > 0) {
-            for (Object str : strs) {
-                sb.append(String.valueOf(str));
-            }
-        }
-        return sb.toString();
-    }
-
-    /**
-     * 串变化 -> 大小&颜色
-     *
-     * @param start 从0开始计数(包含start)
-     * @param end   从1开始计数(包含end)
-     */
-    public static SpannableString changeStr(@NonNull String str, @IntRange(from = 0) int start, @IntRange(from = 0) int end, @IntRange(from = 0) int dip, @ColorInt int color) {
-        SpannableString spannableString = new SpannableString(str);
-        return changeStr(spannableString, start, end, dip, color);
-    }
-
-    public static SpannableString changeStr(@NonNull SpannableString spannableString, @IntRange(from = 0) int start, @IntRange(from = 0) int end, @IntRange(from = 0) int dip, @ColorInt int color) {
-        if (spannableString == null) {
-            return new SpannableString("");
-        }
-        if (start >= end) {
-            return spannableString;
-        }
-        if (dip > 0) {
-            AbsoluteSizeSpan sizeSpan = new AbsoluteSizeSpan(dip, true);
-            spannableString.setSpan(sizeSpan, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-        }
-        if (color > 0) {
-            ForegroundColorSpan colorSpan = new ForegroundColorSpan(color);
-            spannableString.setSpan(colorSpan, start, end, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-        }
-        return spannableString;
-    }
 
     /**
      * 根据手机的分辨率从 dp 的单位转成 px(像素)

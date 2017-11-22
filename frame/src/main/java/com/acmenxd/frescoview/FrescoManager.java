@@ -7,7 +7,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.acmenxd.frame.utils.Utils;
+import com.acmenxd.frame.utils.StringUtils;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.common.internal.Supplier;
 import com.facebook.common.logging.FLog;
@@ -155,7 +155,7 @@ public final class FrescoManager {
     }
 
     public static boolean checkMemoryCache(int resId) {
-        return checkMemoryCache(Utils.appendStrs("res://", APP_PKG_NAME, "/", resId));
+        return checkMemoryCache(StringUtils.appendStrs("res://", APP_PKG_NAME, "/", resId));
     }
 
     /**

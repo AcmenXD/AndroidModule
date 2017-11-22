@@ -112,6 +112,6 @@ public class LogActivity extends BaseActivity {
         tv.setText("日志输出成功");
         LinearLayout.LayoutParams pa = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         pa.gravity = Gravity.CENTER;
-        ((LinearLayout)getContentView()).addView(tv, pa);
+        ((LinearLayout) getContentView()).addView(tv, pa);
     }
 }

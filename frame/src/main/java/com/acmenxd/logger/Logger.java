@@ -237,25 +237,25 @@ public final class Logger extends BaseLog {
         if ((msgs != null && len >= 1) || (thr != null)) {
             StringBuilder stringBuilder = new StringBuilder();
             if (msgs != null && len >= 1) {
-                stringBuilder.append("\n");
+                stringBuilder.append(LINE_SEPARATOR);
                 for (int i = 0; i < len; i++) {
-                    String message = msgs[i].replace("\n", "\n\t");
+                    String message = msgs[i];
                     if (len > 1) {
-                        stringBuilder.append("\t").append(PARAM).append("[").append(i).append("]").append(" = ");
+                        stringBuilder.append("  ").append(PARAM).append("[").append(i).append("]").append(" = ");
                     }
                     if (message == null) {
-                        stringBuilder.append("\t").append(NULL);
+                        stringBuilder.append(NULL);
                     } else {
-                        stringBuilder.append("\t").append(message.toString());
+                        stringBuilder.append(message.toString());
                     }
                     if (i < len - 1) {
-                        stringBuilder.append("\n");
+                        stringBuilder.append(LINE_SEPARATOR);
                     }
                 }
             }
             if (thr != null) {
-                stringBuilder.append("\n");
-                stringBuilder.append("* Throwable Message Start ====================\n ");
+                stringBuilder.append(LINE_SEPARATOR);
+                stringBuilder.append("* Throwable Message Start *").append(LINE_SEPARATOR);
                 Writer writer = new StringWriter();
                 PrintWriter printWriter = new PrintWriter(writer);
                 thr.printStackTrace(printWriter);
@@ -265,12 +265,14 @@ public final class Logger extends BaseLog {
                     cause = cause.getCause();
                 }
                 printWriter.close();
-                stringBuilder.append("\t").append(writer.toString());
-                stringBuilder.append("* Throwable Message End ====================");
+                stringBuilder.append("  ");
+                stringBuilder.append(writer.toString().replaceAll(LINE_SEPARATOR, LINE_SEPARATOR + "    ").trim());
+                stringBuilder.append(LINE_SEPARATOR);
+                stringBuilder.append("* Throwable Message End *");
             }
             return stringBuilder.toString();
         } else {
-            return "\n" + " Log with null message";
+            return LINE_SEPARATOR + " Log with null message";
         }
     }
 

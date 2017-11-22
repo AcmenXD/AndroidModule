@@ -2,7 +2,7 @@ package com.acmenxd.retrofit.interceptor;
 
 import android.support.annotation.NonNull;
 
-import com.acmenxd.frame.utils.Utils;
+import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.retrofit.HttpManager;
 
 import java.io.IOException;
@@ -51,7 +51,7 @@ public final class BodyInterceptor implements Interceptor {
                     formBody.addEncoded(oldFormBody.encodedName(i), oldFormBody.encodedValue(i));
                 }
                 for (Map.Entry<String, String> entry : bodys.entrySet()) {
-                    if (entry != null && !Utils.isEmpty(entry.getKey()) && !Utils.isEmpty(entry.getValue())) {
+                    if (entry != null && !StringUtils.isEmpty(entry.getKey()) && !StringUtils.isEmpty(entry.getValue())) {
                         formBody.add(entry.getKey(), entry.getValue());
                     }
                 }
@@ -61,7 +61,7 @@ public final class BodyInterceptor implements Interceptor {
                 String postBodyString = bodyToString(requestBody);
                 FormBody.Builder formBody = new FormBody.Builder();
                 for (Map.Entry<String, String> entry : bodys.entrySet()) {
-                    if (entry != null && !Utils.isEmpty(entry.getKey()) && !Utils.isEmpty(entry.getValue())) {
+                    if (entry != null && !StringUtils.isEmpty(entry.getKey()) && !StringUtils.isEmpty(entry.getValue())) {
                         formBody.add(entry.getKey(), entry.getValue());
                     }
                 }

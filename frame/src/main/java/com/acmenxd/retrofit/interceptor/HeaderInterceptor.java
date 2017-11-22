@@ -1,6 +1,6 @@
 package com.acmenxd.retrofit.interceptor;
 
-import com.acmenxd.frame.utils.Utils;
+import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.retrofit.HttpManager;
 
 import java.io.IOException;
@@ -33,7 +33,7 @@ public final class HeaderInterceptor implements Interceptor {
         if (headers != null && headers.size() > 0) {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
                 //header()如果有重名的将会覆盖
-                if (entry != null && !Utils.isEmpty(entry.getKey()) && !Utils.isEmpty(entry.getValue())) {
+                if (entry != null && !StringUtils.isEmpty(entry.getKey()) && !StringUtils.isEmpty(entry.getValue())) {
                     requestBuilder.header(entry.getKey(), entry.getValue());
                 }
             }
@@ -41,7 +41,7 @@ public final class HeaderInterceptor implements Interceptor {
         if (headers2 != null && headers2.size() > 0) {
             for (Map.Entry<String, String> entry : headers2.entrySet()) {
                 //addHeader()允许相同key值的header存在
-                if (entry != null && !Utils.isEmpty(entry.getKey()) && !Utils.isEmpty(entry.getValue())) {
+                if (entry != null && !StringUtils.isEmpty(entry.getKey()) && !StringUtils.isEmpty(entry.getValue())) {
                     requestBuilder.addHeader(entry.getKey(), entry.getValue());
                 }
             }

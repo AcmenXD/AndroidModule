@@ -14,7 +14,7 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 
-import com.acmenxd.frame.utils.Utils;
+import com.acmenxd.frame.utils.StringUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.ControllerListener;
@@ -149,19 +149,19 @@ public final class FrescoView extends SimpleDraweeView {
 
         //支持res目录下的资源
         public Image setImageURI(@AnyRes int resId) {
-            setImageURI(Utils.appendStrs("res://", FrescoManager.APP_PKG_NAME, "/", resId), null);
+            setImageURI(StringUtils.appendStrs("res://", FrescoManager.APP_PKG_NAME, "/", resId), null);
             return getThis();
         }
 
         //支持本地文件资源
         public Image setImageURI_File(@NonNull String filePath) {
-            setImageURI(Utils.appendStrs("file://", filePath), null);
+            setImageURI(StringUtils.appendStrs("file://", filePath), null);
             return getThis();
         }
 
         //支持asset目录下的资源
         public Image setImageURI_Asset(@NonNull String assetPath) {
-            setImageURI(Utils.appendStrs("asset://", assetPath), null);
+            setImageURI(StringUtils.appendStrs("asset://", assetPath), null);
             return getThis();
         }
 

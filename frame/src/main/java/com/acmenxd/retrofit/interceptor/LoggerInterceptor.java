@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.format.Formatter;
 
-import com.acmenxd.frame.utils.Utils;
+import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.logger.LogTag;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.retrofit.HttpManager;
@@ -216,7 +216,7 @@ public final class LoggerInterceptor implements Interceptor {
     }
 
     private boolean contentType(@NonNull String contentTypeStr) {
-        if (!Utils.isEmpty(contentTypeStr)
+        if (!StringUtils.isEmpty(contentTypeStr)
                 && (contentTypeStr.contains("UTF-8") || contentTypeStr.contains("json") || contentTypeStr.contains("x-www-form-urlencoded")
                 || contentTypeStr.contains("html") || contentTypeStr.contains("text") || contentTypeStr.contains("xml"))) {
             return true;

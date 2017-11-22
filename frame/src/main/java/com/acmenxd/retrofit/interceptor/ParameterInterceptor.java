@@ -1,6 +1,6 @@
 package com.acmenxd.retrofit.interceptor;
 
-import com.acmenxd.frame.utils.Utils;
+import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.retrofit.HttpManager;
 
 import java.io.IOException;
@@ -31,7 +31,7 @@ public final class ParameterInterceptor implements Interceptor {
         //添加请求公共参数
         if (parameters != null && parameters.size() > 0) {
             for (Map.Entry<String, String> entry : parameters.entrySet()) {
-                if (entry != null && !Utils.isEmpty(entry.getKey()) && !Utils.isEmpty(entry.getValue())) {
+                if (entry != null && !StringUtils.isEmpty(entry.getKey()) && !StringUtils.isEmpty(entry.getValue())) {
                     builder.addQueryParameter(entry.getKey(), entry.getValue());
                 }
             }

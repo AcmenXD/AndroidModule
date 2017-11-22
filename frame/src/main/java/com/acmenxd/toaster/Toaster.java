@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acmenxd.frame.R;
-import com.acmenxd.frame.utils.Utils;
+import com.acmenxd.frame.utils.StringUtils;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -305,7 +305,7 @@ public final class Toaster {
      * @return Toast2 对象实例
      */
     private static final synchronized Toast2 showBase(boolean isDebug, @NonNull ToastNW needWait, @NonNull ToastDuration duration, int gravity, int offsetX, int offsetY, float marginX, float marginY, View view, Object... msgs) {
-        if (view == null && Utils.isEmpty(Utils.appendStrs(msgs))) {
+        if (view == null && StringUtils.isEmpty(StringUtils.appendStrs(msgs))) {
             return null;
         }
         /**
@@ -329,7 +329,7 @@ public final class Toaster {
             canShow = true;
         } else if (msgs != null & msgs.length > 0) {
             // view等于null时, 不显示view ,而显示内容
-            String msgStr = Utils.appendStrs(msgs);
+            String msgStr = StringUtils.appendStrs(msgs);
             View layout = LayoutInflater.from(sContext).inflate(R.layout.toaster, null);
             ((TextView) layout.findViewById(R.id.widget_toaster_tvContent)).setText(msgStr);
             toast2.setText(String.valueOf(mTId));
