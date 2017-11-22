@@ -35,7 +35,6 @@ public abstract class HttpCallback<T> implements Callback<T>, IHttpProgress {
     private boolean isAlreadyOperationData = false;
 
     public HttpCallback() {
-
     }
 
     public HttpCallback(boolean isAlreadyOperationData) {
