@@ -106,7 +106,7 @@ public abstract class BaseLog {
                             + "║ " + msg + StringUtils.repeat(" ", maxLength - PinYinUtils.charNum(msg)) + " ║";
                 }
             }
-            if ((sb.length() > 0 && sb.length() + msg.length() > MAX_LENGTH) || i == 1) {
+            if ((sb.length() > 0 && sb.length() + msg.length() > MAX_LENGTH) || msg.contains("* [ Logger -=")) {
                 printSub(type, tag, sb.toString());
                 sb = new StringBuilder(message.length() >= MAX_LENGTH ? MAX_LENGTH : message.length());
             }
