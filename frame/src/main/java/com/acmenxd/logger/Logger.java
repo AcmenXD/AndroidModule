@@ -241,7 +241,7 @@ public final class Logger extends BaseLog {
                 for (int i = 0; i < len; i++) {
                     String message = msgs[i];
                     if (len > 1) {
-                        stringBuilder.append("  ").append(PARAM).append("[").append(i).append("]").append(" = ");
+                        stringBuilder.append("\t").append(PARAM).append("[").append(i).append("]").append(" = ");
                     }
                     if (message == null) {
                         stringBuilder.append(NULL);
@@ -265,8 +265,8 @@ public final class Logger extends BaseLog {
                     cause = cause.getCause();
                 }
                 printWriter.close();
-                stringBuilder.append("  ");
-                stringBuilder.append(writer.toString().replaceAll(LINE_SEPARATOR, LINE_SEPARATOR + "    ").trim());
+                stringBuilder.append("\t");
+                stringBuilder.append(writer.toString().replaceAll(LINE_SEPARATOR, LINE_SEPARATOR + "\t").trim());
                 stringBuilder.append(LINE_SEPARATOR);
                 stringBuilder.append("* Throwable Message End *");
             }

@@ -60,7 +60,7 @@ public abstract class BaseLog {
         int maxLength = 0;
         resultList.add("start");
         for (int i = 0; i < msgs.length; i++) {
-            String msg = msgs[i].replaceAll("\t", "");
+            String msg = msgs[i].replaceAll("\t", "  ");
             int index = 0;
             int msgLen = msg.length();
             int countOfSub = msgLen / MAX_LENGTH; //输出条数
