@@ -50,7 +50,7 @@ public final class LoggerInterceptor implements Interceptor {
             // 日志关闭,直接返回
             return chain.proceed(request);
         }
-        Logger.w(logTag, "请求已发起:" + request.url());
+        Logger.w(logTag, "请求已发起: " + request.url());
         if (logDetails) {
             sb.append("请求方式: ").append(request.method()).append("\n");
             Connection requestConnection = chain.connection();
@@ -80,24 +80,24 @@ public final class LoggerInterceptor implements Interceptor {
                 long contentLength = requestBody.contentLength();
                 Charset charset = null;
                 if (contentType != null) {
-                    sb.append("\tContent-Type: ").append(contentType).append("\n");
+                    sb.append("\t").append("Content-Type: ").append(contentType).append("\n");
                     charset = contentType.charset(Charset.forName("UTF-8"));
                 }
                 if (contentLength != -1) {
-                    sb.append("\tContent-Length: ").append(Formatter.formatFileSize(context, contentLength)).append("\n");
+                    sb.append("\t").append("Content-Length: ").append(Formatter.formatFileSize(context, contentLength)).append("\n");
                 } else {
-                    sb.append("\tContent-Length: ").append("unknown-length").append("\n");
+                    sb.append("\t").append("Content-Length: ").append("unknown-length").append("\n");
                 }
                 if (charset != null && !(requestBody instanceof MultipartBody) && contentType(requestBody.contentType().toString())) {
                     Buffer buffer = new Buffer();
                     requestBody.writeTo(buffer);
                     if (isPlaintext(buffer)) {
-                        sb.append("\tParameters: ").append(buffer.clone().readString(charset)).append("\n");
+                        sb.append("\t").append("Parameters: ").append(buffer.clone().readString(charset)).append("\n");
                     } else {
-                        sb.append("\tParameters: ").append(charStr).append("\n");
+                        sb.append("\t").append("Parameters: ").append(charStr).append("\n");
                     }
                 } else {
-                    sb.append("\tParameters: ").append(charStr).append("\n");
+                    sb.append("\t").append("Parameters: ").append(charStr).append("\n");
                 }
             }
         }
@@ -121,11 +121,10 @@ public final class LoggerInterceptor implements Interceptor {
         }
         long endTime = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
         if (logDetails) {
-            sb.append("响应状态码: ").append(response.code()).append("\n");
-            sb.append("响应消息: ").append(response.message()).append("\n");
+            sb.append("响应状态: ").append(response.code()).append(" - ").append(response.message()).append("\n");
         }
-        sb.append("响应地址: ").append(response.request().url()).append("\n");
         sb.append("响应时间: ").append(endTime).append(" ms\n");
+        sb.append("响应地址: ").append(response.request().url()).append("\n");
         // 显示详情
         if (logDetails) {
             // 响应头
@@ -148,10 +147,10 @@ public final class LoggerInterceptor implements Interceptor {
             long contentLength = responseBody.contentLength();
             if (logDetails) {
                 if (contentType != null) {
-                    sb.append("\tContent-Type: ").append(contentType).append("\n");
+                    sb.append("\t").append("Content-Type: ").append(contentType).append("\n");
                 }
                 if (contentLength != -1) {
-                    sb.append("\tContent-Length: ").append(Formatter.formatFileSize(context, contentLength)).append("\n");
+                    sb.append("\t").append("Content-Length: ").append(Formatter.formatFileSize(context, contentLength)).append("\n");
                 }
             }
             if (HttpHeaders.hasBody(response)) {
@@ -178,9 +177,9 @@ public final class LoggerInterceptor implements Interceptor {
                     sb.append("\t").append("Size: ").append(Formatter.formatFileSize(context, buffer.size())).append("\n");
                 }
                 if (charset != null && isPlaintext(buffer) && contentType(response.headers().get("Content-Type"))) {
-                    sb.append("\tParameters: ").append(buffer.clone().readString(charset)).append("\n");
+                    sb.append("\t").append("Parameters: ").append(buffer.clone().readString(charset)).append("\n");
                 } else {
-                    sb.append("\tParameters: ").append(charStr).append("\n");
+                    sb.append("\t").append("Parameters: ").append(charStr).append("\n");
                 }
             }
         }
