@@ -46,7 +46,7 @@ public final class FileLog {
             }
         }
         if (!TextUtils.isEmpty(str)) {
-            BaseLog.printSub(LogType.FILE, tag, "║ " + str);
+            BaseLog.printLog(LogType.FILE, tag, str);
             return false;
         }
         File file = new File(dir, fileName);
