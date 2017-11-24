@@ -3,6 +3,7 @@ package com.acmenxd.retrofit.callback;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
+import com.acmenxd.logger.Logger;
 import com.acmenxd.retrofit.HttpEntity;
 import com.acmenxd.retrofit.HttpError;
 import com.acmenxd.retrofit.HttpManager;
@@ -30,12 +31,24 @@ public abstract class HttpSubscriber<T> extends Subscriber<T> implements IHttpPr
      * * 所以在succeed函数中需手动调用NetCode.parseNetCode处理服务器返回的异常
      */
     private boolean isAlreadyOperationData = false;
+    private String logStack; // 日志输出请求代码信息使用
 
     public HttpSubscriber() {
-
+        int index = 5;
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        String fileName = stackTrace[index].getFileName();
+        String className = stackTrace[index].getClassName();
+        String methodName = stackTrace[index].getMethodName();
+        int lineNumber = stackTrace[index].getLineNumber();
+        String methodNameShort = methodName.substring(0, 1).toUpperCase() + methodName.substring(1);
+        StringBuilder sbHeadStr = new StringBuilder();
+        sbHeadStr.append("* [ Logger -=(").append(fileName).append(":").append(lineNumber).append(")=- ")
+                .append(methodNameShort).append(" ] ** 请求发起代码行");
+        logStack = sbHeadStr.toString();
     }
 
     public HttpSubscriber(boolean isAlreadyOperationData) {
+        this();
         this.isAlreadyOperationData = isAlreadyOperationData;
     }
     // ---------------------------- 重写函数 ------------------------
@@ -165,5 +178,6 @@ public abstract class HttpSubscriber<T> extends Subscriber<T> implements IHttpPr
      */
     private final void finish() {
         finished();
+        Logger.w(HttpManager.INSTANCE.net_log_tag, logStack + "\n请求已结束");
     }
 }

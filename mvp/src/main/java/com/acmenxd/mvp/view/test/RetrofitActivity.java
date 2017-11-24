@@ -115,7 +115,6 @@ public class RetrofitActivity extends BaseActivity {
                     public void finished() {
                     }
                 });
-
     }
 
     private int code;

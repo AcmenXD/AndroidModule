@@ -3,6 +3,7 @@ package com.acmenxd.retrofit.callback;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
+import com.acmenxd.logger.Logger;
 import com.acmenxd.retrofit.HttpEntity;
 import com.acmenxd.retrofit.HttpError;
 import com.acmenxd.retrofit.HttpManager;
@@ -14,6 +15,7 @@ import com.acmenxd.retrofit.exception.HttpResponseException;
 
 import java.io.Serializable;
 
+import okhttp3.HttpUrl;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,11 +35,24 @@ public abstract class HttpCallback<T> implements Callback<T>, IHttpProgress {
      * * 所以在succeed函数中需手动处理服务器返回的异常
      */
     private boolean isAlreadyOperationData = false;
+    private String logStack; // 日志输出请求代码信息使用
 
     public HttpCallback() {
+        int index = 5;
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        String fileName = stackTrace[index].getFileName();
+        String className = stackTrace[index].getClassName();
+        String methodName = stackTrace[index].getMethodName();
+        int lineNumber = stackTrace[index].getLineNumber();
+        String methodNameShort = methodName.substring(0, 1).toUpperCase() + methodName.substring(1);
+        StringBuilder sbHeadStr = new StringBuilder();
+        sbHeadStr.append("* [ Logger -=(").append(fileName).append(":").append(lineNumber).append(")=- ")
+                .append(methodNameShort).append(" ] ** 请求发起代码行");
+        logStack = sbHeadStr.toString();
     }
 
     public HttpCallback(boolean isAlreadyOperationData) {
+        this();
         this.isAlreadyOperationData = isAlreadyOperationData;
     }
 
@@ -94,13 +109,13 @@ public abstract class HttpCallback<T> implements Callback<T>, IHttpProgress {
     @Override
     public void onResponse(Call<T> call, Response<T> response) {
         onResponse2(call, response);
-        finish();
+        finish(call.request().url());
     }
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
         onFailure2(call, t);
-        finish();
+        finish(call.request().url());
     }
 
     public final void onResponse2(@NonNull final Call<T> call, @NonNull final Response<T> response) {
@@ -184,7 +199,8 @@ public abstract class HttpCallback<T> implements Callback<T>, IHttpProgress {
      * 请求完成
      * * 每个回调方法->完成的 都会调用
      */
-    private final void finish() {
+    private final void finish(HttpUrl logUrl) {
         finished();
+        Logger.w(HttpManager.INSTANCE.net_log_tag, logStack + "\n请求已结束: " + logUrl);
     }
 }

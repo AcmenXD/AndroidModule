@@ -109,7 +109,7 @@ public final class LoggerInterceptor implements Interceptor {
         try {
             response = chain.proceed(request);
         } catch (Exception pE) {
-            sb.append("-----------------Http Failed!-------------------");
+            sb.append("--------------------Http Failed!--------------------");
             Logger.w(logTag, sb.toString());
             // 显示详情
             if (logDetails) {
