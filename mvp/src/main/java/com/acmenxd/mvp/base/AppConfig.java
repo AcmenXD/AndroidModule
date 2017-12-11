@@ -81,13 +81,13 @@ public final class AppConfig {
         PackageInfo info = null;
         try {
             info = pkgManager.getPackageInfo(app.getPackageName(), 0);
+            VERSION_CODE = info.versionCode;
+            VERSION_NAME = info.versionName;
             PKG_NAME = app.getPackageName();
             PROJECT_NAME = (String) pkgManager.getApplicationLabel(pkgManager.getApplicationInfo(PKG_NAME, 0));
         } catch (PackageManager.NameNotFoundException pE) {
             Logger.e(pE);
         }
-        VERSION_CODE = info.versionCode;
-        VERSION_NAME = info.versionName;
         MARKET = Marketer.getMarket(app.getApplicationContext(), MARKET);
         /**
          * 设置请求返回时回调
