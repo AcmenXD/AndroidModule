@@ -57,28 +57,37 @@ public final class PersistentCookieStore {
         }
     }
 
+    /**
+     * 兼容域名不一致情况
+     * 另多域名共用Cookie时配置
+     */
+    public String compatibilityMultitypeHost(String urlHost) {
+        return urlHost;
+    }
+
     /* 此种方式会导致程序崩溃
     protected String getCookieToken(@NonNull Cookie cookie) {
         return cookie.name() + "@" + cookie.domain();
     }
 
     public void add(@NonNull HttpUrl url, @NonNull Cookie cookie) {
+        String host = compatibilityMultitypeHost(url.host());
         String name = getCookieToken(cookie);
 
         //将cookies缓存到内存中 如果缓存过期 就重置此cookie
         if (!cookie.persistent()) {
-            if (!cookies.containsKey(url.host())) {
-                cookies.put(url.host(), new ConcurrentHashMap<String, Cookie>());
+            if (!cookies.containsKey(host)) {
+                cookies.put(host, new ConcurrentHashMap<String, Cookie>());
             }
-            cookies.get(url.host()).put(name, cookie);
+            cookies.get(host).put(name, cookie);
         } else {
-            if (cookies.containsKey(url.host())) {
-                cookies.get(url.host()).remove(name);
+            if (cookies.containsKey(host)) {
+                cookies.get(host).remove(name);
             }
         }
 
         //将cookies持久化到本地
-        cookieSp.putString(url.host(), TextUtils.join(",", cookies.get(url.host()).keySet()));
+        cookieSp.putString(host, TextUtils.join(",", cookies.get(host).keySet()));
         cookieSp.putString(name, encodeCookie(new NetCookies(cookie)));
     }*/
 
@@ -87,21 +96,23 @@ public final class PersistentCookieStore {
     }
 
     public void add(@NonNull HttpUrl url, @NonNull Cookie cookie) {
+        String host = compatibilityMultitypeHost(url.host());
         String name = getCookieToken(cookie);
-        if (!cookies.containsKey(url.host())) {
-            cookies.put(url.host(), new ConcurrentHashMap<String, Cookie>());
+        if (!cookies.containsKey(host)) {
+            cookies.put(host, new ConcurrentHashMap<String, Cookie>());
         }
-        cookies.get(url.host()).put(name, cookie);
+        cookies.get(host).put(name, cookie);
         //将cookies持久化到本地
-        cookieSp.putString(url.host(), TextUtils.join(",", cookies.get(url.host()).keySet()));
+        cookieSp.putString(host, TextUtils.join(",", cookies.get(host).keySet()));
         cookieSp.putString(name, encodeCookie(new HttpCookies(cookie)));
     }
 
     public List<Cookie> getCookies(@NonNull HttpUrl url) {
+        String host = compatibilityMultitypeHost(url.host());
         ArrayList<Cookie> ret = new ArrayList<>();
         long time = System.currentTimeMillis();
-        if (cookies.containsKey(url.host())) {
-            ConcurrentHashMap<String, Cookie> maps = cookies.get(url.host());
+        if (cookies.containsKey(host)) {
+            ConcurrentHashMap<String, Cookie> maps = cookies.get(host);
             for (Map.Entry<String, Cookie> entry : maps.entrySet()) {
                 if (entry.getValue().expiresAt() > time) {
                     ret.add(entry.getValue());
@@ -131,13 +142,14 @@ public final class PersistentCookieStore {
     }
 
     public boolean remove(@NonNull HttpUrl url, @NonNull Cookie cookie) {
+        String host = compatibilityMultitypeHost(url.host());
         String name = getCookieToken(cookie);
-        if (cookies.containsKey(url.host()) && cookies.get(url.host()).containsKey(name)) {
-            cookies.get(url.host()).remove(name);
+        if (cookies.containsKey(host) && cookies.get(host).containsKey(name)) {
+            cookies.get(host).remove(name);
             if (cookieSp.contains(name)) {
                 cookieSp.remove(name);
             }
-            cookieSp.putString(url.host(), TextUtils.join(",", cookies.get(url.host()).keySet()));
+            cookieSp.putString(host, TextUtils.join(",", cookies.get(host).keySet()));
             return true;
         } else {
             return false;
