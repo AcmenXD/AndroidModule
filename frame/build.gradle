@@ -37,6 +37,10 @@ dependencies {
      */
     compile files('libs/pinyin4j-2.5.0.jar')
     /**
+     * 渠道打包库
+     */
+    compile files('libs/MarketUtils.jar')
+    /**
      * 网络库
      */
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
