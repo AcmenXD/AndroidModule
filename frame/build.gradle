@@ -39,7 +39,7 @@ dependencies {
     /**
      * 渠道打包库
      */
-    compile files('libs/MarketUtils.jar')
+    compile files('libs/Marketer.jar')
     /**
      * 网络库
      */
