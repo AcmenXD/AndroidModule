@@ -58,6 +58,10 @@ public abstract class SwipeMenuView extends LinearLayout {
      */
     public void resetMenu() {
         this.removeAllViews();
+        ViewGroup.LayoutParams params = this.getLayoutParams();
+        params.width = 0;
+        params.height = 0;
+        this.setLayoutParams(params);
     }
 
     /**
