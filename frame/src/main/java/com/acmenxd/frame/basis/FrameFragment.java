@@ -29,6 +29,7 @@ import com.acmenxd.frame.basis.impl.IFrameStart;
 import com.acmenxd.frame.basis.impl.IFrameSubscription;
 import com.acmenxd.frame.basis.impl.IFrameUtils;
 import com.acmenxd.frame.basis.impl.IFrameView;
+import com.acmenxd.frame.basis.mvp.IBView;
 import com.acmenxd.frame.utils.DeviceUtils;
 import com.acmenxd.frame.utils.StatusBarUtils;
 import com.acmenxd.frame.utils.StringUtils;
@@ -361,20 +362,6 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
      */
     public final int getViewPagerFragmentVisibleIndex() {
         return viewPagerFragmentVisibleIndex;
-    }
-
-    /**
-     * 添加Presenters
-     */
-    public final void addPresenters(@NonNull FramePresenter... pPresenters) {
-        if (pPresenters != null && pPresenters.length > 0) {
-            if (mPresenters == null) {
-                mPresenters = new ArrayList<>();
-            }
-            for (int i = 0, len = pPresenters.length; i < len; i++) {
-                mPresenters.add(pPresenters[i]);
-            }
-        }
     }
 
     /**
@@ -900,6 +887,20 @@ public abstract class FrameFragment extends Fragment implements IFrameSubscripti
         return Utils.px2sp(mActivity, px);
     }
     //------------------------------------子类可使用的工具函数 -> IBView
+
+    /**
+     * 添加Presenters
+     */
+    public final void addPresenters(@NonNull FramePresenter... pPresenters) {
+        if (pPresenters != null && pPresenters.length > 0) {
+            if (mPresenters == null) {
+                mPresenters = new ArrayList<>();
+            }
+            for (int i = 0, len = pPresenters.length; i < len; i++) {
+                mPresenters.add(pPresenters[i]);
+            }
+        }
+    }
 
     /**
      * 统一获取上下文对象

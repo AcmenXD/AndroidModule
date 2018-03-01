@@ -1,5 +1,6 @@
 package com.acmenxd.frame.basis;
 
+import com.acmenxd.frame.basis.mvp.IBView;
 import com.acmenxd.retrofit.callback.HttpCallback;
 
 import retrofit2.Call;

@@ -28,6 +28,7 @@ import com.acmenxd.frame.basis.impl.IFrameStart;
 import com.acmenxd.frame.basis.impl.IFrameSubscription;
 import com.acmenxd.frame.basis.impl.IFrameUtils;
 import com.acmenxd.frame.basis.impl.IFrameView;
+import com.acmenxd.frame.basis.mvp.IBView;
 import com.acmenxd.frame.utils.DeviceUtils;
 import com.acmenxd.frame.utils.StatusBarUtils;
 import com.acmenxd.frame.utils.StringUtils;
@@ -270,20 +271,6 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
             this.customStatusBarColorId_noCan = pCustomStatusBarColorId_noCan;
             if (customStatusBarView != null) {
                 customStatusBarView.setBackgroundResource(pCustomStatusBarColorId_noCan);
-            }
-        }
-    }
-
-    /**
-     * 添加Presenters
-     */
-    public final void addPresenters(@NonNull FramePresenter... pPresenters) {
-        if (pPresenters != null && pPresenters.length > 0) {
-            if (mPresenters == null) {
-                mPresenters = new ArrayList<>();
-            }
-            for (int i = 0, len = pPresenters.length; i < len; i++) {
-                mPresenters.add(pPresenters[i]);
             }
         }
     }
@@ -814,6 +801,20 @@ public abstract class FrameActivity extends AppCompatActivity implements IFrameS
         return Utils.px2sp(this, px);
     }
     //------------------------------------子类可使用的工具函数 -> IBView
+
+    /**
+     * 添加Presenters
+     */
+    public final void addPresenters(@NonNull FramePresenter... pPresenters) {
+        if (pPresenters != null && pPresenters.length > 0) {
+            if (mPresenters == null) {
+                mPresenters = new ArrayList<>();
+            }
+            for (int i = 0, len = pPresenters.length; i < len; i++) {
+                mPresenters.add(pPresenters[i]);
+            }
+        }
+    }
 
     /**
      * 统一获取上下文对象

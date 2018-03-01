@@ -1,11 +1,14 @@
 package com.acmenxd.frame.basis;
 
+import android.content.Context;
 import android.support.annotation.CallSuper;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import com.acmenxd.frame.basis.impl.IFrameNet;
 import com.acmenxd.frame.basis.impl.IFrameSubscription;
+import com.acmenxd.frame.basis.mvp.IBPresenter;
+import com.acmenxd.frame.basis.mvp.IBView;
 import com.acmenxd.frame.utils.net.IMonitorListener;
 import com.acmenxd.frame.utils.net.Monitor;
 import com.acmenxd.frame.utils.net.NetStatus;
@@ -29,11 +32,11 @@ import rx.subscriptions.CompositeSubscription;
  * @date 2016/12/16 16:01
  * @detail Presenter基类
  */
-public abstract class FramePresenter<T extends IBView> implements IFrameSubscription, IFrameNet {
+public abstract class FramePresenter implements IFrameSubscription, IFrameNet, IBPresenter {
     protected final String TAG = this.getClass().getSimpleName();
 
-    // Activity|Fragment实例
-    protected T mView;
+    // IBView实例
+    protected IBView mIBView;
     // 统一持有Subscription
     private CompositeSubscription mSubscription;
     // 统一管理Models
@@ -47,10 +50,11 @@ public abstract class FramePresenter<T extends IBView> implements IFrameSubscrip
     };
 
     /**
-     * 构造器,传入BaseView实例
+     * 构造器,传入IBView实例
      */
-    public FramePresenter(@NonNull T pView) {
-        mView = pView;
+    public FramePresenter(@NonNull IBView pIBView) {
+        mIBView = pIBView;
+        mIBView.addPresenters(this);
         // 初始化容器
         mSubscription = getCompositeSubscription();
         mModels = new ArrayList<>();
@@ -63,6 +67,7 @@ public abstract class FramePresenter<T extends IBView> implements IFrameSubscrip
      */
     @CallSuper
     public void unSubscribe() {
+        mIBView = null;
         // 网络监控反注册
         Monitor.unRegistListener(mNetListener);
         //解绑 Subscriptions
@@ -88,20 +93,6 @@ public abstract class FramePresenter<T extends IBView> implements IFrameSubscrip
     //------------------------------------子类可使用的工具函数 -> 私有
 
     /**
-     * 添加Models
-     */
-    public final void addModels(@NonNull FrameModel... pModels) {
-        if (pModels != null && pModels.length > 0) {
-            if (mModels == null) {
-                mModels = new ArrayList<>();
-            }
-            for (int i = 0, len = pModels.length; i < len; i++) {
-                mModels.add(pModels[i]);
-            }
-        }
-    }
-
-    /**
      * 统一处理因异步导致的 Activity|Fragment销毁时发生NullPointerException问题
      * 统一处理LoadingDialog逻辑
      */
@@ -115,9 +106,7 @@ public abstract class FramePresenter<T extends IBView> implements IFrameSubscrip
          *                2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
          */
         public BindCallback(boolean... setting) {
-            if (mView != null) {
-                mView.showLoadingDialogBySetting(setting);
-            }
+            showLoadingDialogBySetting(setting);
         }
 
         @Deprecated
@@ -126,9 +115,7 @@ public abstract class FramePresenter<T extends IBView> implements IFrameSubscrip
             if (canReceiveResponse()) {
                 super.onResponse(call, response);
             }
-            if (mView != null) {
-                mView.hideLoadingDialog();
-            }
+            hideLoadingDialog();
         }
 
         @Deprecated
@@ -137,9 +124,7 @@ public abstract class FramePresenter<T extends IBView> implements IFrameSubscrip
             if (canReceiveResponse()) {
                 super.onFailure(call, t);
             }
-            if (mView != null) {
-                mView.hideLoadingDialog();
-            }
+            hideLoadingDialog();
         }
     }
 
@@ -157,9 +142,7 @@ public abstract class FramePresenter<T extends IBView> implements IFrameSubscrip
          *                2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
          */
         public BindSubscriber(boolean... setting) {
-            if (mView != null) {
-                mView.showLoadingDialogBySetting(setting);
-            }
+            showLoadingDialogBySetting(setting);
         }
 
         @Deprecated
@@ -184,9 +167,7 @@ public abstract class FramePresenter<T extends IBView> implements IFrameSubscrip
             if (canReceiveResponse()) {
                 super.onCompleted();
             }
-            if (mView != null) {
-                mView.hideLoadingDialog();
-            }
+            hideLoadingDialog();
         }
     }
     //------------------------------------子类可使用的工具函数 -> IFrameSubscription
@@ -279,5 +260,67 @@ public abstract class FramePresenter<T extends IBView> implements IFrameSubscrip
     @Override
     public final <E> E uploadRequest(@NonNull Class<E> pIRequest, @NonNull IHttpProgress pProgress, @IntRange(from = 0) int writeTimeout) {
         return HttpManager.INSTANCE.uploadRequest(pIRequest, pProgress, writeTimeout);
+    }
+    //------------------------------------子类可使用的工具函数 -> IBPresenter
+
+    /**
+     * 添加Models
+     */
+    public final void addModels(@NonNull FrameModel... pModels) {
+        if (pModels != null && pModels.length > 0) {
+            if (mModels == null) {
+                mModels = new ArrayList<>();
+            }
+            for (int i = 0, len = pModels.length; i < len; i++) {
+                mModels.add(pModels[i]);
+            }
+        }
+    }
+
+    /**
+     * 统一获取上下文对象
+     */
+    @Override
+    public final Context getContext() {
+        return mIBView != null ? mIBView.getContext() : null;
+    }
+
+    /**
+     * 根据setting,检查是否显示LoadingDialog
+     *
+     * @param setting 数组下标 ->
+     *                0.是否显示LoadingDialog(默认false)
+     *                1.isCancelable(是否可以通过点击Back键取消)(默认true)
+     *                2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
+     */
+    @Override
+    public final void showLoadingDialogBySetting(final boolean... setting) {
+        if (mIBView != null) {
+            mIBView.showLoadingDialogBySetting(setting);
+        }
+    }
+
+    /**
+     * 显示LoadingDialog
+     *
+     * @param setting 数组下标 ->
+     *                0.isCancelable(是否可以通过点击Back键取消)(默认true)
+     *                1.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
+     */
+    @Override
+    public final void showLoadingDialog(final boolean... setting) {
+        if (mIBView != null) {
+            mIBView.showLoadingDialog(setting);
+        }
+    }
+
+    /**
+     * 隐藏LoadingDialog
+     */
+    @Override
+    public final void hideLoadingDialog() {
+        if (mIBView != null) {
+            mIBView.hideLoadingDialog();
+        }
     }
 }

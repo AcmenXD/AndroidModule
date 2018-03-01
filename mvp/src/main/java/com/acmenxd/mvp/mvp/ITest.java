@@ -1,7 +1,9 @@
-package com.acmenxd.mvp.presenter;
+package com.acmenxd.mvp.mvp;
 
-import com.acmenxd.frame.basis.IBPresenter;
-import com.acmenxd.frame.basis.IBView;
+import com.acmenxd.frame.basis.RequestCallback;
+import com.acmenxd.frame.basis.mvp.IBModel;
+import com.acmenxd.frame.basis.mvp.IBPresenter;
+import com.acmenxd.frame.basis.mvp.IBView;
 import com.acmenxd.mvp.model.response.TestEntity;
 
 /**
@@ -18,5 +20,9 @@ public interface ITest {
 
     interface IPresenter extends IBPresenter {
         void login();
+    }
+
+    interface IModel extends IBModel {
+        void doLogin(final RequestCallback callback);
     }
 }

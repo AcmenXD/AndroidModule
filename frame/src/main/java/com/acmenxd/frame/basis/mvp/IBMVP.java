@@ -1,4 +1,4 @@
-package com.acmenxd.frame.basis;
+package com.acmenxd.frame.basis.mvp;
 
 import android.content.Context;
 
@@ -6,10 +6,10 @@ import android.content.Context;
  * @author AcmenXD
  * @version v1.0
  * @github https://github.com/AcmenXD
- * @date 2017/3/16 16:06
- * @detail Activity|Fragment接口基类
+ * @date 2018/3/1 16:14
+ * @detail MVP接口基类
  */
-public interface IBView {
+public interface IBMVP {
     /**
      * 统一获取上下文对象
      */

@@ -1,7 +1,7 @@
 package com.acmenxd.mvp.base;
 
 import com.acmenxd.frame.basis.FramePresenter;
-import com.acmenxd.frame.basis.IBView;
+import com.acmenxd.frame.basis.mvp.IBView;
 import com.acmenxd.mvp.base.impl.IBaseNet;
 import com.acmenxd.mvp.http.IRequest;
 
@@ -14,14 +14,14 @@ import org.greenrobot.eventbus.Subscribe;
  * @date 2017/5/24 14:46
  * @detail 顶级Presenter
  */
-public abstract class BasePresenter<T extends IBView> extends FramePresenter<T> implements IBaseNet {
+public abstract class BasePresenter extends FramePresenter implements IBaseNet {
     /**
-     * 构造器,传入BaseView实例
+     * 构造器,传入IBView实例
      *
-     * @param pView
+     * @param pIBView
      */
-    public BasePresenter(T pView) {
-        super(pView);
+    public BasePresenter(IBView pIBView) {
+        super(pIBView);
         // EventBus事件注册
         EventBusHelper.register(this);
     }

@@ -1,11 +1,14 @@
 package com.acmenxd.frame.basis;
 
+import android.content.Context;
 import android.support.annotation.CallSuper;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import com.acmenxd.frame.basis.impl.IFrameNet;
 import com.acmenxd.frame.basis.impl.IFrameSubscription;
+import com.acmenxd.frame.basis.mvp.IBModel;
+import com.acmenxd.frame.basis.mvp.IBPresenter;
 import com.acmenxd.frame.utils.net.IMonitorListener;
 import com.acmenxd.frame.utils.net.Monitor;
 import com.acmenxd.frame.utils.net.NetStatus;
@@ -26,11 +29,11 @@ import rx.subscriptions.CompositeSubscription;
  * @date 2016/12/16 16:01
  * @detail Model基类
  */
-public abstract class FrameModel implements IFrameSubscription, IFrameNet {
+public abstract class FrameModel implements IFrameSubscription, IFrameNet, IBModel {
     protected final String TAG = this.getClass().getSimpleName();
 
-    // Activity|Fragment实例
-    protected FramePresenter mFramePresenter;
+    // IBPresenter实例
+    protected IBPresenter mIBPresenter;
     // 统一持有Subscription
     private CompositeSubscription mSubscription;
     // 网络状态监控
@@ -42,17 +45,11 @@ public abstract class FrameModel implements IFrameSubscription, IFrameNet {
     };
 
     /**
-     * 构造器
+     * 构造器,传入IBPresenter实例
      */
-    public FrameModel() {
-        this(null);
-    }
-
-    /**
-     * 构造器,传入FramePresenter实例
-     */
-    public FrameModel(@NonNull FramePresenter pFramePresenter) {
-        mFramePresenter = pFramePresenter;
+    public FrameModel(@NonNull IBPresenter pIBPresenter) {
+        mIBPresenter = pIBPresenter;
+        mIBPresenter.addModels(this);
         // 初始化容器
         mSubscription = getCompositeSubscription();
         // 网络监控注册
@@ -64,6 +61,7 @@ public abstract class FrameModel implements IFrameSubscription, IFrameNet {
      */
     @CallSuper
     public void unSubscribe() {
+        mIBPresenter = null;
         // 网络监控反注册
         Monitor.unRegistListener(mNetListener);
         //解绑 Subscriptions
@@ -95,9 +93,7 @@ public abstract class FrameModel implements IFrameSubscription, IFrameNet {
          *                2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
          */
         public BindCallback(boolean... setting) {
-            if (mFramePresenter != null && mFramePresenter.mView != null) {
-                mFramePresenter.mView.showLoadingDialogBySetting(setting);
-            }
+            showLoadingDialogBySetting(setting);
         }
 
         @Deprecated
@@ -106,9 +102,7 @@ public abstract class FrameModel implements IFrameSubscription, IFrameNet {
             if (canReceiveResponse()) {
                 super.onResponse(call, response);
             }
-            if (mFramePresenter != null && mFramePresenter.mView != null) {
-                mFramePresenter.mView.hideLoadingDialog();
-            }
+            hideLoadingDialog();
         }
 
         @Deprecated
@@ -117,9 +111,7 @@ public abstract class FrameModel implements IFrameSubscription, IFrameNet {
             if (canReceiveResponse()) {
                 super.onFailure(call, t);
             }
-            if (mFramePresenter != null && mFramePresenter.mView != null) {
-                mFramePresenter.mView.hideLoadingDialog();
-            }
+            hideLoadingDialog();
         }
     }
 
@@ -137,9 +129,7 @@ public abstract class FrameModel implements IFrameSubscription, IFrameNet {
          *                2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
          */
         public BindSubscriber(boolean... setting) {
-            if (mFramePresenter != null && mFramePresenter.mView != null) {
-                mFramePresenter.mView.showLoadingDialogBySetting(setting);
-            }
+            showLoadingDialogBySetting(setting);
         }
 
         @Deprecated
@@ -164,9 +154,7 @@ public abstract class FrameModel implements IFrameSubscription, IFrameNet {
             if (canReceiveResponse()) {
                 super.onCompleted();
             }
-            if (mFramePresenter != null && mFramePresenter.mView != null) {
-                mFramePresenter.mView.hideLoadingDialog();
-            }
+            hideLoadingDialog();
         }
     }
     //------------------------------------子类可使用的工具函数 -> IFrameSubscription
@@ -260,5 +248,52 @@ public abstract class FrameModel implements IFrameSubscription, IFrameNet {
     public final <E> E newRequest(@NonNull Class<E> pIRequest, @IntRange(from = 0) int connectTimeout, @IntRange(from = 0) int readTimeout, @IntRange(from = 0) int writeTimeout) {
         return HttpManager.INSTANCE.newRequest(pIRequest, connectTimeout, readTimeout, writeTimeout);
     }
+    //------------------------------------子类可使用的工具函数 -> IBModel
 
+    /**
+     * 统一获取上下文对象
+     */
+    @Override
+    public final Context getContext() {
+        return mIBPresenter != null ? mIBPresenter.getContext() : null;
+    }
+
+    /**
+     * 根据setting,检查是否显示LoadingDialog
+     *
+     * @param setting 数组下标 ->
+     *                0.是否显示LoadingDialog(默认false)
+     *                1.isCancelable(是否可以通过点击Back键取消)(默认true)
+     *                2.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
+     */
+    @Override
+    public final void showLoadingDialogBySetting(final boolean... setting) {
+        if (mIBPresenter != null) {
+            mIBPresenter.showLoadingDialogBySetting(setting);
+        }
+    }
+
+    /**
+     * 显示LoadingDialog
+     *
+     * @param setting 数组下标 ->
+     *                0.isCancelable(是否可以通过点击Back键取消)(默认true)
+     *                1.isCanceledOnTouchOutside(是否在点击Dialog外部时取消Dialog)(默认false)
+     */
+    @Override
+    public final void showLoadingDialog(final boolean... setting) {
+        if (mIBPresenter != null) {
+            mIBPresenter.showLoadingDialog(setting);
+        }
+    }
+
+    /**
+     * 隐藏LoadingDialog
+     */
+    @Override
+    public final void hideLoadingDialog() {
+        if (mIBPresenter != null) {
+            mIBPresenter.hideLoadingDialog();
+        }
+    }
 }
