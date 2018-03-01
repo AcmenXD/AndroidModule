@@ -29,6 +29,7 @@
 **basis**
 ```java
 -> impl包               : 框架层所需的接口基类
+-> mvp包                : 实现MVP的接口基类
 -> FrameApplication     : 框架层Application, 项目需继承此类做相关拓展!
 -> FrameActivity        : 框架层Activity,实现Subscription | Presenter支持,内容 | 加载 | 错误视图,网络状态监控,Net支持,以及销毁等
 -> FrameFragment        : 框架层Fragment,实现Subscription | Presenter支持,内容 | 加载 | 错误视图,网络状态监控,Net支持,以及销毁等
@@ -36,8 +37,6 @@
 -> FramePresenter       : 框架层Presenter,实现Subscription支持,网络状态监控,Net支持,以及销毁等
 -> FrameModel           : 框架层Model,实现Subscription支持,网络状态监控,Net支持,以及销毁等
 -> ActivityStackManager : Activity堆栈管理器,提供exit | restartApp支持
--> IBView               : MVP V层的实现接口类
--> IBPresenter          : MVP P层的实现接口类
 ```
 ---
 **utils**
@@ -100,9 +99,10 @@
 -> test           : 测试的Activity
 ```
 ---
-**presenter**
+**mvp**
 ```java
 -> ITest         : 模拟登录模块mvp接口定义
+-> TestModel     : 模拟登录模块m层实现
 -> TestPresenter : 模拟登录模块p层实现
 
 ```
