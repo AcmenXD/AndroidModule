@@ -2,6 +2,7 @@ package com.acmenxd.retrofit.converter;
 
 import android.support.annotation.NonNull;
 
+import com.acmenxd.retrofit.HttpDataEntity;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
@@ -34,8 +35,9 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
     @Override
     public T convert(ResponseBody value) throws IOException {
         String json = value.string();
+        JSONObject newJson = null;
         try {
-            JSONObject newJson = new JSONObject(json);
+            newJson = new JSONObject(json);
             newJson.put("json", json);
             json = newJson.toString();
         } catch (JSONException pE) {
@@ -44,6 +46,24 @@ final class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
         JsonReader jsonReader = gson.newJsonReader(new StringReader(json));
         try {
             T data = adapter.read(jsonReader);
+            /**
+             * * 二次解析,如匹配HttpDataEntity,将把json的"data"层自动过滤掉
+             */
+            if (data instanceof HttpDataEntity && newJson != null) {
+                JSONObject dataObj = null;
+                try {
+                    dataObj = newJson.getJSONObject("data");
+                    if (dataObj != null) {
+                        dataObj.put("code", ((HttpDataEntity) data).getCode());
+                        dataObj.put("msg", ((HttpDataEntity) data).getMsg());
+                        dataObj.put("json", ((HttpDataEntity) data).getJson());
+                        json = dataObj.toString();
+                    }
+                } catch (JSONException pE) {
+                    pE.printStackTrace();
+                }
+                data = (T) gson.fromJson(json, data.getClass());
+            }
             return data;
         } finally {
             value.close();
