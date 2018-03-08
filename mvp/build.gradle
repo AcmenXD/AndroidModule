@@ -133,7 +133,10 @@ dependencies {
      * 数据库
      */
     compile 'org.greenrobot:greendao:3.2.2'
-    compile 'net.zetetic:android-database-sqlcipher:3.5.1'
+    /**
+     * 数据库加密库
+     */
+    //compile 'net.zetetic:android-database-sqlcipher:3.5.1'
     /**
      * 查看数据库表的工具库
      */
