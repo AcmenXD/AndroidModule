@@ -12,8 +12,15 @@ import java.io.File;
  * @detail 保存图片的回调接口
  */
 public interface SaveCallback {
-
+    /**
+     * 请注意,回调函数是在子线程中执行的
+     * @param file
+     */
     void succeed(@NonNull final File file);
 
+    /**
+     * 请注意,回调函数是在子线程中执行的
+     * @param pE
+     */
     void failed(@NonNull final Exception pE);
 }
