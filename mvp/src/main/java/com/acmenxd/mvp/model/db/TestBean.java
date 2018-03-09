@@ -24,7 +24,6 @@ public class TestBean {
      * @Unique : 表示该字段唯一
      * @Index(unique = true) : 使普通属性改变成唯一索引属性
      */
-
     @Id//通过这个注解标记的字段必须是Long类型的，这个字段在数据库中表示它就是主键，并且它默认就是自增的
     private Long id;
 
