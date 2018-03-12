@@ -24,6 +24,11 @@ public interface GroupListener {
     int ITEM_OUT_LEFT = 3; //外侧左部
 
     /**
+     * 获取数据最大数
+     */
+    int getDataLength();
+
+    /**
      * 获取GroupItem层级的数量
      */
     int getGroupItemLevelNum();
