@@ -177,9 +177,7 @@ public final class GroupHeadLayout extends LinearLayout {
     protected void removeGroupHeadViewByLevel(@IntRange(from = 0) int level) {
         for (int i = level; i < groupItemLevelNum; i++) {
             if (mViews.containsKey(i)) {
-                View view = mViews.get(i);
-                mViews.remove(i);
-                this.removeView(view);
+                this.removeView(mViews.remove(i));
             }
         }
     }
