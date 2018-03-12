@@ -111,11 +111,6 @@ public class RecyclerActivity extends BaseActivity {
         // 添加悬浮菜单
         GroupListener mGroupListener = new GroupListener() {
             @Override
-            public int getDataLength() {
-                return datas.size();
-            }
-
-            @Override
             public int getGroupItemLevelNum() {
                 return 4;
             }

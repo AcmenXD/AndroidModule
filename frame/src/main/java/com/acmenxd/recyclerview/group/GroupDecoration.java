@@ -185,25 +185,31 @@ public final class GroupDecoration extends RecyclerView.ItemDecoration {
                     if (currPositions[level] != groupHeadPosition) {
                         currPositions[level] = groupHeadPosition;
                         int dataPosition = groupHeadPosition - WrapperUtils.getEmptyUpItemCount(parent);
-                        int dataMax = mListener.getDataLength();
                         if (!mGroupHeadLayout.isHave() || isGroupItemTypeMoreOne || groupItemLevelNum > 1) {
                             mGroupHeadLayout.removeGroupHeadViewByLevel(level);
-                            if (dataPosition < dataMax) {
-                                View groupHeadView = mListener.getGroupHeadView(mGroupHeadLayout, level, dataPosition);
-                                if (groupHeadView != null) {
-                                    mGroupHeadLayout.addGroupHeadView(groupHeadView, level);
-                                    if (direction == 2 || direction == 4) {
-                                        mGroupHeadLayout.addResetPosition(level);
-                                    }
+                            View groupHeadView = null;
+                            try {
+                                groupHeadView = mListener.getGroupHeadView(mGroupHeadLayout, level, dataPosition);
+                            } catch (Exception pE) {
+
+                            }
+                            if (groupHeadView != null) {
+                                mGroupHeadLayout.addGroupHeadView(groupHeadView, level);
+                                if (direction == 2 || direction == 4) {
+                                    mGroupHeadLayout.addResetPosition(level);
                                 }
-                                if (mGroupHeadLayout.isHave()) {
-                                    mListener.changeGroupHeadView(mGroupHeadLayout.getGroupHeadView(level), level, dataPosition);
-                                    if (isAutoSetGroupHeadViewWidthHeightByGroupItemView) {
-                                        RecyclerView.ViewHolder changeViewHolder = parent.findViewHolderForAdapterPosition(groupHeadPosition);
-                                        if (changeViewHolder != null && changeViewHolder.itemView != null) {
-                                            setGroupHeadLayoutWH(changeViewHolder.itemView, level);
-                                        }
-                                    }
+                            }
+                        }
+                        if (mGroupHeadLayout.isHave()) {
+                            try {
+                                mListener.changeGroupHeadView(mGroupHeadLayout.getGroupHeadView(level), level, dataPosition);
+                            } catch (Exception pE) {
+                                pE.printStackTrace();
+                            }
+                            if (isAutoSetGroupHeadViewWidthHeightByGroupItemView) {
+                                RecyclerView.ViewHolder changeViewHolder = parent.findViewHolderForAdapterPosition(groupHeadPosition);
+                                if (changeViewHolder != null && changeViewHolder.itemView != null) {
+                                    setGroupHeadLayoutWH(changeViewHolder.itemView, level);
                                 }
                             }
                         }
