@@ -64,6 +64,7 @@ public final class SwipeMenuLayout extends FrameLayout {
 
     public SwipeMenuLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        setClickable(true);
         mScroller = new OverScroller(getContext());
         ViewConfiguration mViewConfig = ViewConfiguration.get(getContext());
         mScaledTouchSlop = mViewConfig.getScaledTouchSlop();
