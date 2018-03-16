@@ -259,15 +259,15 @@ public class RecyclerActivity extends BaseActivity {
                 }
         );
         // 设置Adapter
-        mAdapter = new SimpleAdapter(this, rv, R.layout.activity_recycler_item, datas) {
+        mAdapter = new SimpleAdapter(R.layout.activity_recycler_item, datas) {
             @Override
             public void convert(ViewHolder viewHolder, Object item, int dataPosition) {
             }
         };
         // 多item类型Adapter
-        mAdapter = new MultiItemTypeAdapter(this, rv, datas);
+        mAdapter = new MultiItemTypeAdapter(datas);
         // 多item类型&侧滑菜单 Adapter
-        mAdapter = new MultiItemTypeSwipeMenuAdapter(this, rv, datas, new OnSwipeMenuListener() {
+        mAdapter = new MultiItemTypeSwipeMenuAdapter(datas, new OnSwipeMenuListener() {
             @Override
             public int[] getLeftMenuLayoutIds(int dataPosition) {
                 if (dataPosition == 3) {
