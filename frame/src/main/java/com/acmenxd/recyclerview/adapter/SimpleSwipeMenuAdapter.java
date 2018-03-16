@@ -16,7 +16,6 @@ import java.util.List;
  * @github https://github.com/AcmenXD
  * @date 2017/2/16 16:00
  * @detail RecyclerView -> 公共滑动菜单Adapter,简化了RecyclerView.Adapter并实现了滑动菜单功能
- * * 与滑动删除事件冲突,如用侧滑菜单,请勿添加侧滑删除功能 或者 在侧滑功能的onDeleteCheck回调中返回false
  */
 public abstract class SimpleSwipeMenuAdapter<T> extends MultiItemTypeSwipeMenuAdapter<T> {
     public SimpleSwipeMenuAdapter(@LayoutRes final int layoutId, @NonNull List<T> datas, @NonNull OnSwipeMenuListener pSwipeMenuListener) {

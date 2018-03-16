@@ -3,7 +3,9 @@ package com.acmenxd.recyclerview.adapter;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -24,7 +26,6 @@ import java.util.List;
  * @github https://github.com/AcmenXD
  * @date 2017/2/16 16:00
  * @detail RecyclerView -> 多类型item的侧滑菜单 Adapter,简化了RecyclerView.Adapter并实现了滑动菜单功能
- * * 与滑动删除事件冲突,如用侧滑菜单,请勿添加侧滑删除功能 或者 在侧滑功能的onDeleteCheck回调中返回false
  */
 public class MultiItemTypeSwipeMenuAdapter<T> extends MultiItemTypeAdapter<T> {
     private OnSwipeMenuListener mSwipeMenuListener;
@@ -32,6 +33,12 @@ public class MultiItemTypeSwipeMenuAdapter<T> extends MultiItemTypeAdapter<T> {
     public MultiItemTypeSwipeMenuAdapter(@NonNull List<T> datas, @NonNull OnSwipeMenuListener pSwipeMenuListener) {
         super(datas);
         this.mSwipeMenuListener = pSwipeMenuListener;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        mRecyclerView.addOnItemTouchListener(new OnItemSwipeListener());
     }
 
     @Override
@@ -93,6 +100,42 @@ public class MultiItemTypeSwipeMenuAdapter<T> extends MultiItemTypeAdapter<T> {
         }
         if (mDatas.size() > dataPosition) {
             mItemDelegateManager.convert(viewHolder, mDatas.get(dataPosition), dataPosition);
+        }
+    }
+
+    /**
+     * 滑动菜单
+     */
+    private class OnItemSwipeListener implements RecyclerView.OnItemTouchListener {
+        SwipeMenuLayout mTargetSwipeMenuLayout;
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            if (e.getAction() == MotionEvent.ACTION_DOWN) {
+                View child = rv.findChildViewUnder(e.getX(), e.getY());
+                if (child instanceof SwipeMenuLayout) {
+                    mTargetSwipeMenuLayout = (SwipeMenuLayout) child;
+                }
+            }
+            if (mTargetSwipeMenuLayout != null && rv.getScrollState() == mRecyclerView.SCROLL_STATE_IDLE) {
+                return mTargetSwipeMenuLayout.onInterceptTouchEventCustom(e);
+            }
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+            if (mTargetSwipeMenuLayout != null && rv.getScrollState() == mRecyclerView.SCROLL_STATE_IDLE) {
+                mTargetSwipeMenuLayout.onTouchEventCustom(e);
+            }
+            if (e.getAction() == MotionEvent.ACTION_UP || e.getAction() == MotionEvent.ACTION_CANCEL) {
+                mTargetSwipeMenuLayout = null;
+            }
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
         }
     }
 }

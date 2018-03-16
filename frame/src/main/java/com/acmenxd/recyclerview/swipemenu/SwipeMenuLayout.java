@@ -42,9 +42,9 @@ public final class SwipeMenuLayout extends FrameLayout {
     private int mLastX; // 最后触发的X坐标
     private int mLastY; // 最后触发的Y坐标
     private int mScrollerDuration = 200; // 滑动是的时间(毫秒)
+    private boolean loseOnceTouch = false; // 整个列表中,除自身外是否有打开的Menu
 
     private RecyclerView mRecyclerView;
-    private boolean loseOnceTouch = false;
 
     public void setRecyclerView(@NonNull RecyclerView pRecyclerView) {
         mRecyclerView = pRecyclerView;
@@ -64,7 +64,6 @@ public final class SwipeMenuLayout extends FrameLayout {
 
     public SwipeMenuLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setClickable(true);
         mScroller = new OverScroller(getContext());
         ViewConfiguration mViewConfig = ViewConfiguration.get(getContext());
         mScaledTouchSlop = mViewConfig.getScaledTouchSlop();
@@ -251,8 +250,7 @@ public final class SwipeMenuLayout extends FrameLayout {
         return (float) Math.sin(f);
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent ev) {
+    public boolean onTouchEventCustom(MotionEvent ev) {
         if (!loseOnceTouch) {
             if (mVelocityTracker == null) {
                 mVelocityTracker = VelocityTracker.obtain();
@@ -263,32 +261,6 @@ public final class SwipeMenuLayout extends FrameLayout {
                 case MotionEvent.ACTION_DOWN:
                     mLastX = (int) ev.getX();
                     mLastY = (int) ev.getY();
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    int disX = (int) (mLastX - ev.getX());
-                    int disY = (int) (mLastY - ev.getY());
-                    if (!mDragging && Math.abs(disX) > mScaledTouchSlop && Math.abs(disX) > Math.abs(disY)) {
-                        mDragging = true;
-                    }
-                    if (mDragging) {
-                        if (currMenuView == null || shouldResetSwipe) {
-                            if (disX < 0) {
-                                if (leftMenuView != null)
-                                    currMenuView = leftMenuView;
-                                else
-                                    currMenuView = rightMenuView;
-                            } else {
-                                if (rightMenuView != null)
-                                    currMenuView = rightMenuView;
-                                else
-                                    currMenuView = leftMenuView;
-                            }
-                        }
-                        scrollBy(disX, 0);
-                        mLastX = (int) ev.getX();
-                        mLastY = (int) ev.getY();
-                        shouldResetSwipe = false;
-                    }
                     break;
                 case MotionEvent.ACTION_UP:
                     mDragging = false;
@@ -327,6 +299,32 @@ public final class SwipeMenuLayout extends FrameLayout {
                         return true;
                     }
                     break;
+                case MotionEvent.ACTION_MOVE:
+                    int disX = (int) (mLastX - ev.getX());
+                    int disY = (int) (mLastY - ev.getY());
+                    if (!mDragging && Math.abs(disX) > mScaledTouchSlop && Math.abs(disX) > Math.abs(disY)) {
+                        mDragging = true;
+                    }
+                    if (mDragging) {
+                        if (currMenuView == null || shouldResetSwipe) {
+                            if (disX < 0) {
+                                if (leftMenuView != null)
+                                    currMenuView = leftMenuView;
+                                else
+                                    currMenuView = rightMenuView;
+                            } else {
+                                if (rightMenuView != null)
+                                    currMenuView = rightMenuView;
+                                else
+                                    currMenuView = leftMenuView;
+                            }
+                        }
+                        scrollBy(disX, 0);
+                        mLastX = (int) ev.getX();
+                        mLastY = (int) ev.getY();
+                        shouldResetSwipe = false;
+                    }
+                    break;
                 case MotionEvent.ACTION_CANCEL:
                     mDragging = false;
                     if (!mScroller.isFinished()) {
@@ -342,8 +340,7 @@ public final class SwipeMenuLayout extends FrameLayout {
         return super.onTouchEvent(ev);
     }
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
+    public boolean onInterceptTouchEventCustom(MotionEvent ev) {
         boolean isIntercepted = super.onInterceptTouchEvent(ev);
         int action = ev.getAction();
         switch (action) {
@@ -358,6 +355,15 @@ public final class SwipeMenuLayout extends FrameLayout {
                     view.smoothCloseMenu();
                 }
                 break;
+            case MotionEvent.ACTION_UP:
+                if (!loseOnceTouch) {
+                    isIntercepted = false;
+                    if (isMenuOpen() && currMenuView.isClickOnMenuView(this.getWidth(), ev.getX())) {
+                        smoothCloseMenu();
+                        isIntercepted = true;
+                    }
+                }
+                break;
             case MotionEvent.ACTION_MOVE:
                 if (!loseOnceTouch) {
                     int disX = (int) (ev.getX() - mDownX);
@@ -365,15 +371,6 @@ public final class SwipeMenuLayout extends FrameLayout {
                     isIntercepted = Math.abs(disX) > mScaledTouchSlop && Math.abs(disX) > Math.abs(disY);
                     if (isIntercepted) {
                         getParent().requestDisallowInterceptTouchEvent(isIntercepted);
-                    }
-                }
-                break;
-            case MotionEvent.ACTION_UP:
-                if (!loseOnceTouch) {
-                    isIntercepted = false;
-                    if (isMenuOpen() && currMenuView.isClickOnMenuView(this.getWidth(), ev.getX())) {
-                        smoothCloseMenu();
-                        isIntercepted = true;
                     }
                 }
                 break;
