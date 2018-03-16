@@ -1,10 +1,8 @@
 package com.acmenxd.recyclerview.adapter;
 
-import android.content.Context;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.OrientationHelper;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +29,8 @@ import java.util.List;
 public class MultiItemTypeSwipeMenuAdapter<T> extends MultiItemTypeAdapter<T> {
     private OnSwipeMenuListener mSwipeMenuListener;
 
-    public MultiItemTypeSwipeMenuAdapter(@NonNull Context context, @NonNull RecyclerView recyclerView, @NonNull List<T> datas, @NonNull OnSwipeMenuListener pSwipeMenuListener) {
-        super(context, recyclerView, datas);
-        mContext = context;
-        mRecyclerView = recyclerView;
-        mDatas = datas;
+    public MultiItemTypeSwipeMenuAdapter(@NonNull List<T> datas, @NonNull OnSwipeMenuListener pSwipeMenuListener) {
+        super(datas);
         this.mSwipeMenuListener = pSwipeMenuListener;
     }
 
@@ -100,5 +95,4 @@ public class MultiItemTypeSwipeMenuAdapter<T> extends MultiItemTypeAdapter<T> {
             mItemDelegateManager.convert(viewHolder, mDatas.get(dataPosition), dataPosition);
         }
     }
-
 }
