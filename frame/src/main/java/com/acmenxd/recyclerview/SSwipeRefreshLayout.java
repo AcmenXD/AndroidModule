@@ -488,7 +488,7 @@ public class SSwipeRefreshLayout extends ViewGroup {
     /**
      * 主要判断是否应该拦截子View的事件<br>
      * 如果拦截，则交给自己的OnTouchEvent处理<br>
-     * 否者，交给子View处理<br>
+     * 否则，交给子View处理<br>
      */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
