@@ -119,20 +119,22 @@ public final class AddItemListener {
                             if (mRecyclerView.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
                                 if (mItemCallBack != null) {
                                     View child = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
-                                    boolean isMenuOpen = false;
-                                    if (child instanceof SwipeMenuLayout && (((SwipeMenuLayout) child).isMenuOpen() || ((SwipeMenuLayout) child).isLoseOnceTouch())) {
-                                        isMenuOpen = true;
-                                    }
-                                    boolean isGroup = false;
-                                    if (child instanceof GroupItemLayout && ((GroupItemLayout) child).getChildAt(0) instanceof GroupHeadLayout) {
-                                        isGroup = isDownInView(((GroupItemLayout) child).getChildAt(0), (int) e.getRawX(), (int) e.getRawY());
-                                    }
-                                    if (child != null && child.isEnabled() && !isMenuOpen && !isGroup) {
-                                        int viewPosition = mRecyclerView.getChildAdapterPosition(child);
-                                        int dataPosition = viewPosition - WrapperUtils.getEmptyUpItemCount(mRecyclerView);
-                                        boolean isWrapper = WrapperUtils.isItemWrapper(mRecyclerView, viewPosition);
-                                        if (!isWrapper) {
-                                            mItemCallBack.onClick(mRecyclerView.getChildViewHolder(child), dataPosition);
+                                    if (child != null) {
+                                        boolean isMenuOpen = false;
+                                        if (child instanceof SwipeMenuLayout && (((SwipeMenuLayout) child).isMenuOpen() || ((SwipeMenuLayout) child).isLoseOnceTouch())) {
+                                            isMenuOpen = true;
+                                        }
+                                        boolean isGroup = false;
+                                        if (child instanceof GroupItemLayout && ((GroupItemLayout) child).getChildAt(0) instanceof GroupHeadLayout) {
+                                            isGroup = isDownInView(((GroupItemLayout) child).getChildAt(0), (int) e.getRawX(), (int) e.getRawY());
+                                        }
+                                        if (child.isEnabled() && !isMenuOpen && !isGroup) {
+                                            int viewPosition = mRecyclerView.getChildAdapterPosition(child);
+                                            int dataPosition = viewPosition - WrapperUtils.getEmptyUpItemCount(mRecyclerView);
+                                            boolean isWrapper = WrapperUtils.isItemWrapper(mRecyclerView, viewPosition);
+                                            if (!isWrapper) {
+                                                mItemCallBack.onClick(mRecyclerView.getChildViewHolder(child), dataPosition);
+                                            }
                                         }
                                     }
                                 }
@@ -146,16 +148,18 @@ public final class AddItemListener {
                                 if (mItemCallBack != null) {
                                     if (mItemCallBack.isLongEnabled()) {
                                         View child = mRecyclerView.findChildViewUnder(e.getX(), e.getY());
-                                        boolean isMenuOpen = false;
-                                        if (child instanceof SwipeMenuLayout && (((SwipeMenuLayout) child).isMenuOpen() || ((SwipeMenuLayout) child).isLoseOnceTouch())) {
-                                            isMenuOpen = true;
-                                        }
-                                        if (child != null && child.isEnabled() && !isMenuOpen) {
-                                            int viewPosition = mRecyclerView.getChildAdapterPosition(child);
-                                            int dataPosition = viewPosition - WrapperUtils.getEmptyUpItemCount(mRecyclerView);
-                                            boolean isWrapper = WrapperUtils.isItemWrapper(mRecyclerView, viewPosition);
-                                            if (!isWrapper) {
-                                                mItemCallBack.onLongClick(mRecyclerView.getChildViewHolder(child), dataPosition);
+                                        if (child != null) {
+                                            boolean isMenuOpen = false;
+                                            if (child instanceof SwipeMenuLayout && (((SwipeMenuLayout) child).isMenuOpen() || ((SwipeMenuLayout) child).isLoseOnceTouch())) {
+                                                isMenuOpen = true;
+                                            }
+                                            if (child.isEnabled() && !isMenuOpen) {
+                                                int viewPosition = mRecyclerView.getChildAdapterPosition(child);
+                                                int dataPosition = viewPosition - WrapperUtils.getEmptyUpItemCount(mRecyclerView);
+                                                boolean isWrapper = WrapperUtils.isItemWrapper(mRecyclerView, viewPosition);
+                                                if (!isWrapper) {
+                                                    mItemCallBack.onLongClick(mRecyclerView.getChildViewHolder(child), dataPosition);
+                                                }
                                             }
                                         }
                                     } else {
