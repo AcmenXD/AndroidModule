@@ -291,6 +291,44 @@ public class SSwipeRefreshLayout extends ViewGroup {
     }
 
     /**
+     * 滚动到顶部
+     */
+    public void scrollToTop() {
+        if (mTarget != null) {
+            mTarget.setScrollY(0);
+        }
+    }
+
+    /**
+     * 滚动到底部
+     */
+    public void scrollToBottom() {
+        if (mTarget != null) {
+            mTarget.setScrollY(mTarget.getMeasuredHeight());
+        }
+    }
+
+    /**
+     * 滚动到左边
+     */
+    public void scrollToStart() {
+        if (mTarget != null) {
+            scrollToTop();
+            mTarget.setScrollX(0);
+        }
+    }
+
+    /**
+     * 滚动到右边
+     */
+    public void scrollToEnd() {
+        if (mTarget != null) {
+            scrollToBottom();
+            mTarget.setScrollX(mTarget.getMeasuredWidth());
+        }
+    }
+
+    /**
      * 设置头部背景
      */
     public void setHeaderBackgroundResource(@DrawableRes int resId) {
