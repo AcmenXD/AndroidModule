@@ -47,7 +47,7 @@
 -> ...      : 各种工具类,具体功能请查看源码
 ```
 ---
-### 结构说明 -> mvp 示例Module
+### 结构说明 -> mvpbase 示例Module
 ---
 **base**
 ```java
@@ -74,9 +74,7 @@
 ```java
 -> IRequestDoc      : Retrofit注解的使用文档
 -> IRequest         : 默认所有服务器接口的定义
--> IUploadRequest   : 默认上传接口的定义
--> IDownloadRequest : 默认下载接口的定义
--> NetCode          : 服务器状态码统一处理类
+-> RequestCallback  : 服务器状态码统一处理类
 ```
 ---
 **widget**
@@ -104,7 +102,6 @@
 -> ITest         : 模拟登录模块mvp接口定义
 -> TestModel     : 模拟登录模块m层实现
 -> TestPresenter : 模拟登录模块p层实现
-
 ```
 ---
 有问题请与作者联系AcmenXD@163.com ^_^!
