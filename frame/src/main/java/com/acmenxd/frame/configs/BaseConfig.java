@@ -55,7 +55,7 @@ public abstract class BaseConfig {
     // Log开关
     protected boolean LOG_OPEN = DEBUG;
     // Log显示等级, >= LOG_LEVEL的log显示
-    protected LogType LOG_LEVEL = LogType.V;
+    public LogType LOG_LEVEL = LogType.V;
 
     /**
      * Toast 配置

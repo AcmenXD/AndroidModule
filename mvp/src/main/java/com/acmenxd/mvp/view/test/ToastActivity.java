@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.acmenxd.mvp.R;
-import com.acmenxd.mvp.base.BaseActivity;
-import com.acmenxd.mvp.utils.ViewUtils;
+import com.acmenxd.mvpbase.base.BaseActivity;
+import com.acmenxd.mvpbase.utils.RefreshUtils;
 import com.acmenxd.toaster.ToastDuration;
 import com.acmenxd.toaster.ToastNW;
 import com.acmenxd.toaster.Toaster;
@@ -27,7 +27,7 @@ public class ToastActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_toast);
         setTitleView(R.layout.layout_title);
-        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title"), new ViewUtils.OnTitleListener() {
+        RefreshUtils.initTitleView(getTitleView(), getBundle().getString("title"), new RefreshUtils.OnTitleListener() {
             @Override
             public void onBack() {
                 ToastActivity.this.finish();

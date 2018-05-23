@@ -1,1 +1,1 @@
-include ':frame', ':mvp'
+include ':frame', ':glide', ':frescoview', ':mvpbase', ':mvp'

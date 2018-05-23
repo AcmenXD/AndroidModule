@@ -14,13 +14,13 @@ import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.frame.utils.Utils;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.R;
-import com.acmenxd.mvp.base.BaseActivity;
-import com.acmenxd.mvp.http.IDownloadRequest;
-import com.acmenxd.mvp.http.IUploadRequest;
-import com.acmenxd.mvp.http.LoadHelper;
-import com.acmenxd.mvp.model.response.TestEntity;
-import com.acmenxd.mvp.utils.ViewUtils;
-import com.acmenxd.retrofit.HttpEntity;
+import com.acmenxd.mvpbase.base.BaseActivity;
+import com.acmenxd.retrofit.load.IDownloadRequest;
+import com.acmenxd.retrofit.load.IUploadRequest;
+import com.acmenxd.retrofit.load.LoadHelper;
+import com.acmenxd.mvpbase.model.response.TestEntity;
+import com.acmenxd.mvpbase.utils.RefreshUtils;
+import com.acmenxd.retrofit.entity.HttpEntity;
 import com.acmenxd.retrofit.exception.HttpException;
 import com.acmenxd.toaster.Toaster;
 
@@ -49,7 +49,7 @@ public class RetrofitActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retrofit);
         setTitleView(R.layout.layout_title);
-        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title"), new ViewUtils.OnTitleListener() {
+        RefreshUtils.initTitleView(getTitleView(), getBundle().getString("title"), new RefreshUtils.OnTitleListener() {
             @Override
             public void onBack() {
                 RetrofitActivity.this.finish();

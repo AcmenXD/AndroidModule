@@ -17,8 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acmenxd.mvp.R;
-import com.acmenxd.mvp.base.BaseActivity;
-import com.acmenxd.mvp.utils.ViewUtils;
+import com.acmenxd.mvpbase.base.BaseActivity;
+import com.acmenxd.mvpbase.utils.RefreshUtils;
 import com.acmenxd.recyclerview.LoadMoreLayout;
 import com.acmenxd.recyclerview.adapter.AdapterUtils;
 import com.acmenxd.recyclerview.adapter.MultiItemTypeAdapter;
@@ -67,7 +67,7 @@ public class RecyclerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycler);
         setTitleView(R.layout.layout_title);
-        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title"), new ViewUtils.OnTitleListener() {
+        RefreshUtils.initTitleView(getTitleView(), getBundle().getString("title"), new RefreshUtils.OnTitleListener() {
             @Override
             public void onBack() {
                 RecyclerActivity.this.finish();

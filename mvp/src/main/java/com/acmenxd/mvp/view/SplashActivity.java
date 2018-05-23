@@ -11,9 +11,9 @@ import com.acmenxd.frame.utils.PermissionsUtils;
 import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.R;
-import com.acmenxd.mvp.base.AppConfig;
-import com.acmenxd.mvp.base.BaseActivity;
-import com.acmenxd.mvp.base.BaseApplication;
+import com.acmenxd.mvpbase.base.AppConfig;
+import com.acmenxd.mvpbase.base.BaseActivity;
+import com.acmenxd.mvpbase.base.BaseApplication;
 import com.acmenxd.sptool.SpManager;
 import com.acmenxd.sptool.SpTool;
 

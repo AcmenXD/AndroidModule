@@ -11,11 +11,11 @@ import android.widget.TextView;
 
 import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.R;
-import com.acmenxd.mvp.base.AppConfig;
-import com.acmenxd.mvp.base.BaseActivity;
-import com.acmenxd.mvp.base.EventBusHelper;
-import com.acmenxd.mvp.model.response.TestEntity;
-import com.acmenxd.mvp.utils.ViewUtils;
+import com.acmenxd.mvpbase.base.AppConfig;
+import com.acmenxd.mvpbase.base.BaseActivity;
+import com.acmenxd.mvpbase.base.EventBusHelper;
+import com.acmenxd.mvpbase.model.response.TestEntity;
+import com.acmenxd.mvpbase.utils.RefreshUtils;
 import com.acmenxd.mvp.view.test.DBActivity;
 import com.acmenxd.mvp.view.test.FileActivity;
 import com.acmenxd.mvp.view.test.FrescoActivity;
@@ -49,7 +49,7 @@ public class MainActivity extends BaseActivity {
         Logger.w("App进入MainActivity!");
         setContentView(R.layout.activity_main);
         setTitleView(R.layout.layout_title);
-        ViewUtils.initTitleView(getTitleView(), "Android框架设计", null);
+        RefreshUtils.initTitleView(getTitleView(), "Android框架设计", null);
         initData();
 
         lv_main = (ListView) findViewById(R.id.lv_main);

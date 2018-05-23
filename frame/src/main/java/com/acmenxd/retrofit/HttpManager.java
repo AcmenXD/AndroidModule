@@ -6,9 +6,9 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import com.acmenxd.logger.LogTag;
-import com.acmenxd.retrofit.callback.IHttpProgress;
-import com.acmenxd.retrofit.callback.ProgressRequestBody;
-import com.acmenxd.retrofit.callback.ProgressResponseBody;
+import com.acmenxd.retrofit.load.IHttpProgress;
+import com.acmenxd.retrofit.load.ProgressRequestBody;
+import com.acmenxd.retrofit.load.ProgressResponseBody;
 import com.acmenxd.retrofit.converter.CustomConverterFactory;
 import com.acmenxd.retrofit.cookie.HttpCookieJar;
 import com.acmenxd.retrofit.interceptor.BodyInterceptor;
@@ -79,7 +79,7 @@ public enum HttpManager {
     // 请求返回时回调
     public HttpResultCallback resultCallback;
     // 请求公共参数回调
-    public HttpMutualCallback mutualCallback;
+    public HttpMutualParamCallback mutualCallback;
 
     private Retrofit mRetrofit;
 

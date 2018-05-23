@@ -16,11 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acmenxd.mvp.R;
-import com.acmenxd.mvp.base.BaseActivity;
-import com.acmenxd.mvp.db.TestBeanDB;
-import com.acmenxd.mvp.db.dao.TestBeanDao;
-import com.acmenxd.mvp.model.db.TestBean;
-import com.acmenxd.mvp.utils.ViewUtils;
+import com.acmenxd.mvpbase.base.BaseActivity;
+import com.acmenxd.mvpbase.db.TestBeanDB;
+import com.acmenxd.mvpbase.db.dao.TestBeanDao;
+import com.acmenxd.mvpbase.model.db.TestBean;
+import com.acmenxd.mvpbase.utils.RefreshUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -49,7 +49,7 @@ public class DBActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_db);
         setTitleView(R.layout.layout_title);
-        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title"), new ViewUtils.OnTitleListener() {
+        RefreshUtils.initTitleView(getTitleView(), getBundle().getString("title"), new RefreshUtils.OnTitleListener() {
             @Override
             public void onBack() {
                 DBActivity.this.finish();

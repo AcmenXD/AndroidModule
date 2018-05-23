@@ -1,0 +1,83 @@
+apply plugin: 'com.android.library'
+// GreenDao Config
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+    compileSdkVersion 26
+    buildToolsVersion "27.0.3"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                // EventBus Config
+                arguments = [eventBusIndex: 'com.acmenxd.mvpbase.MyEventBusIndex']
+            }
+        }
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/main/java']
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+// GreenDao Config ------------------------------------
+greendao {
+    /**
+     * 数据库版本号不能降低,会导致App无法安装
+     * 数据库字段发生变更或新增表时,更新这个版本号,运行Make Project
+     * 版本号历史:
+     * 1:2016年11月21日13:32:33 - > 创建初始库和表
+     */
+    schemaVersion 1
+    daoPackage 'com.acmenxd.mvpbase.db.dao'//生成的dao文件存放路径
+    targetGenDir 'src/main/java'//自定义生成数据库文件的目录，可以将生成的文件放到我们的java目录中，而不是build中，这样就不用额外的设置资源目录了
+}
+// GreenDao Config End ------------------------------------
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    /**
+     * 系统库
+     */
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:26.0.0'
+    /**
+     * Module
+     */
+    compile project(':frame')
+    compile project(':frescoview')
+    compile project(':glide')
+    /**
+     * 数据库
+     */
+    compile 'org.greenrobot:greendao:3.2.2'
+    /**
+     * 数据库加密库
+     */
+    //compile 'net.zetetic:android-database-sqlcipher:3.5.1'
+    /**
+     * 查看数据库表的工具库
+     */
+    compile 'com.amitshekhar.android:debug-db:1.0.0'
+    /**
+     * 消息传递处理库
+     */
+    compile 'org.greenrobot:eventbus:3.0.0'
+    annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.0.1'
+}

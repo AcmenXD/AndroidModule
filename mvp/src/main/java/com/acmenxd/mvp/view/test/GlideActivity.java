@@ -12,8 +12,8 @@ import com.acmenxd.glide.GlideManager;
 import com.acmenxd.glide.RoundTransform;
 import com.acmenxd.glide.SaveCallback;
 import com.acmenxd.mvp.R;
-import com.acmenxd.mvp.base.BaseActivity;
-import com.acmenxd.mvp.utils.ViewUtils;
+import com.acmenxd.mvpbase.base.BaseActivity;
+import com.acmenxd.mvpbase.utils.RefreshUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -35,7 +35,7 @@ public class GlideActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_glide);
         setTitleView(R.layout.layout_title);
-        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title"), new ViewUtils.OnTitleListener() {
+        RefreshUtils.initTitleView(getTitleView(), getBundle().getString("title"), new RefreshUtils.OnTitleListener() {
             @Override
             public void onBack() {
                 GlideActivity.this.finish();

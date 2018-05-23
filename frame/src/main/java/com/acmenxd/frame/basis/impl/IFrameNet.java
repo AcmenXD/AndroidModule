@@ -3,7 +3,7 @@ package com.acmenxd.frame.basis.impl;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
-import com.acmenxd.retrofit.callback.IHttpProgress;
+import com.acmenxd.retrofit.load.IHttpProgress;
 
 /**
  * @author AcmenXD

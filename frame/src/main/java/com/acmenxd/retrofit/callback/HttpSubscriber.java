@@ -4,13 +4,14 @@ import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import com.acmenxd.logger.Logger;
-import com.acmenxd.retrofit.HttpEntity;
-import com.acmenxd.retrofit.HttpError;
+import com.acmenxd.retrofit.entity.HttpEntity;
+import com.acmenxd.retrofit.exception.HttpError;
 import com.acmenxd.retrofit.HttpManager;
 import com.acmenxd.retrofit.HttpResultCallback;
 import com.acmenxd.retrofit.exception.HttpException;
 import com.acmenxd.retrofit.exception.HttpNoDataBodyException;
 import com.acmenxd.retrofit.exception.HttpNoDataTypeException;
+import com.acmenxd.retrofit.load.IHttpProgress;
 
 import java.io.Serializable;
 

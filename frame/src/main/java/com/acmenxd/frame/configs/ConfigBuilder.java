@@ -4,16 +4,12 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.acmenxd.frame.basis.FrameApplication;
-import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frame.utils.code.EncodeDecode;
-import com.acmenxd.frescoview.FrescoManager;
-import com.acmenxd.glide.GlideManager;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.retrofit.HttpManager;
 import com.acmenxd.sptool.SpEncodeDecodeCallback;
 import com.acmenxd.sptool.SpManager;
 import com.acmenxd.toaster.Toaster;
-import com.bumptech.glide.load.DecodeFormat;
 
 import java.io.File;
 import java.io.IOException;
@@ -119,39 +115,5 @@ public final class ConfigBuilder {
         HttpManager.INSTANCE.connect_timeout = sConfigInfo.CONNECT_TIMEOUT;
         HttpManager.INSTANCE.read_timeout = sConfigInfo.READ_TIMEOUT;
         HttpManager.INSTANCE.write_timeout = sConfigInfo.WRITE_TIMEOUT;
-        //------------------------------------Glide配置---------------------------------
-        GlideManager.DECODEFORMAT = DecodeFormat.PREFER_ARGB_8888;
-        GlideManager.IMAGE_CACHE_PATH = FileUtils.imgCacheDirPath;
-        GlideManager.MAIN_CACHE_DIR = "MainCache";
-        GlideManager.MAX_DISK_CACHE_SIZE = 50;
-        //------------------------------------FrescoView配置---------------------------------
-        /**
-         * 设置Log开关 & 等级
-         * * 默认为 开 & Log.VERBOSE
-         */
-        FrescoManager.LOG_OPEN = sConfigInfo.LOG_OPEN;
-        FrescoManager.LOG_LEVEL = sConfigInfo.LOG_LEVEL.intValue();
-        /**
-         * 设置缓存图片的存放路径
-         * Environment.getExternalStorageDirectory().getAbsolutePath() + "/FrescoView/"
-         * * 路径:默认为SD卡根目录FrescoView下 (此路径非直接存储图片的路径,还需要以下目录设置)
-         * * 大图片存放目录:默认为MainCache目录
-         * * 小图片存放目录:默认为SmallCache目录 (如不想区分大小图片,可设置为null或者"",表示大小图片都放在mainCacheDir目录下)
-         */
-        FrescoManager.IMAGE_CACHE_PATH = FileUtils.imgCacheDirPath;
-        FrescoManager.MAIN_CACHE_DIR = "MainCache";
-        FrescoManager.SMALL_CACHE_DIR = "SmallCache";
-        /**
-         * 设置缓存磁盘大小
-         * * mainCacheSize  大图片磁盘大小(MB) 默认为50MB
-         * * smallCacheSize 小图片磁盘大小(MB) 默认为20MB
-         */
-        FrescoManager.MAX_DISK_CACHE_SIZE = 50;
-        FrescoManager.MAX_SMALL_DISK_LOW_CACHE_SIZE = 20;
-        /**
-         * 初始化 -> 配置完成后必须调用此函数生效
-         * * context必须设置
-         */
-        FrescoManager.setContext(context);
     }
 }

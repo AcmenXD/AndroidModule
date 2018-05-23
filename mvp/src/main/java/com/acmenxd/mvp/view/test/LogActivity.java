@@ -10,9 +10,9 @@ import android.widget.TextView;
 import com.acmenxd.logger.LogTag;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.R;
-import com.acmenxd.mvp.base.AppConfig;
-import com.acmenxd.mvp.base.BaseActivity;
-import com.acmenxd.mvp.utils.ViewUtils;
+import com.acmenxd.mvpbase.base.AppConfig;
+import com.acmenxd.mvpbase.base.BaseActivity;
+import com.acmenxd.mvpbase.utils.RefreshUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class LogActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log);
         setTitleView(R.layout.layout_title);
-        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title"), new ViewUtils.OnTitleListener() {
+        RefreshUtils.initTitleView(getTitleView(), getBundle().getString("title"), new RefreshUtils.OnTitleListener() {
             @Override
             public void onBack() {
                 LogActivity.this.finish();

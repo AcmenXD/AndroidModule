@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "27.0.3"
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -27,8 +27,8 @@ dependencies {
      * 系统库
      */
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:25.0.0'
-    compile 'com.android.support:recyclerview-v7:25.0.0'
+    compile 'com.android.support:appcompat-v7:26.0.0'
+    compile 'com.android.support:recyclerview-v7:26.0.0'
     /**
      * 拼音支持库
      */
@@ -48,22 +48,4 @@ dependencies {
      * 权限处理库
      */
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar'
-    /**
-     * 图片加载处理库 -> glide
-     */
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    /**
-     * 图片加载处理库 -> facebook推出的图片处理库
-     */
-    compile 'com.facebook.fresco:fresco:1.0.1'
-    //支持okhttp3网络库请求
-    compile 'com.facebook.fresco:imagepipeline-okhttp3:1.0.1'
-    //支持gif时需要添加
-    compile 'com.facebook.fresco:animated-gif:1.0.1'
-    //支持 WebP （静态图+动图），需要添加
-    compile 'com.facebook.fresco:animated-webp:1.0.1'
-    //在 API < 14(4.0) 上的机器支持 WebP 时，需要添加
-    //compile 'com.facebook.fresco:animated-base-support:1.0.1'
-    //支持 WebP 静态图，需要添加
-    //compile 'com.facebook.fresco:webpsupport:1.0.1'
 }

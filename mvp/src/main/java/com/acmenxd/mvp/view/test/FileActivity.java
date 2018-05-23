@@ -10,8 +10,8 @@ import android.widget.TextView;
 import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.mvp.R;
-import com.acmenxd.mvp.base.BaseActivity;
-import com.acmenxd.mvp.utils.ViewUtils;
+import com.acmenxd.mvpbase.base.BaseActivity;
+import com.acmenxd.mvpbase.utils.RefreshUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +29,7 @@ public class FileActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file);
         setTitleView(R.layout.layout_title);
-        ViewUtils.initTitleView(getTitleView(), getBundle().getString("title"), new ViewUtils.OnTitleListener() {
+        RefreshUtils.initTitleView(getTitleView(), getBundle().getString("title"), new RefreshUtils.OnTitleListener() {
             @Override
             public void onBack() {
                 FileActivity.this.finish();

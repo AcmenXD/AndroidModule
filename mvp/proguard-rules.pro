@@ -1,13 +1,9 @@
 # Add project specific ProGuard rules here.
-# By default, the flags in this file are appended to flags specified
-# in D:\Android\Android\sdk/tools/proguard/proguard-android.txt
-# You can edit the include path and order by changing the proguardFiles
-# directive in build.gradle.
+# You can control the set of applied configuration files using the
+# proguardFiles setting in build.gradle.
 #
 # For more details, see
 #   http://developer.android.com/guide/developing/tools/proguard.html
-
-# Add any project specific keep options here:
 
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface
@@ -23,6 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
 # * 混淆日志生成目录:app.build.outputs.mapping下,打包时请拷贝此日志,用于错误日志还原分析.
 #--------------------------------------------- 公共配置 ----------------------------------------#
 -optimizationpasses 5 # 代码混淆压缩比
@@ -172,21 +169,16 @@
 -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
     <init>(java.lang.Throwable);
 }
-#--------------------------------------------- 第三方依赖库 End ----------------------------------------#
 
 #--------------------------------------------- 项目混淆 处理 ----------------------------------------#
--keep class com.acmenxd.mvp.model.**{ *; } # 所有实体类
-#--------------------------------------------- 项目混淆 End ----------------------------------------#
+-keep class com.acmenxd.mvpbase.model.**{ *; } # 实体类
+-keep class com.acmenxd.mvp.model.**{ *; } # 实体类
 
 #--------------------------------------------- 反射类 处理 ----------------------------------------#
 
-#--------------------------------------------- 反射类 End ----------------------------------------#
 
 #--------------------------------------------- WebView 处理 ----------------------------------------#
 
-#--------------------------------------------- WebView End ----------------------------------------#
 
 #--------------------------------------------- js交互 处理 ----------------------------------------#
-
-#--------------------------------------------- js交互 End ----------------------------------------#
 

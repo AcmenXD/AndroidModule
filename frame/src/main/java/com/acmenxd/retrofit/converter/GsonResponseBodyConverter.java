@@ -2,7 +2,7 @@ package com.acmenxd.retrofit.converter;
 
 import android.support.annotation.NonNull;
 
-import com.acmenxd.retrofit.HttpDataEntity;
+import com.acmenxd.retrofit.entity.HttpDataEntity;
 import com.google.gson.Gson;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;

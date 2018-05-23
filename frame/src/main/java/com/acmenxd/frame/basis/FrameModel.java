@@ -15,7 +15,7 @@ import com.acmenxd.frame.utils.net.NetStatus;
 import com.acmenxd.retrofit.HttpManager;
 import com.acmenxd.retrofit.callback.HttpCallback;
 import com.acmenxd.retrofit.callback.HttpSubscriber;
-import com.acmenxd.retrofit.callback.IHttpProgress;
+import com.acmenxd.retrofit.load.IHttpProgress;
 
 import retrofit2.Call;
 import retrofit2.Response;
