@@ -2,14 +2,14 @@ package com.acmenxd.appbase.base;
 
 import android.content.Context;
 
+import com.acmenxd.appbase.MyEventBusIndex;
+import com.acmenxd.appbase.db.core.DBManager;
 import com.acmenxd.frame.basis.FrameApplication;
 import com.acmenxd.frame.configs.TestConfig;
 import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frescoview.FrescoManager;
 import com.acmenxd.glide.GlideManager;
 import com.acmenxd.logger.Logger;
-import com.acmenxd.appbase.MyEventBusIndex;
-import com.acmenxd.appbase.db.core.DBManager;
 import com.bumptech.glide.load.DecodeFormat;
 
 import org.greenrobot.eventbus.EventBus;
@@ -38,12 +38,12 @@ public final class BaseApplication extends FrameApplication {
         startTime = System.currentTimeMillis();
 
         // 配置框架设置
-        initFrameSetting(TestConfig.class, com.acmenxd.appbase.base.AppConfig.DEBUG);
+        initFrameSetting(TestConfig.class, AppConfig.DEBUG);
         initBaseSetting();
         // 存储项目整体配置信息
-        com.acmenxd.appbase.base.AppConfig.config = getConfig();
+        AppConfig.config = getConfig();
         // 初始化App配置
-        com.acmenxd.appbase.base.AppConfig.init();
+        AppConfig.init();
 
         // 初始化数据库配置
         DBManager.getInstance().init();
@@ -58,13 +58,13 @@ public final class BaseApplication extends FrameApplication {
     @Override
     public void crashException(String projectInformation, Thread pThread, Throwable pE) {
         StringBuffer sb = new StringBuffer();
-        sb.append("Debug").append(" = ").append(com.acmenxd.appbase.base.AppConfig.DEBUG).append("\n");
-        sb.append("Imei").append(" = ").append(com.acmenxd.appbase.base.AppConfig.IMEI).append("\n");
-        sb.append("Market").append(" = ").append(com.acmenxd.appbase.base.AppConfig.MARKET).append("\n");
-        sb.append("PackageName").append(" = ").append(com.acmenxd.appbase.base.AppConfig.PKG_NAME).append("\n");
-        sb.append("ProjectName").append(" = ").append(com.acmenxd.appbase.base.AppConfig.PROJECT_NAME).append("\n");
-        sb.append("VersionCode").append(" = ").append(com.acmenxd.appbase.base.AppConfig.VERSION_CODE).append("\n");
-        sb.append("VersionName").append(" = ").append(com.acmenxd.appbase.base.AppConfig.VERSION_NAME).append("\n");
+        sb.append("Debug").append(" = ").append(AppConfig.DEBUG).append("\n");
+        sb.append("Imei").append(" = ").append(AppConfig.IMEI).append("\n");
+        sb.append("Market").append(" = ").append(AppConfig.MARKET).append("\n");
+        sb.append("PackageName").append(" = ").append(AppConfig.PKG_NAME).append("\n");
+        sb.append("ProjectName").append(" = ").append(AppConfig.PROJECT_NAME).append("\n");
+        sb.append("VersionCode").append(" = ").append(AppConfig.VERSION_CODE).append("\n");
+        sb.append("VersionName").append(" = ").append(AppConfig.VERSION_NAME).append("\n");
         sb.append("ThreadName").append(" = ").append(pThread.getName()).append("\n");
         super.crashException(sb.toString(), pThread, pE);
     }

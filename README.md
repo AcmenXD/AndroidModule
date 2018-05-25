@@ -1,28 +1,25 @@
-# AcmenXDMvp
+# AppFrame
 
-基于 MVP 以及一些 主流技术,整理的一个Android公共框架frame.
+基于目前一些主流技术,整理的模块化开放框架
 
 如要了解功能实现,请运行app程序查看控制台日志和源代码!
-* 源代码 : <a href="https://github.com/AcmenXD/AcmenXDMvp">AcmenXD/AcmenXDMvp</a>
-* apk下载路径 : <a href="https://github.com/AcmenXD/Resource/blob/master/apks/AcmenXDMvp.apk">AcmenXDMvp.apk</a>
+* 源代码 : <a href="https://github.com/AcmenXD/AppFrame">AcmenXD/AppFrame</a>
+* apk下载路径 : <a href="https://github.com/AcmenXD/Resource/blob/master/apks/AppFrame.apk">AppFrame.apk</a>
 
 ### 功能
 ---
-- 多项目共用一份frame框架机制
-- 可视化打包工具配置渠道
-- debug|release版本控制debug开关
-- 签名信息在local.properties配置
+- 多项目共用一份frame框架
+- 多业务可分多Module开发,便于协作
 - 默认debug&release都开启 -> <a href="http://blog.csdn.net/wxd_beijing/article/details/70140536">混淆</a> | zipalign优化 | 移除无用的resource文件
-- 默认生成包名为:项目名_v版本_当前时间_debug | release.apk
 - 框架已对<a href="https://github.com/AcmenXD">com.github.AcmenXD</a>:<a href="https://github.com/AcmenXD/Toaster">Toaster</a> | <a href="https://github.com/AcmenXD/SpTool">SpTool</a> | <a href="https://github.com/AcmenXD/Retrofit">Retrofit</a> | <a href="https://github.com/AcmenXD/Marketer">Marketer</a> | <a href="https://github.com/AcmenXD/Glide">Glide</a> | <a href="https://github.com/AcmenXD/FrescoView">FrescoView</a> | <a href="https://github.com/AcmenXD/Logger">Logger</a> | <a href="https://github.com/AcmenXD/RecyclerView">RecyclerView</a>做好配置支持
 - 框架已集成并添加<a href="https://github.com/ReactiveX/RxJava">RxJava</a> | <a href="https://github.com/ReactiveX/RxAndroid">RxAndroid</a> | <a href="https://github.com/greenrobot/greenDAO">greenDAO</a> | <a href="https://github.com/greenrobot/EventBus">EventBus</a>支持
 - 特别说明 -> 框架支持库请移步对应的github查看使用方法及源码
 
-### 结构说明 -> frame 框架Module
+### frame 框架Module
 ---
 **configs**
 ```java
--> BaseConfig    : 基础配置信息,项目配置必须继承此类,从而拓展其他配置!  例如:MvpConfig/OtherConfit(每个项目都有一份单独的配置清单)
+-> BaseConfig    : 基础配置信息,项目配置必须继承此类,从而拓展其他配置!  例如:TestConfig/OtherConfit(每个项目都有一份单独的配置清单)
 -> ConfigBuilder : 框架进行初始化操作类,包括初始化第三方组件/类库
 ```
 ---
@@ -47,18 +44,23 @@
 -> ...      : 各种工具类,具体功能请查看源码
 ```
 ---
-### 结构说明 -> mvpbase 示例Module
+**logger** / **marketer** / **recyclerview** / **retrofit** / **sptool** / **toaster**
+```java
+-> 功能组件,详情请移步对应的github查看使用方法及源码
+```
+---
+### 结构说明 -> appbase 模拟项目的基准库
 ---
 **base**
 ```java
 -> impl包          : base层所需的接口基类
+-> AppConfig       : debug开关,config配置及项目用到的其他参数等
 -> BaseApplication : 继承自FrameApplication,拓展项目配置初始化等
 -> BaseActivity    : 继承自FrameActivity,拓展项目功能
 -> BaseFragment    : 继承自FrameFragment,拓展项目功能
 -> BaseService     : 继承自FrameService,拓展项目功能
 -> BasePresenter   : 继承自FramePresenter,拓展项目功能
 -> BaseModel       : 继承自FrameModel,拓展项目功能
--> AppConfig       : debug开关,config配置及项目用到的其他参数等
 -> EventBusHelper  : EventBus帮助类
 ```
 ---
@@ -85,16 +87,16 @@
 ---
 **model**
 ```java
+-> db       : 数据库实体类定义
 -> request  : 服务器请求实体类定义
 -> response : 服务器响应实体类定义
--> db       : 数据库实体类定义
 ```
 ---
+### 结构说明 -> test 模拟项目的主Module
 **view**
 ```java
 -> SplashActivity : 启动页
 -> MainActivity   : 主页
--> test           : 测试的Activity
 ```
 ---
 **mvp**
@@ -102,6 +104,12 @@
 -> ITest         : 模拟登录模块mvp接口定义
 -> TestModel     : 模拟登录模块m层实现
 -> TestPresenter : 模拟登录模块p层实现
+```
+---
+### 结构说明 -> test_demo 模拟项目的业务Module
+**view**
+```java
+-> 各功能模块的测试Activity
 ```
 ---
 有问题请与作者联系AcmenXD@163.com ^_^!
