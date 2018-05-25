@@ -30,7 +30,7 @@ public abstract class BaseConfig {
      * 数据库 配置
      */
     // 数据库名称
-    public String DB_NAME = "acmen_db";
+    public String DB_NAME = "app_frame_db";
 
     /**
      * File 存储配置
@@ -39,7 +39,7 @@ public abstract class BaseConfig {
      */
     public String SDCARD_DIR = Environment.getExternalStorageDirectory().getAbsolutePath();
     // 项目主路径
-    public String BASE_DIR = SDCARD_DIR + "/AcmenXD/";
+    public String BASE_DIR = SDCARD_DIR + "/AppFrame/";
     // Log日志默认保存路径
     public String LOG_DIR = BASE_DIR + "Logger/";
 
