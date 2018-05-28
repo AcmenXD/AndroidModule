@@ -1,6 +1,6 @@
 # AppFrame
 
-基于目前一些主流技术,整理的模块化开放框架
+基于目前一些主流技术,整理的模块化开发框架
 
 如要了解功能实现,请运行app程序查看控制台日志和源代码!
 * 源代码 : <a href="https://github.com/AcmenXD/AppFrame">AcmenXD/AppFrame</a>
