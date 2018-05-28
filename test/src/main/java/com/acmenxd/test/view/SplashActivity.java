@@ -132,8 +132,6 @@ public final class SplashActivity extends BaseActivity {
                 permissionsIndex++;
                 if (permissionsIndex == permissions.length) {
                     AppConfig.permissionsAfterInit();
-                    // 获取应用整体数据
-                    // startService(MainService.class);
                     if (permissionsOrStartResult) {
                         startNextActivity();
                     } else {
