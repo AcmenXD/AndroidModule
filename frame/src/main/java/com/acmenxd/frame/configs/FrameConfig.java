@@ -14,7 +14,7 @@ import com.acmenxd.toaster.ToastNW;
  * @date 2017/5/25 10:02
  * @detail 配置详细参数类
  */
-public abstract class BaseConfig {
+public abstract class FrameConfig {
     /**
      * 初始化
      */
@@ -89,10 +89,6 @@ public abstract class BaseConfig {
                 break;
             case 1:
                 //测试1
-                BASE_URL = "http://www.baidu.com";
-                break;
-            default:
-                //正式版
                 BASE_URL = "http://www.baidu.com";
                 break;
         }

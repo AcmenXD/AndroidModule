@@ -19,7 +19,7 @@
 ---
 **configs**
 ```java
--> BaseConfig    : 基础配置信息,项目配置必须继承此类,从而拓展其他配置!  例如:TestConfig/OtherConfit(每个项目都有一份单独的配置清单)
+-> FrameConfig    : 基础配置信息,项目配置必须继承此类,从而拓展其他配置!  例如:AppFrameConfig/OtherConfit(每个项目都有一份单独的配置清单)
 -> ConfigBuilder : 框架进行初始化操作类,包括初始化第三方组件/类库
 ```
 ---
@@ -55,6 +55,7 @@
 ```java
 -> impl包          : base层所需的接口基类
 -> AppConfig       : debug开关,config配置及项目用到的其他参数等
+-> AppFrameConfig  : 继承自FrameConfig,修改一些基础配置
 -> BaseApplication : 继承自FrameApplication,拓展项目配置初始化等
 -> BaseActivity    : 继承自FrameActivity,拓展项目功能
 -> BaseFragment    : 继承自FrameFragment,拓展项目功能

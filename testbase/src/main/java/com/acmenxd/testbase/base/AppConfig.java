@@ -5,17 +5,16 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.telephony.TelephonyManager;
 
-import com.acmenxd.frame.configs.TestConfig;
 import com.acmenxd.frame.utils.RandomUtils;
 import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.marketer.Marketer;
-import com.acmenxd.testbase.R;
-import com.acmenxd.testbase.http.ResultCallback;
 import com.acmenxd.retrofit.HttpManager;
 import com.acmenxd.retrofit.HttpMutualParamCallback;
 import com.acmenxd.sptool.SpManager;
 import com.acmenxd.sptool.SpTool;
+import com.acmenxd.testbase.R;
+import com.acmenxd.testbase.http.ResultCallback;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +24,7 @@ import java.util.Map;
  * @version v1.0
  * @github https://github.com/AcmenXD
  * @date 2016/11/22 14:36
- * @detail App配置
+ * @detail 项目配置文件
  */
 public final class AppConfig {
     /**
@@ -33,9 +32,13 @@ public final class AppConfig {
      */
     public static final boolean DEBUG = true;
     /**
+     * 请求地址配置 -1:正式版  0->预发布  1->测试1
+     */
+    public static byte URL_Type = -1;
+    /**
      * 项目整体配置信息
      */
-    public static TestConfig config;
+    public static AppFrameConfig config;
     /**
      * App 版本号
      */

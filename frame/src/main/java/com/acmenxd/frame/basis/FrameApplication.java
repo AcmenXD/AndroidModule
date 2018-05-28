@@ -7,7 +7,7 @@ import android.os.Debug;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 
-import com.acmenxd.frame.configs.BaseConfig;
+import com.acmenxd.frame.configs.FrameConfig;
 import com.acmenxd.frame.configs.ConfigBuilder;
 import com.acmenxd.frame.utils.CrashUtils;
 import com.acmenxd.frame.utils.DateUtils;
@@ -76,7 +76,7 @@ public abstract class FrameApplication extends Application {
     /**
      * 初始化配置
      */
-    public final void initFrameSetting(@NonNull Class<? extends BaseConfig> pConfig, @NonNull boolean isDebug) {
+    public final void initFrameSetting(@NonNull Class<? extends FrameConfig> pConfig, @NonNull boolean isDebug) {
         // 创建配置Info
         ConfigBuilder.createConfig(pConfig, isDebug);
         // 初始化模块配置
@@ -92,7 +92,7 @@ public abstract class FrameApplication extends Application {
     /**
      * 获取配置详情
      */
-    public final <T extends BaseConfig> T getConfig() {
+    public final <T extends FrameConfig> T getConfig() {
         return ConfigBuilder.getConfigInfo();
     }
 

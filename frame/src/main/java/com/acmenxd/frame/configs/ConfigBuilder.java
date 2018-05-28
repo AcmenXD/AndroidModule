@@ -23,12 +23,12 @@ import java.io.IOException;
  */
 public final class ConfigBuilder {
     // 配置详细参数类
-    private static BaseConfig sConfigInfo;
+    private static FrameConfig sConfigInfo;
 
     /**
      * 创建配置详情
      */
-    public static void createConfig(@NonNull Class<? extends BaseConfig> pConfig, @NonNull boolean isDebug) {
+    public static void createConfig(@NonNull Class<? extends FrameConfig> pConfig, @NonNull boolean isDebug) {
         try {
             sConfigInfo = pConfig.newInstance();
             sConfigInfo.init(isDebug);
@@ -42,7 +42,7 @@ public final class ConfigBuilder {
     /**
      * 获取配置详情
      */
-    public static <T extends BaseConfig> T getConfigInfo() {
+    public static <T extends FrameConfig> T getConfigInfo() {
         if (sConfigInfo != null) {
             return (T) sConfigInfo;
         }

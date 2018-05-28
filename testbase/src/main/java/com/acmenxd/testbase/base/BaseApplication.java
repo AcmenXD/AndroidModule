@@ -5,7 +5,6 @@ import android.content.Context;
 import com.acmenxd.testbase.MyEventBusIndex;
 import com.acmenxd.testbase.db.core.DBManager;
 import com.acmenxd.frame.basis.FrameApplication;
-import com.acmenxd.frame.configs.TestConfig;
 import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frescoview.FrescoManager;
 import com.acmenxd.glide.GlideManager;
@@ -38,7 +37,7 @@ public final class BaseApplication extends FrameApplication {
         startTime = System.currentTimeMillis();
 
         // 配置框架设置
-        initFrameSetting(TestConfig.class, AppConfig.DEBUG);
+        initFrameSetting(AppFrameConfig.class, AppConfig.DEBUG);
         initBaseSetting();
         // 存储项目整体配置信息
         AppConfig.config = getConfig();
@@ -73,7 +72,7 @@ public final class BaseApplication extends FrameApplication {
      * 初始化配置
      */
     public void initBaseSetting() {
-        TestConfig config = getConfig();
+        AppFrameConfig config = getConfig();
         Context context = getApplicationContext();
         //------------------------------------Glide配置---------------------------------
         GlideManager.DECODEFORMAT = DecodeFormat.PREFER_ARGB_8888;
