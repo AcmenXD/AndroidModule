@@ -16,11 +16,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acmenxd.test_demo.R;
-import com.acmenxd.appbase.base.BaseActivity;
-import com.acmenxd.appbase.db.TestBeanDB;
-import com.acmenxd.appbase.db.dao.TestBeanDao;
-import com.acmenxd.appbase.model.db.TestBean;
-import com.acmenxd.appbase.utils.RefreshUtils;
+import com.acmenxd.testbase.base.BaseActivity;
+import com.acmenxd.testbase.db.TestBeanDB;
+import com.acmenxd.testbase.db.dao.TestBeanDao;
+import com.acmenxd.testbase.model.db.TestBean;
+import com.acmenxd.testbase.utils.RefreshUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

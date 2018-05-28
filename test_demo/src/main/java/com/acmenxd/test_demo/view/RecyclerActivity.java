@@ -17,8 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.acmenxd.test_demo.R;
-import com.acmenxd.appbase.base.BaseActivity;
-import com.acmenxd.appbase.utils.RefreshUtils;
+import com.acmenxd.testbase.base.BaseActivity;
+import com.acmenxd.testbase.utils.RefreshUtils;
 import com.acmenxd.recyclerview.LoadMoreLayout;
 import com.acmenxd.recyclerview.adapter.AdapterUtils;
 import com.acmenxd.recyclerview.adapter.MultiItemTypeAdapter;

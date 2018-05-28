@@ -30,5 +30,5 @@ dependencies {
     /**
      * Module
      */
-    compile project(':appbase')
+    compile project(':testbase')
 }

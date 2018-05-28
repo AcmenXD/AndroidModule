@@ -12,8 +12,8 @@ import com.acmenxd.glide.GlideManager;
 import com.acmenxd.glide.RoundTransform;
 import com.acmenxd.glide.SaveCallback;
 import com.acmenxd.test_demo.R;
-import com.acmenxd.appbase.base.BaseActivity;
-import com.acmenxd.appbase.utils.RefreshUtils;
+import com.acmenxd.testbase.base.BaseActivity;
+import com.acmenxd.testbase.utils.RefreshUtils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 

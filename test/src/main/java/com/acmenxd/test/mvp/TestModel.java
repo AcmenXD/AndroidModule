@@ -1,7 +1,7 @@
 package com.acmenxd.test.mvp;
 
 import com.acmenxd.frame.basis.RequestCallback;
-import com.acmenxd.appbase.base.BaseModel;
+import com.acmenxd.testbase.base.BaseModel;
 
 /**
  * @author AcmenXD

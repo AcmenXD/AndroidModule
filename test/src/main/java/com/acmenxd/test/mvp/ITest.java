@@ -4,7 +4,7 @@ import com.acmenxd.frame.basis.RequestCallback;
 import com.acmenxd.frame.basis.mvp.IBModel;
 import com.acmenxd.frame.basis.mvp.IBPresenter;
 import com.acmenxd.frame.basis.mvp.IBView;
-import com.acmenxd.appbase.model.response.TestEntity;
+import com.acmenxd.testbase.model.response.TestEntity;
 
 /**
  * @author AcmenXD

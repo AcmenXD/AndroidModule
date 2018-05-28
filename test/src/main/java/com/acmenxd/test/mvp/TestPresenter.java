@@ -3,8 +3,8 @@ package com.acmenxd.test.mvp;
 import android.support.annotation.NonNull;
 
 import com.acmenxd.frame.basis.RequestCallback;
-import com.acmenxd.appbase.base.BasePresenter;
-import com.acmenxd.appbase.model.response.TestEntity;
+import com.acmenxd.testbase.base.BasePresenter;
+import com.acmenxd.testbase.model.response.TestEntity;
 import com.acmenxd.retrofit.exception.HttpException;
 
 /**
