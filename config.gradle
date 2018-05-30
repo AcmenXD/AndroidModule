@@ -1,0 +1,65 @@
+/**
+ * build.gradle配置
+ */
+ext {
+    compileSdkVersion = 26
+    buildToolsVersion = "27.0.3"
+    minSdkVersion = 14
+    targetSdkVersion = 26
+
+    // 图片加载库
+    glide = "com.github.bumptech.glide:glide:3.7.0"
+    // 响应式编程库
+    rxandroid = "io.reactivex:rxandroid:1.2.0"
+    // 权限处理库
+    rxpermissions = "com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar"
+
+    // 测试库
+    test = [
+            junit   : "junit:junit:4.12",
+            espresso: "com.android.support.test.espresso:espresso-core:2.2.2",
+    ]
+
+    // 系统库
+    support = [
+            appcompatV7 : "com.android.support:appcompat-v7:26.1.0",
+            recyclerview: "com.android.support:recyclerview-v7:26.1.0",
+    ]
+
+    // 网络库
+    http = [
+            okhttp         : "com.squareup.okhttp3:okhttp:3.8.1",
+            retrofit       : "com.squareup.retrofit2:retrofit:2.3.0",
+            retrofit_gson  : "com.squareup.retrofit2:converter-gson:2.3.0",
+            retrofit_rxjava: "com.squareup.retrofit2:adapter-rxjava:2.3.0",
+    ]
+
+    // 数据库
+    db = [
+            greendao : "org.greenrobot:greendao:3.2.2",
+            // 数据库加密库
+            sqlcipher: "net.zetetic:android-database-sqlcipher:3.5.1",
+            // 查看数据库表的工具库
+            debug    : "com.amitshekhar.android:debug-db:1.0.0",
+    ]
+
+    eventbus = [
+            eventbus                    : "org.greenrobot:eventbus:3.0.0",
+            eventbus_annotationProcessor: "org.greenrobot:eventbus-annotation-processor:3.0.1",
+    ]
+
+    fresco = [
+            // facebook推出的图片处理库
+            fresco            : "com.facebook.fresco:fresco:1.0.1",
+            // 支持okhttp3网络库请求
+            fresco_okhttp3    : "com.facebook.fresco:imagepipeline-okhttp3:1.0.1",
+            // 支持gif时需要添加
+            fresco_gif        : "com.facebook.fresco:animated-gif:1.0.1",
+            // 支持 WebP （静态图+动图），需要添加
+            fresco_webp       : "com.facebook.fresco:animated-webp:1.0.1",
+            // 在 API < 14(4.0) 上的机器支持 WebP 时，需要添加
+            fresco_support    : "com.facebook.fresco:animated-base-support:1.0.1",
+            // 支持 WebP 静态图，需要添加
+            fresco_webpsupport: "com.facebook.fresco:webpsupport:1.0.1",
+    ]
+}

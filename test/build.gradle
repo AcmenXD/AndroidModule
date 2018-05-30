@@ -17,16 +17,18 @@ def release_keyPassword = properties.getProperty("release_keyPassword")
 def release_storePassword = properties.getProperty("release_storePassword")
 def release_storeFile = properties.getProperty("release_storeFile")
 
+def config = rootProject.ext
+
 android {
-    compileSdkVersion 26
-    buildToolsVersion "27.0.3"
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
     // 解决 -> Some file crunching failed问题
     aaptOptions.cruncherEnabled = false
     aaptOptions.useNewCruncher = false
     defaultConfig {
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
         applicationId "com.acmenxd.test"
-        minSdkVersion 14
-        targetSdkVersion 26
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -88,15 +90,6 @@ def releaseTime() {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    /**
-     * 系统库
-     */
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:26.1.0'
     /**
      * Module
      */
