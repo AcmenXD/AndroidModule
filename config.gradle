@@ -1,5 +1,5 @@
 /**
- * build.gradle配置
+ * build.gradle Module统一配置
  */
 ext {
     compileSdkVersion = 26
@@ -21,7 +21,7 @@ ext {
     ]
 
     // 系统库
-    support = [
+    system = [
             appcompatV7 : "com.android.support:appcompat-v7:26.1.0",
             recyclerview: "com.android.support:recyclerview-v7:26.1.0",
     ]

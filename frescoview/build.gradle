@@ -24,7 +24,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile config.test.junit
-    compile config.support.appcompatV7
+    compile config.system.appcompatV7
     compile config.fresco.fresco
     compile config.fresco.fresco_okhttp3
     compile config.fresco.fresco_gif

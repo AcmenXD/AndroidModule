@@ -30,8 +30,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile config.test.junit
-    compile config.support.appcompatV7
-    compile config.support.recyclerview
+    compile config.system.appcompatV7
+    compile config.system.recyclerview
     compile config.http.okhttp
     compile config.http.retrofit
     compile config.http.retrofit_gson
