@@ -12,7 +12,7 @@ import com.acmenxd.frame.basis.FrameActivity;
  * @version v1.0
  * @github https://github.com/AcmenXD
  * @date 2018/5/26 11:00
- * @detail something
+ * @detail 辅助模块间互调
  */
 public class ModuleTogether {
     public static String DBActivity = "com.acmenxd.test_demo.view.DBActivity";
