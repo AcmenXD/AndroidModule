@@ -1,5 +1,6 @@
 package com.acmenxd.testbase.base;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -128,6 +129,7 @@ public final class AppConfig {
     /**
      * 获取到手机权限后回调
      */
+    @SuppressLint("MissingPermission")
     public static synchronized void permissionsAfterInit() {
         SpTool spTool = SpManager.getCommonSp(config.SP_Device);
         String tempIMEI = spTool.getString("imei", "");

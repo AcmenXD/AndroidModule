@@ -1,5 +1,6 @@
 package com.acmenxd.frame.utils.net;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.Network;
@@ -236,6 +237,7 @@ public final class NetUtils {
     /**
      * 获取运营商
      */
+    @SuppressLint("MissingPermission")
     public static String getProvider() {
         String provider = "未知";
         try {
