@@ -20,16 +20,7 @@ android {
     }
 }
 dependencies {
-    /**
-     * libs
-     */
-    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile files('libs/pinyin4j-2.5.0.jar')
-
-    androidTestCompile(config.test.espresso, {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    testCompile config.test.junit
     compile config.system.appcompatV7
     compile config.system.recyclerview
     compile config.http.okhttp
