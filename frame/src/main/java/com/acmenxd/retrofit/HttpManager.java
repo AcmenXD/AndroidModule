@@ -6,9 +6,6 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 
 import com.acmenxd.logger.LogTag;
-import com.acmenxd.retrofit.load.IHttpProgress;
-import com.acmenxd.retrofit.load.ProgressRequestBody;
-import com.acmenxd.retrofit.load.ProgressResponseBody;
 import com.acmenxd.retrofit.converter.CustomConverterFactory;
 import com.acmenxd.retrofit.cookie.HttpCookieJar;
 import com.acmenxd.retrofit.interceptor.BodyInterceptor;
@@ -16,6 +13,9 @@ import com.acmenxd.retrofit.interceptor.HeaderInterceptor;
 import com.acmenxd.retrofit.interceptor.LoggerInterceptor;
 import com.acmenxd.retrofit.interceptor.NetworkInterceptor;
 import com.acmenxd.retrofit.interceptor.ParameterInterceptor;
+import com.acmenxd.retrofit.load.IHttpProgress;
+import com.acmenxd.retrofit.load.ProgressRequestBody;
+import com.acmenxd.retrofit.load.ProgressResponseBody;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,8 +54,6 @@ public enum HttpManager {
      */
     // 上下文对象
     public Context context;
-    // 基础URL地址
-    public String base_url = "www.baidu.com";
     // Net Log 的日志Tag
     public LogTag net_log_tag = LogTag.mk("NetLog");
     // Net Log 的日志显示形式 -> 是否显示 "请求头 请求体 响应头 错误日志" 等详情
@@ -81,7 +79,18 @@ public enum HttpManager {
     // 请求公共参数回调
     public HttpMutualParamCallback mutualCallback;
 
+    // 基础URL地址
+    private String base_url = "";
     private Retrofit mRetrofit;
+
+    /**
+     * 设置Context对象
+     * * 必须设置,否则无法使用
+     */
+    public void init(@NonNull Context context, String base_url) {
+        this.context = context;
+        this.base_url = base_url;
+    }
 
     /**
      * 根据IRequest类获取Request实例
@@ -257,16 +266,16 @@ public enum HttpManager {
         /**
          * 添加https证书 - http://blog.csdn.net/sk719887916/article/details/51597816
          */
-//        /**
-//         * 添加证书Pinning
-//         */
-//        mBuilder.certificatePinner(new CertificatePinner.Builder()
-//                .add("YOU API.com", "sha1/DmxUShsZuNiqPQsX2Oi9uv2sCnw=")
-//                .build());
-//        /**
-//         * 设置代理
-//         */
-//        mBuilder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort)));
+        //        /**
+        //         * 添加证书Pinning
+        //         */
+        //        mBuilder.certificatePinner(new CertificatePinner.Builder()
+        //                .add("YOU API.com", "sha1/DmxUShsZuNiqPQsX2Oi9uv2sCnw=")
+        //                .build());
+        //        /**
+        //         * 设置代理
+        //         */
+        //        mBuilder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort)));
         return builder;
     }
 }

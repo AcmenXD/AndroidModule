@@ -17,9 +17,7 @@ public final class AppFrameConfig extends FrameConfig {
 
     @Override
     protected void init(boolean isDebug) {
-        DEBUG = isDebug;
-        LOG_OPEN = DEBUG;
-        TOAST_DEBUG_OPEN = DEBUG;
+        super.init(isDebug);
 
         DB_NAME = "test_db";
         BASE_DIR = SDCARD_DIR + "/TestApp/";
@@ -27,13 +25,7 @@ public final class AppFrameConfig extends FrameConfig {
         spAll = new String[]{SP_Cookie, SP_Device, SP_Config, SP_User};
 
         // 请求地址配置 -1:正式版  0->预发布  1->测试1
-        URL_Type = AppConfig.URL_Type;
-        initNetURL();
-    }
-
-    @Override
-    protected void initNetURL() {
-        switch (URL_Type) {
+        switch (AppConfig.URL_Type) {
             case -1:
                 //正式版
                 BASE_URL = "http://server.jeasonlzy.com/OkHttpUtils/";

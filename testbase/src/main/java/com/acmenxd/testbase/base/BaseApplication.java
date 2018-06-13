@@ -39,8 +39,7 @@ public final class BaseApplication extends FrameApplication {
         // 配置框架设置
         initFrameSetting(AppFrameConfig.class, AppConfig.DEBUG);
         initBaseSetting();
-        // 存储项目整体配置信息
-        AppConfig.config = getConfig();
+
         // 初始化App配置
         AppConfig.init();
 
@@ -72,7 +71,6 @@ public final class BaseApplication extends FrameApplication {
      * 初始化配置
      */
     public void initBaseSetting() {
-        AppFrameConfig config = getConfig();
         Context context = getApplicationContext();
         //------------------------------------Glide配置---------------------------------
         GlideManager.DECODEFORMAT = DecodeFormat.PREFER_ARGB_8888;
@@ -84,8 +82,8 @@ public final class BaseApplication extends FrameApplication {
          * 设置Log开关 & 等级
          * * 默认为 开 & Log.VERBOSE
          */
-        FrescoManager.LOG_OPEN = config.DEBUG;
-        FrescoManager.LOG_LEVEL = config.LOG_LEVEL.intValue();
+        FrescoManager.LOG_OPEN = AppConfig.DEBUG;
+        FrescoManager.LOG_LEVEL = getConfig().LOG_LEVEL.intValue();
         /**
          * 设置缓存图片的存放路径
          * Environment.getExternalStorageDirectory().getAbsolutePath() + "/FrescoView/"
@@ -103,10 +101,7 @@ public final class BaseApplication extends FrameApplication {
          */
         FrescoManager.MAX_DISK_CACHE_SIZE = 50;
         FrescoManager.MAX_SMALL_DISK_LOW_CACHE_SIZE = 20;
-        /**
-         * 初始化 -> 配置完成后必须调用此函数生效
-         * * context必须设置
-         */
-        FrescoManager.setContext(context);
+        // * 必须设置,否则无法使用
+        FrescoManager.init(context);
     }
 }

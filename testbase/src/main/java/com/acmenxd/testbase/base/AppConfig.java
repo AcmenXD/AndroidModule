@@ -71,6 +71,8 @@ public final class AppConfig {
     public static synchronized void init() {
         BaseApplication app = BaseApplication.instance();
         PackageManager pkgManager = app.getPackageManager();
+        // 存储项目整体配置信息
+        config = app.getConfig();
         // 设置默认值
         VERSION_CODE = 1;
         VERSION_NAME = "1.0";

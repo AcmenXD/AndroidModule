@@ -41,7 +41,7 @@ public final class Toaster {
      * 设置Context对象
      * * 必须设置,否则无法使用
      */
-    public static void setContext(@NonNull Context pContext) {
+    public static void init(@NonNull Context pContext) {
         sContext = pContext;
         Toast toast = new Toast(pContext);
         // 初始配置

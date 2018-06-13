@@ -32,7 +32,7 @@ public final class SpManager {
      * 设置Context对象
      * * 必须设置,否则无法使用
      */
-    public static void setContext(@NonNull Context pContext) {
+    public static void init(@NonNull Context pContext) {
         sContext = pContext;
         String[] spAll = CommonSp;
         if (spAll == null || spAll.length <= 0) {

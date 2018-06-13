@@ -76,7 +76,7 @@ public abstract class FrameApplication extends Application {
     /**
      * 初始化配置
      */
-    public final void initFrameSetting(@NonNull Class<? extends FrameConfig> pConfig, @NonNull boolean isDebug) {
+    protected final void initFrameSetting(@NonNull Class<? extends FrameConfig> pConfig, @NonNull boolean isDebug) {
         // 创建配置Info
         ConfigBuilder.createConfig(pConfig, isDebug);
         // 初始化模块配置
@@ -94,13 +94,6 @@ public abstract class FrameApplication extends Application {
      */
     public final <T extends FrameConfig> T getConfig() {
         return ConfigBuilder.getConfigInfo();
-    }
-
-    /**
-     * 退出应用程序
-     */
-    public final void exit() {
-        ActivityStackManager.INSTANCE.exit();
     }
 
     /**

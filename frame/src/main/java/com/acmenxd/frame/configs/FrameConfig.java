@@ -1,6 +1,7 @@
 package com.acmenxd.frame.configs;
 
 import android.os.Environment;
+import android.support.annotation.CallSuper;
 
 import com.acmenxd.logger.LogTag;
 import com.acmenxd.logger.LogType;
@@ -14,23 +15,28 @@ import com.acmenxd.toaster.ToastNW;
  * @date 2017/5/25 10:02
  * @detail 配置详细参数类
  */
-public abstract class FrameConfig {
+public class FrameConfig {
     /**
      * 初始化
      */
-    protected abstract void init(boolean isDebug);
+    @CallSuper
+    protected void init(boolean isDebug) {
+        DEBUG = isDebug;
+        LOG_OPEN = isDebug;
+        TOAST_DEBUG_OPEN = isDebug;
+    }
 
     /**
      * 调试模式开关
      * * 由build.gradle -> debug | release版本控制
      */
-    public boolean DEBUG = false;
+    protected boolean DEBUG = false;
 
     /**
      * 数据库 配置
      */
     // 数据库名称
-    public String DB_NAME = "app_frame_db";
+    public String DB_NAME = "appframe_db";
 
     /**
      * File 存储配置
@@ -52,10 +58,10 @@ public abstract class FrameConfig {
     /**
      * Log 配置
      */
-    // Log开关
-    protected boolean LOG_OPEN = DEBUG;
     // Log显示等级, >= LOG_LEVEL的log显示
     public LogType LOG_LEVEL = LogType.V;
+    // Log开关
+    protected boolean LOG_OPEN = DEBUG;
 
     /**
      * Toast 配置
@@ -71,29 +77,8 @@ public abstract class FrameConfig {
     /**
      * Net 配置
      */
-    // 请求地址配置 -1:正式版  0->预发布  1->测试1
-    protected byte URL_Type = -1;
     // 基础url配置
-    protected String BASE_URL = "http://www.baidu.com";
-
-    // 配置连接地址
-    protected void initNetURL() {
-        switch (URL_Type) {
-            case -1:
-                //正式版
-                BASE_URL = "http://www.baidu.com";
-                break;
-            case 0:
-                //预发布
-                BASE_URL = "http://www.baidu.com";
-                break;
-            case 1:
-                //测试1
-                BASE_URL = "http://www.baidu.com";
-                break;
-        }
-    }
-
+    protected String BASE_URL = "";
     // Net Log 的日志Tag
     protected LogTag NET_LOG_TAG = LogTag.mk("NetLog");
     // Net Log 的日志显示形式 -> 是否显示 "请求头 请求体 响应头 错误日志" 等详情
