@@ -71,9 +71,9 @@ android {
                     def outputFile = output.outputFile
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
                         if (variant.buildType.name.equals('debug')) {
-                            outputFileName = "AppFrame_v${defaultConfig.versionName}_debug.apk"
+                            outputFileName = "AndroidModule_v${defaultConfig.versionName}_debug.apk"
                         } else if (variant.buildType.name.equals('release')) {
-                            outputFileName = "AppFrame_v${defaultConfig.versionName}_release.apk"
+                            outputFileName = "AndroidModule_v${defaultConfig.versionName}_release.apk"
                         }
                     }
                 }
