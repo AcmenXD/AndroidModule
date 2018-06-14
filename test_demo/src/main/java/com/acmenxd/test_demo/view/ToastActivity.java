@@ -7,8 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.acmenxd.test_demo.R;
-import com.acmenxd.testbase.base.BaseActivity;
-import com.acmenxd.testbase.utils.RefreshUtils;
+import com.acmenxd.core.base.BaseActivity;
+import com.acmenxd.core.utils.RefreshUtils;
 import com.acmenxd.toaster.ToastDuration;
 import com.acmenxd.toaster.ToastNW;
 import com.acmenxd.toaster.Toaster;

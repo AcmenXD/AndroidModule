@@ -27,5 +27,5 @@ dependencies {
     /**
      * Module
      */
-    compile project(':testbase')
+    compile project(':core')
 }

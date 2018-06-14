@@ -39,8 +39,8 @@ import com.acmenxd.recyclerview.wrapper.EmptyWrapper;
 import com.acmenxd.recyclerview.wrapper.HeaderAndFooterWrapper;
 import com.acmenxd.recyclerview.wrapper.LoadMoreWrapper;
 import com.acmenxd.test_demo.R;
-import com.acmenxd.testbase.base.BaseActivity;
-import com.acmenxd.testbase.utils.RefreshUtils;
+import com.acmenxd.core.base.BaseActivity;
+import com.acmenxd.core.utils.RefreshUtils;
 
 import java.util.ArrayList;
 import java.util.List;

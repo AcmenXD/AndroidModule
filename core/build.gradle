@@ -1,0 +1,65 @@
+apply plugin: 'com.android.library'
+// GreenDao Config
+apply plugin: 'org.greenrobot.greendao'
+
+def config = rootProject.ext
+
+android {
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
+    defaultConfig {
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                // EventBus Config
+                arguments = [eventBusIndex: 'com.acmenxd.core.MyEventBusIndex']
+            }
+        }
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            java.srcDirs = ['src/main/java', 'src/main/java']
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+}
+
+// GreenDao Config ------------------------------------
+greendao {
+    /**
+     * 数据库版本号不能降低,会导致App无法安装
+     * 数据库字段发生变更或新增表时,更新这个版本号,运行Make Project
+     * 版本号历史:
+     * 1:2016年11月21日13:32:33 - > 创建初始库和表
+     */
+    schemaVersion 1
+    daoPackage 'com.acmenxd.core.db.dao'//生成的dao文件存放路径
+    targetGenDir 'src/main/java'//自定义生成数据库文件的目录，可以将生成的文件放到我们的java目录中，而不是build中，这样就不用额外的设置资源目录了
+}
+// GreenDao Config End ------------------------------------
+
+dependencies {
+    androidTestCompile(config.test.espresso, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile config.test.junit
+
+    compile config.frame
+    compile config.glide
+    compile config.frescoview
+    compile config.db.greendao
+    compile config.db.debug
+    //compile config.db.sqlcipher
+    compile config.eventbus.eventbus
+    annotationProcessor config.eventbus.eventbus_annotationProcessor
+}

@@ -1,1 +1,1 @@
-include ':testbase', ':test', ':test_demo'
+include ':core', ':test', ':test_demo'

@@ -11,9 +11,9 @@ import com.acmenxd.frame.utils.PermissionsUtils;
 import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.test.R;
-import com.acmenxd.testbase.base.AppConfig;
-import com.acmenxd.testbase.base.BaseActivity;
-import com.acmenxd.testbase.base.BaseApplication;
+import com.acmenxd.core.base.AppConfig;
+import com.acmenxd.core.base.BaseActivity;
+import com.acmenxd.core.base.BaseApplication;
 import com.acmenxd.sptool.SpManager;
 import com.acmenxd.sptool.SpTool;
 

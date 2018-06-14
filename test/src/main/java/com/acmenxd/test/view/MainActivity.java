@@ -11,11 +11,11 @@ import android.widget.TextView;
 
 import com.acmenxd.logger.Logger;
 import com.acmenxd.test.R;
-import com.acmenxd.testbase.base.AppConfig;
-import com.acmenxd.testbase.base.BaseActivity;
-import com.acmenxd.testbase.base.EventBusHelper;
-import com.acmenxd.testbase.model.response.TestEntity;
-import com.acmenxd.testbase.utils.RefreshUtils;
+import com.acmenxd.core.base.AppConfig;
+import com.acmenxd.core.base.BaseActivity;
+import com.acmenxd.core.base.EventBusHelper;
+import com.acmenxd.core.model.response.TestEntity;
+import com.acmenxd.core.utils.RefreshUtils;
 import com.acmenxd.test_demo.view.DBActivity;
 import com.acmenxd.test_demo.view.FileActivity;
 import com.acmenxd.test_demo.view.FrescoActivity;
