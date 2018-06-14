@@ -7,12 +7,12 @@ ext {
     minSdkVersion = 14
     targetSdkVersion = 26
 
+    // 基础框架库
+    frame = "com.github.AcmenXD:AndroidFrame:1.1"
     // 图片加载库
-    glide = "com.github.bumptech.glide:glide:3.7.0"
-    // 响应式编程库
-    rxandroid = "io.reactivex:rxandroid:1.2.0"
-    // 权限处理库
-    rxpermissions = "com.tbruyelle.rxpermissions:rxpermissions:0.9.4@aar"
+    glide = "com.github.AcmenXD:Glide:3.0"
+    // 图片加载库
+    frescoview = "com.github.AcmenXD:FrescoView:3.0"
 
     // 测试库
     test = [
@@ -23,15 +23,6 @@ ext {
     // 系统库
     system = [
             appcompatV7 : "com.android.support:appcompat-v7:26.1.0",
-            recyclerview: "com.android.support:recyclerview-v7:26.1.0",
-    ]
-
-    // 网络库
-    http = [
-            okhttp         : "com.squareup.okhttp3:okhttp:3.8.1",
-            retrofit       : "com.squareup.retrofit2:retrofit:2.3.0",
-            retrofit_gson  : "com.squareup.retrofit2:converter-gson:2.3.0",
-            retrofit_rxjava: "com.squareup.retrofit2:adapter-rxjava:2.3.0",
     ]
 
     // 数据库
@@ -46,20 +37,5 @@ ext {
     eventbus = [
             eventbus                    : "org.greenrobot:eventbus:3.0.0",
             eventbus_annotationProcessor: "org.greenrobot:eventbus-annotation-processor:3.0.1",
-    ]
-
-    fresco = [
-            // facebook推出的图片处理库
-            fresco            : "com.facebook.fresco:fresco:1.0.1",
-            // 支持okhttp3网络库请求
-            fresco_okhttp3    : "com.facebook.fresco:imagepipeline-okhttp3:1.0.1",
-            // 支持gif时需要添加
-            fresco_gif        : "com.facebook.fresco:animated-gif:1.0.1",
-            // 支持 WebP （静态图+动图），需要添加
-            fresco_webp       : "com.facebook.fresco:animated-webp:1.0.1",
-            // 在 API < 14(4.0) 上的机器支持 WebP 时，需要添加
-            fresco_support    : "com.facebook.fresco:animated-base-support:1.0.1",
-            // 支持 WebP 静态图，需要添加
-            fresco_webpsupport: "com.facebook.fresco:webpsupport:1.0.1",
     ]
 }

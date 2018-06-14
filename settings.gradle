@@ -1,1 +1,1 @@
-include ':frame', ':frescoview', ':glide', ':testbase', ':test', ':test_demo'
+include ':testbase', ':test', ':test_demo'

@@ -90,6 +90,10 @@ def releaseTime() {
 }
 
 dependencies {
+    androidTestCompile(config.test.espresso, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile config.test.junit
     /**
      * Module
      */

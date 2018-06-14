@@ -49,13 +49,14 @@ greendao {
 // GreenDao Config End ------------------------------------
 
 dependencies {
-   /**
-     * Module
-     */
-    compile project(':frame')
-    compile project(':frescoview')
-    compile project(':glide')
+    androidTestCompile(config.test.espresso, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile config.test.junit
 
+    compile config.frame
+    compile config.glide
+    compile config.frescoview
     compile config.db.greendao
     compile config.db.debug
     //compile config.db.sqlcipher

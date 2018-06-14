@@ -16,9 +16,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.acmenxd.test_demo.R;
-import com.acmenxd.testbase.base.BaseActivity;
-import com.acmenxd.testbase.utils.RefreshUtils;
 import com.acmenxd.recyclerview.LoadMoreLayout;
 import com.acmenxd.recyclerview.adapter.AdapterUtils;
 import com.acmenxd.recyclerview.adapter.MultiItemTypeAdapter;
@@ -41,6 +38,9 @@ import com.acmenxd.recyclerview.swipemenu.SwipeMenuView;
 import com.acmenxd.recyclerview.wrapper.EmptyWrapper;
 import com.acmenxd.recyclerview.wrapper.HeaderAndFooterWrapper;
 import com.acmenxd.recyclerview.wrapper.LoadMoreWrapper;
+import com.acmenxd.test_demo.R;
+import com.acmenxd.testbase.base.BaseActivity;
+import com.acmenxd.testbase.utils.RefreshUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,8 +188,8 @@ public class RecyclerActivity extends BaseActivity {
         rv.addItemDecoration(new GroupDecoration((GroupHeadLayout) findViewById(R.id.groupLayout), mGroupListener));
         //设置分隔线
         rv.addItemDecoration(new LinearLayoutDecoration(this));
-//        rv.addItemDecoration(new GridLayoutDecoration(this));
-//        rv.addItemDecoration(new StaggeredGridLayoutDecoration(this));
+        //        rv.addItemDecoration(new GridLayoutDecoration(this));
+        //        rv.addItemDecoration(new StaggeredGridLayoutDecoration(this));
         //设置增加或删除条目的动画
         rv.setItemAnimator(new DefaultItemAnimator());
         /**
@@ -290,16 +290,12 @@ public class RecyclerActivity extends BaseActivity {
                 if (direction == SwipeMenuView.RIGHT_DIRECTION) {
                     dirStr = "右边菜单";
                 }
-                switch (menuItemLayoutId) {
-//                    case R.id.menu_1:
-//                        showToast("position:" + dataPosition + dirStr + "的第一个menu");
-//                        break;
-//                    case R.id.menu_2:
-//                        showToast("position:" + dataPosition + dirStr + "的第二个menu");
-//                        break;
-//                    case R.id.menu_3:
-//                        showToast("position:" + dataPosition + dirStr + "的第三个menu");
-//                        break;
+                if (menuItemLayoutId == R.id.menu_1) {
+                    showToast("position:" + dataPosition + dirStr + "的第一个menu");
+                } else if (menuItemLayoutId == R.id.menu_2) {
+                    showToast("position:" + dataPosition + dirStr + "的第二个menu");
+                } else if (menuItemLayoutId == R.id.menu_3) {
+                    showToast("position:" + dataPosition + dirStr + "的第三个menu");
                 }
                 return true;
             }

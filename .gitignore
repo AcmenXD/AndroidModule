@@ -72,7 +72,6 @@ fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
-.idea/
 test_demo/src/main/java/com/acmenxd/test_demo/model/
 testbase/libs/
 testbase/src/main/java/com/acmenxd/testbase/model/request/
