@@ -1,0 +1,19 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.acmenxd.main">
+
+    <application>
+        <activity
+            android:name=".view.SplashActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".view.MainActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/MainTheme"/>
+    </application>
+</manifest>

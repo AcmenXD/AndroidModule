@@ -13,7 +13,7 @@ import org.greenrobot.eventbus.Subscribe;
  * @version v1.0
  * @github https://github.com/AcmenXD
  * @date 2017/5/24 14:35
- * @detail 顶级Activity
+ * @detail 顶级Service
  */
 public abstract class BaseService extends FrameService implements IBaseNet {
 

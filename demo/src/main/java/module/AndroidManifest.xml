@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.acmenxd.demo">
+
+    <application>
+        <activity
+            android:name="module.SplashActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.acmenxd.demo.view.LogActivity"/>
+        <activity
+            android:name="com.acmenxd.demo.view.ToastActivity"/>
+        <activity
+            android:name="com.acmenxd.demo.view.SPActivity"/>
+        <activity
+            android:name="com.acmenxd.demo.view.FileActivity"/>
+        <activity
+            android:name="com.acmenxd.demo.view.GlideActivity"/>
+        <activity
+            android:name="com.acmenxd.demo.view.FrescoActivity"/>
+        <activity
+            android:name="com.acmenxd.demo.view.RetrofitActivity"/>
+        <activity
+            android:name="com.acmenxd.demo.view.RecyclerActivity"/>
+        <activity
+            android:name="com.acmenxd.demo.view.DBActivity"/>
+    </application>
+
+</manifest>

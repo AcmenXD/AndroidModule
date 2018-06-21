@@ -1,0 +1,106 @@
+apply plugin: 'com.android.application'
+
+/**
+ * debug签名配置
+ */
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def debug_keyAlias = properties.getProperty("debug_keyAlias")
+def debug_keyPassword = properties.getProperty("debug_keyPassword")
+def debug_storePassword = properties.getProperty("debug_storePassword")
+def debug_storeFile = properties.getProperty("debug_storeFile")
+/**
+ * release签名配置
+ */
+def release_keyAlias = properties.getProperty("release_keyAlias")
+def release_keyPassword = properties.getProperty("release_keyPassword")
+def release_storePassword = properties.getProperty("release_storePassword")
+def release_storeFile = properties.getProperty("release_storeFile")
+
+def config = rootProject.ext
+
+android {
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
+    // 解决 -> Some file crunching failed问题
+    aaptOptions.cruncherEnabled = false
+    aaptOptions.useNewCruncher = false
+    defaultConfig {
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        applicationId "com.acmenxd.module"
+        versionCode 1
+        versionName "1.0.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    signingConfigs {
+        debug { // debug签名配置
+            keyAlias debug_keyAlias
+            keyPassword debug_keyPassword
+            storeFile file(debug_storeFile)
+            storePassword debug_storePassword
+            v2SigningEnabled false // 只使用旧版签名,禁用V2版签名模式,否则在Android7.0安装时会提示没有签名
+        }
+        release { // release签名配置
+            keyAlias release_keyAlias
+            keyPassword release_keyPassword
+            storeFile file(release_storeFile)
+            storePassword release_storePassword
+            v2SigningEnabled false // 只使用旧版签名,禁用V2版签名模式,否则在Android7.0安装时会提示没有签名
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled true     //混淆
+            zipAlignEnabled true   //zipalign压缩对齐
+            shrinkResources true   //移除无用的资源
+            //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug //debug签名配置
+        }
+        release {
+            minifyEnabled true     //混淆
+            zipAlignEnabled true   //zipalign压缩对齐
+            shrinkResources true   //移除无用的资源
+            //前一部分代表系统默认的android程序的混淆文件，该文件已经包含了基本的混淆声明，后一个文件是自己的定义混淆文件
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release //release签名配置
+            // 打包apk文件名配置
+            applicationVariants.all { variant ->
+                variant.outputs.all { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        if (variant.buildType.name.equals('debug')) {
+                            outputFileName = "AndroidModule_v${defaultConfig.versionName}_debug.apk"
+                        } else if (variant.buildType.name.equals('release')) {
+                            outputFileName = "AndroidModule_v${defaultConfig.versionName}_release.apk"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/**
+ * 获取当前时间
+ */
+def releaseTime() {
+    return new Date().format("yyyyMMddHHmmss", TimeZone.getTimeZone("GMT+0800"))
+}
+
+dependencies {
+    androidTestCompile(config.test.espresso, {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile config.test.junit
+    /**
+     * Module
+     */
+    if (isApplication.toBoolean()) {
+        compile project(':core')
+    } else {
+        compile project(':main')
+        compile project(':demo')
+    }
+}

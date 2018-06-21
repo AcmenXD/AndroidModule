@@ -1,1 +1,1 @@
-include ':core', ':test', ':test_demo'
+include ':core', ':app', ':main', ':demo'
