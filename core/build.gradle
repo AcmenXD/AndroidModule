@@ -12,13 +12,13 @@ android {
         targetSdkVersion config.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
                 // EventBus Config
                 arguments = [eventBusIndex: 'com.acmenxd.core.MyEventBusIndex']
             }
         }
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -62,4 +62,6 @@ dependencies {
     //compile config.db.sqlcipher
     compile config.eventbus.eventbus
     annotationProcessor config.eventbus.eventbus_annotationProcessor
+    compile config.ARouter.api
+    compile config.ARouter.annotation
 }

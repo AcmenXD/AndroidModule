@@ -7,6 +7,7 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.acmenxd.core.data.Constants;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.demo.R;
 import com.acmenxd.core.base.AppConfig;
@@ -15,6 +16,7 @@ import com.acmenxd.core.utils.RefreshUtils;
 import com.acmenxd.sptool.SpChangeListener;
 import com.acmenxd.sptool.SpManager;
 import com.acmenxd.sptool.SpTool;
+import com.alibaba.android.arouter.facade.annotation.Route;
 
 import java.util.HashSet;
 import java.util.Iterator;
@@ -28,6 +30,7 @@ import java.util.Set;
  * @date 2016/12/16 15:34
  * @detail something
  */
+@Route(path = Constants.demo_SPActivity)
 public class SPActivity extends BaseActivity {
     @Override
     public void onCreate(@NonNull Bundle savedInstanceState) {

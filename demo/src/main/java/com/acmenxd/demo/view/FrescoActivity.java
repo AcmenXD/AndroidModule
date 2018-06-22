@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.acmenxd.core.data.Constants;
 import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.frescoview.FrescoCallback;
 import com.acmenxd.frescoview.FrescoView;
@@ -15,6 +16,7 @@ import com.acmenxd.logger.Logger;
 import com.acmenxd.demo.R;
 import com.acmenxd.core.base.BaseActivity;
 import com.acmenxd.core.utils.RefreshUtils;
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.imagepipeline.image.ImageInfo;
 import com.facebook.imagepipeline.image.QualityInfo;
@@ -28,6 +30,7 @@ import com.facebook.imagepipeline.request.Postprocessor;
  * @date 2016/12/16 15:34
  * @detail something
  */
+@Route(path = Constants.demo_FrescoActivity)
 public class FrescoActivity extends BaseActivity {
     private FrescoView iv1;
     private FrescoView iv2;

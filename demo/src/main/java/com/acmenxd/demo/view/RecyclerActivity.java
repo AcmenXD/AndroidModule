@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.acmenxd.core.data.Constants;
 import com.acmenxd.recyclerview.LoadMoreLayout;
 import com.acmenxd.recyclerview.adapter.AdapterUtils;
 import com.acmenxd.recyclerview.adapter.MultiItemTypeAdapter;
@@ -41,6 +42,7 @@ import com.acmenxd.recyclerview.wrapper.LoadMoreWrapper;
 import com.acmenxd.demo.R;
 import com.acmenxd.core.base.BaseActivity;
 import com.acmenxd.core.utils.RefreshUtils;
+import com.alibaba.android.arouter.facade.annotation.Route;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,7 @@ import java.util.Random;
  * @date 2017/2/6 17:35
  * @detail something
  */
+@Route(path = Constants.demo_RecyclerActivity)
 public class RecyclerActivity extends BaseActivity {
     private List<Data> datas = new ArrayList<>();
     private RecyclerView rv;

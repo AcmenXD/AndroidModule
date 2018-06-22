@@ -8,7 +8,7 @@ ext {
     targetSdkVersion = 26
 
     // 基础框架库
-    frame = "com.github.AcmenXD:AndroidFrame:1.2"
+    frame = "com.github.AcmenXD:AndroidFrame:1.3"
     // 图片加载库
     glide = "com.github.AcmenXD:Glide:3.0"
     // 图片加载库
@@ -22,7 +22,7 @@ ext {
 
     // 系统库
     system = [
-            appcompatV7 : "com.android.support:appcompat-v7:26.1.0",
+            appcompatV7: "com.android.support:appcompat-v7:26.1.0",
     ]
 
     // 数据库
@@ -37,5 +37,11 @@ ext {
     eventbus = [
             eventbus                    : "org.greenrobot:eventbus:3.0.0",
             eventbus_annotationProcessor: "org.greenrobot:eventbus-annotation-processor:3.0.1",
+    ]
+
+    ARouter = [
+            api       : "com.alibaba:arouter-api:1.3.1",
+            annotation: "com.alibaba:arouter-annotation:1.0.4",
+            compiler  : "com.alibaba:arouter-compiler:1.1.4",
     ]
 }

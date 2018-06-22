@@ -1,4 +1,4 @@
-# AndroidModule(未整理完,请勿使用)
+# AndroidModule
 
 基于<a href="https://github.com/AcmenXD/AndroidFrame">AcmenXD/AndroidFrame</a>,整理的组件化框架
 
@@ -56,7 +56,8 @@
 -> response : 服务器响应实体类定义
 ```
 ---
-### 结构说明 -> test 业务主Module
+### 结构说明 -> app 壳Module
+### 结构说明 -> main 业务主Module
 **view**
 ```java
 -> SplashActivity : 启动页
@@ -70,7 +71,7 @@
 -> TestPresenter : 模拟登录模块p层实现
 ```
 ---
-### 结构说明 -> test_demo 业务Module
+### 结构说明 -> demo 业务Module
 **view**
 ```java
 -> 各功能模块的测试Activity

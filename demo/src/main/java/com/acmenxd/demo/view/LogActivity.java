@@ -7,12 +7,14 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.acmenxd.core.data.Constants;
 import com.acmenxd.logger.LogTag;
 import com.acmenxd.logger.Logger;
 import com.acmenxd.demo.R;
 import com.acmenxd.core.base.AppConfig;
 import com.acmenxd.core.base.BaseActivity;
 import com.acmenxd.core.utils.RefreshUtils;
+import com.alibaba.android.arouter.facade.annotation.Route;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +27,7 @@ import java.io.InputStreamReader;
  * @date 2016/12/16 15:34
  * @detail something
  */
+@Route(path = Constants.demo_LogActivity)
 public class LogActivity extends BaseActivity {
     @Override
     public void onCreate(@NonNull Bundle savedInstanceState) {

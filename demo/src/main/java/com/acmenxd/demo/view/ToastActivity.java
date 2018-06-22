@@ -6,12 +6,14 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
+import com.acmenxd.core.data.Constants;
 import com.acmenxd.demo.R;
 import com.acmenxd.core.base.BaseActivity;
 import com.acmenxd.core.utils.RefreshUtils;
 import com.acmenxd.toaster.ToastDuration;
 import com.acmenxd.toaster.ToastNW;
 import com.acmenxd.toaster.Toaster;
+import com.alibaba.android.arouter.facade.annotation.Route;
 
 /**
  * @author AcmenXD
@@ -20,6 +22,7 @@ import com.acmenxd.toaster.Toaster;
  * @date 2016/12/16 15:34
  * @detail something
  */
+@Route(path = Constants.demo_ToastActivity)
 public class ToastActivity extends BaseActivity {
 
     @Override

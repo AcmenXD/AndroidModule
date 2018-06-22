@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.acmenxd.core.data.Constants;
 import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frame.utils.RxUtils;
 import com.acmenxd.frame.utils.StringUtils;
@@ -23,6 +24,7 @@ import com.acmenxd.core.utils.RefreshUtils;
 import com.acmenxd.retrofit.entity.HttpEntity;
 import com.acmenxd.retrofit.exception.HttpException;
 import com.acmenxd.toaster.Toaster;
+import com.alibaba.android.arouter.facade.annotation.Route;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,6 +42,7 @@ import rx.functions.Func1;
  * @date 2016/12/16 15:34
  * @detail something
  */
+@Route(path = Constants.demo_RetrofitActivity)
 public class RetrofitActivity extends BaseActivity {
     private final String TAG = this.getClass().getName();
     private ImageView iv;

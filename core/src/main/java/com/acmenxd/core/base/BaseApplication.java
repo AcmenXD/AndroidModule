@@ -9,6 +9,7 @@ import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frescoview.FrescoManager;
 import com.acmenxd.glide.GlideManager;
 import com.acmenxd.logger.Logger;
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.bumptech.glide.load.DecodeFormat;
 
 import org.greenrobot.eventbus.EventBus;
@@ -72,6 +73,15 @@ public final class BaseApplication extends FrameApplication {
      */
     public void initBaseSetting() {
         Context context = getApplicationContext();
+        //------------------------------------ARouter配置---------------------------------
+        if (AppConfig.DEBUG) {
+            // * 必须写在init之前，否则这些配置在init过程中将无效
+            ARouter.openLog(); // 打印日志
+            ARouter.printStackTrace(); // 打印日志的时候打印线程堆栈
+            ARouter.openDebug(); // 开启调试模式(如果在InstantRun模式下运行，必须开启调试模式！线上版本需要关闭,否则有安全风险)
+        }
+        // * 必须设置,否则无法使用
+        ARouter.init(this);
         //------------------------------------Glide配置---------------------------------
         GlideManager.DECODEFORMAT = DecodeFormat.PREFER_ARGB_8888;
         GlideManager.IMAGE_CACHE_PATH = FileUtils.imgCacheDirPath;

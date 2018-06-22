@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.acmenxd.core.data.Constants;
 import com.acmenxd.glide.CircleTransform;
 import com.acmenxd.glide.GlideManager;
 import com.acmenxd.glide.RoundTransform;
@@ -14,6 +15,7 @@ import com.acmenxd.glide.SaveCallback;
 import com.acmenxd.demo.R;
 import com.acmenxd.core.base.BaseActivity;
 import com.acmenxd.core.utils.RefreshUtils;
+import com.alibaba.android.arouter.facade.annotation.Route;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -26,6 +28,7 @@ import java.io.File;
  * @date 2017/5/3 15:39
  * @detail something
  */
+@Route(path = Constants.demo_GlideActivity)
 public class GlideActivity extends BaseActivity {
     private ImageView iv;
     private String url = "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2994123101,43895145&fm=23&gp=0.jpg";
