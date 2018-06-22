@@ -5,6 +5,8 @@
 如要了解功能实现,请运行app程序查看控制台日志和源代码!
 * 源代码 : <a href="https://github.com/AcmenXD/AndroidModule">AcmenXD/AndroidModule</a>
 * apk下载路径 : <a href="https://github.com/AcmenXD/Resource/blob/master/apks/AndroidModule.apk">AndroidModule.apk</a>
+* 参考 : <a href="https://blog.csdn.net/guiying712/article/details/55213884#t4">Android组件化方案</a>
+* 路由 : <a href="https://github.com/alibaba/ARouter">ARouter</a>
 
 ### 功能
 ---
