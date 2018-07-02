@@ -14,7 +14,7 @@ import com.acmenxd.core.base.BaseActivity;
  * @date 2018/6/20 17:43
  * @detail something
  */
-public class SplashActivity extends BaseActivity {
+public class FristActivity extends BaseActivity {
     @Override
     protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
