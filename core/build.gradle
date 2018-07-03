@@ -54,14 +54,14 @@ dependencies {
     })
     testCompile config.test.junit
 
-    compile config.frame
-    compile config.glide
-    compile config.frescoview
-    compile config.db.greendao
-    compile config.db.debug
+    api config.frame
+    api config.glide
+    api config.frescoview
+    api config.db.greendao
+    api config.db.debug
     //compile config.db.sqlcipher
-    compile config.eventbus.eventbus
+    api config.eventbus.eventbus
     annotationProcessor config.eventbus.eventbus_annotationProcessor
-    compile config.ARouter.api
-    compile config.ARouter.annotation
+    api config.ARouter.api
+    api config.ARouter.annotation
 }

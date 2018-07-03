@@ -98,9 +98,9 @@ dependencies {
      * Module
      */
     if (isApplication.toBoolean()) {
-        compile project(':core')
+        implementation project(':core')
     } else {
-        compile project(':main')
-        compile project(':demo')
+        implementation project(':main')
+        implementation project(':demo')
     }
 }
