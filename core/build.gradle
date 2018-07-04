@@ -59,7 +59,6 @@ dependencies {
     api config.frescoview
     api config.db.greendao
     api config.db.debug
-    //compile config.db.sqlcipher
     api config.eventbus.eventbus
     annotationProcessor config.eventbus.eventbus_annotationProcessor
     api config.ARouter.api
