@@ -29,6 +29,7 @@ public final class DBOpenHelper extends DaoMaster.OpenHelper {
     public void onUpgrade(Database db, int oldVersion, int newVersion) {
         super.onUpgrade(db, oldVersion, newVersion);
         //DBManager.getInstance().onUpgrade(db);
+        //创建数据库时,不走该函数
         /**
          * * 数据库版本号不能降低,会导致App无法安装(newVersion < oldVersion)
          * 循环数据库版本,更新各版本数据结构差异
