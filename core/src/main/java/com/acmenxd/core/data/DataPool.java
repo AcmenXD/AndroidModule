@@ -7,5 +7,5 @@ package com.acmenxd.core.data;
  * @date 2018/5/23 17:10
  * @detail 数据池
  */
-public class Pool {
+public class DataPool {
 }

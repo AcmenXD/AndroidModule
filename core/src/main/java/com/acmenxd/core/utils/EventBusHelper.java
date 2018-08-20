@@ -1,4 +1,4 @@
-package com.acmenxd.core.base;
+package com.acmenxd.core.utils;
 
 import org.greenrobot.eventbus.EventBus;
 

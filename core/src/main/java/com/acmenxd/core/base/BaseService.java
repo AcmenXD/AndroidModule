@@ -2,6 +2,7 @@ package com.acmenxd.core.base;
 
 import android.support.annotation.CallSuper;
 
+import com.acmenxd.core.utils.EventBusHelper;
 import com.acmenxd.frame.basis.FrameService;
 import com.acmenxd.core.base.impl.IBaseNet;
 import com.acmenxd.core.http.IRequest;

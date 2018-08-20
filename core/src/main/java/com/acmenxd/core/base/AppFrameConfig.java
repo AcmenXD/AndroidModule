@@ -21,7 +21,6 @@ public final class AppFrameConfig extends FrameConfig {
 
         DB_NAME = "test_db";
         BASE_DIR = SDCARD_DIR + "/TestApp/";
-        LOG_DIR = BASE_DIR + "Logger/";
         spAll = new String[]{SP_Cookie, SP_Device, SP_Config, SP_User};
 
         // 请求地址配置 -1:正式版  0->预发布  1->测试1

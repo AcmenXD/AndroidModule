@@ -27,7 +27,6 @@
 -> BaseService     : 继承自FrameService,拓展项目功能
 -> BasePresenter   : 继承自FramePresenter,拓展项目功能
 -> BaseModel       : 继承自FrameModel,拓展项目功能
--> EventBusHelper  : EventBus帮助类
 ```
 ---
 **db**

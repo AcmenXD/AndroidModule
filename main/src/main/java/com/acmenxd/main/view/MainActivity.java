@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.acmenxd.core.base.AppConfig;
 import com.acmenxd.core.base.BaseActivity;
-import com.acmenxd.core.base.EventBusHelper;
+import com.acmenxd.core.utils.EventBusHelper;
 import com.acmenxd.core.data.Constants;
 import com.acmenxd.core.model.response.TestEntity;
 import com.acmenxd.core.utils.RefreshUtils;

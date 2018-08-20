@@ -1,5 +1,6 @@
 package com.acmenxd.core.base;
 
+import com.acmenxd.core.utils.EventBusHelper;
 import com.acmenxd.frame.basis.FramePresenter;
 import com.acmenxd.frame.basis.mvp.IBView;
 import com.acmenxd.core.base.impl.IBaseNet;

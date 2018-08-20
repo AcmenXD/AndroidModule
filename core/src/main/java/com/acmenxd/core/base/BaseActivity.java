@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
 
+import com.acmenxd.core.utils.EventBusHelper;
 import com.acmenxd.frame.basis.FrameActivity;
 import com.acmenxd.core.base.impl.IBaseNet;
 import com.acmenxd.core.http.IRequest;
