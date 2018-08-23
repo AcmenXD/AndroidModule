@@ -16,8 +16,8 @@ public final class AppFrameConfig extends FrameConfig {
     public String SP_User = "spUser";
 
     @Override
-    protected void init(boolean isDebug) {
-        super.init(isDebug);
+    protected void init() {
+        super.init();
 
         DB_NAME = "test_db";
         BASE_DIR = SDCARD_DIR + "/TestApp/";
