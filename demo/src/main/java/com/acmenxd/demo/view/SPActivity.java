@@ -7,12 +7,12 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.acmenxd.core.data.Constants;
-import com.acmenxd.logger.Logger;
-import com.acmenxd.demo.R;
 import com.acmenxd.core.base.AppConfig;
 import com.acmenxd.core.base.BaseActivity;
-import com.acmenxd.core.utils.RefreshUtils;
+import com.acmenxd.core.data.Constants;
+import com.acmenxd.core.utils.TitleUtils;
+import com.acmenxd.demo.R;
+import com.acmenxd.logger.Logger;
 import com.acmenxd.sptool.SpChangeListener;
 import com.acmenxd.sptool.SpManager;
 import com.acmenxd.sptool.SpTool;
@@ -37,7 +37,7 @@ public class SPActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sp);
         setTitleView(R.layout.layout_title);
-        RefreshUtils.initTitleView(getTitleView(), getBundle().getString("title"), new RefreshUtils.OnTitleListener() {
+        TitleUtils.initTitleView(getTitleView(), getBundle().getString("title"), new TitleUtils.OnTitleListener() {
             @Override
             public void onBack() {
                 SPActivity.this.finish();
@@ -80,10 +80,10 @@ public class SPActivity extends BaseActivity {
         spDevice.putString("change2", "test2");
         // 注销监听
         sp.unregisterOnChangeListener(sp_listener1);
-//        sp.unregisterOnChangeListener(sp_listener2);
+        //        sp.unregisterOnChangeListener(sp_listener2);
         sp.unregisterOnChangeListenerAll();
         spDevice.unregisterOnChangeListener(spDevice_listener1);
-//        spDevice.unregisterOnChangeListener(spDevice_listener2);
+        //        spDevice.unregisterOnChangeListener(spDevice_listener2);
         spDevice.unregisterOnChangeListenerAll();
         // ---------------------------------Listener End
         // 初始化数据
@@ -126,6 +126,6 @@ public class SPActivity extends BaseActivity {
         tv.setText("SP读取成功");
         LinearLayout.LayoutParams pa = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         pa.gravity = Gravity.CENTER;
-        ((LinearLayout)getContentView()).addView(tv, pa);
+        ((LinearLayout) getContentView()).addView(tv, pa);
     }
 }

@@ -7,13 +7,13 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.acmenxd.core.data.Constants;
-import com.acmenxd.logger.LogTag;
-import com.acmenxd.logger.Logger;
-import com.acmenxd.demo.R;
 import com.acmenxd.core.base.AppConfig;
 import com.acmenxd.core.base.BaseActivity;
-import com.acmenxd.core.utils.RefreshUtils;
+import com.acmenxd.core.data.Constants;
+import com.acmenxd.core.utils.TitleUtils;
+import com.acmenxd.demo.R;
+import com.acmenxd.logger.LogTag;
+import com.acmenxd.logger.Logger;
 import com.alibaba.android.arouter.facade.annotation.Route;
 
 import java.io.File;
@@ -35,7 +35,7 @@ public class LogActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log);
         setTitleView(R.layout.layout_title);
-        RefreshUtils.initTitleView(getTitleView(), getBundle().getString("title"), new RefreshUtils.OnTitleListener() {
+        TitleUtils.initTitleView(getTitleView(), getBundle().getString("title"), new TitleUtils.OnTitleListener() {
             @Override
             public void onBack() {
                 LogActivity.this.finish();

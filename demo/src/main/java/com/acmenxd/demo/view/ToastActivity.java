@@ -6,10 +6,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 
-import com.acmenxd.core.data.Constants;
-import com.acmenxd.demo.R;
 import com.acmenxd.core.base.BaseActivity;
-import com.acmenxd.core.utils.RefreshUtils;
+import com.acmenxd.core.data.Constants;
+import com.acmenxd.core.utils.TitleUtils;
+import com.acmenxd.demo.R;
 import com.acmenxd.toaster.ToastDuration;
 import com.acmenxd.toaster.ToastNW;
 import com.acmenxd.toaster.Toaster;
@@ -30,7 +30,7 @@ public class ToastActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_toast);
         setTitleView(R.layout.layout_title);
-        RefreshUtils.initTitleView(getTitleView(), getBundle().getString("title"), new RefreshUtils.OnTitleListener() {
+        TitleUtils.initTitleView(getTitleView(), getBundle().getString("title"), new TitleUtils.OnTitleListener() {
             @Override
             public void onBack() {
                 ToastActivity.this.finish();

@@ -15,13 +15,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.acmenxd.core.data.Constants;
-import com.acmenxd.demo.R;
 import com.acmenxd.core.base.BaseActivity;
+import com.acmenxd.core.data.Constants;
 import com.acmenxd.core.db.TestBeanDB;
 import com.acmenxd.core.db.dao.TestBeanDao;
 import com.acmenxd.core.model.db.TestBean;
-import com.acmenxd.core.utils.RefreshUtils;
+import com.acmenxd.core.utils.TitleUtils;
+import com.acmenxd.demo.R;
 import com.alibaba.android.arouter.facade.annotation.Route;
 
 import java.text.SimpleDateFormat;
@@ -52,7 +52,7 @@ public class DBActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_db);
         setTitleView(R.layout.layout_title);
-        RefreshUtils.initTitleView(getTitleView(), getBundle().getString("title"), new RefreshUtils.OnTitleListener() {
+        TitleUtils.initTitleView(getTitleView(), getBundle().getString("title"), new TitleUtils.OnTitleListener() {
             @Override
             public void onBack() {
                 DBActivity.this.finish();

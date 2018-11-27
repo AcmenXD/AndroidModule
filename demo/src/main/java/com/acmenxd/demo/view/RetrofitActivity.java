@@ -8,21 +8,21 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.acmenxd.core.base.BaseActivity;
 import com.acmenxd.core.data.Constants;
+import com.acmenxd.core.model.response.TestEntity;
+import com.acmenxd.core.utils.TitleUtils;
+import com.acmenxd.demo.R;
 import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.frame.utils.RxUtils;
 import com.acmenxd.frame.utils.StringUtils;
 import com.acmenxd.frame.utils.Utils;
 import com.acmenxd.logger.Logger;
-import com.acmenxd.demo.R;
-import com.acmenxd.core.base.BaseActivity;
+import com.acmenxd.retrofit.entity.HttpEntity;
+import com.acmenxd.retrofit.exception.HttpException;
 import com.acmenxd.retrofit.load.IDownloadRequest;
 import com.acmenxd.retrofit.load.IUploadRequest;
 import com.acmenxd.retrofit.load.LoadHelper;
-import com.acmenxd.core.model.response.TestEntity;
-import com.acmenxd.core.utils.RefreshUtils;
-import com.acmenxd.retrofit.entity.HttpEntity;
-import com.acmenxd.retrofit.exception.HttpException;
 import com.acmenxd.toaster.Toaster;
 import com.alibaba.android.arouter.facade.annotation.Route;
 
@@ -52,7 +52,7 @@ public class RetrofitActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retrofit);
         setTitleView(R.layout.layout_title);
-        RefreshUtils.initTitleView(getTitleView(), getBundle().getString("title"), new RefreshUtils.OnTitleListener() {
+        TitleUtils.initTitleView(getTitleView(), getBundle().getString("title"), new TitleUtils.OnTitleListener() {
             @Override
             public void onBack() {
                 RetrofitActivity.this.finish();
@@ -179,7 +179,7 @@ public class RetrofitActivity extends BaseActivity {
      */
     public void downloadClick(View view) {
         request(IDownloadRequest.class).getRx("http://server.jeasonlzy.com/OkHttpUtils/image")
-//        request(IDownloadRequest.class).download("http://10.1.22.49:8080/webDemo/aa")
+                //        request(IDownloadRequest.class).download("http://10.1.22.49:8080/webDemo/aa")
                 .compose(RxUtils.<ResponseBody>applySchedulers())
                 .subscribe(new BindSubscriber<ResponseBody>() {
                     @Override
@@ -187,13 +187,13 @@ public class RetrofitActivity extends BaseActivity {
                         boolean result = LoadHelper.saveDownLoadFile(pData, FileUtils.cacheDirPath + "download.jpg");
                     }
                 });
-//        request(IDownloadRequest.class).download("http://server.jeasonlzy.com/OkHttpUtils/image")
-//                .enqueue(newCallback(new NetCallback<ResponseBody>() {
-//                    @Override
-//                    public void succeed(ResponseBody pData) {
-//                        boolean result = LoadUtils.saveDownLoadFile(pData, FileUtils.cacheDirPath + "download.jpg");
-//                    }
-//                }));
+        //        request(IDownloadRequest.class).download("http://server.jeasonlzy.com/OkHttpUtils/image")
+        //                .enqueue(newCallback(new NetCallback<ResponseBody>() {
+        //                    @Override
+        //                    public void succeed(ResponseBody pData) {
+        //                        boolean result = LoadUtils.saveDownLoadFile(pData, FileUtils.cacheDirPath + "download.jpg");
+        //                    }
+        //                }));
     }
 
     /**
@@ -247,7 +247,7 @@ public class RetrofitActivity extends BaseActivity {
         dataStrs.put("name_key_2", "name_value_2");
         request(IUploadRequest.class)
                 .uploadRx("http://server.jeasonlzy.com/OkHttpUtils/" + "upload", LoadHelper.getUploadFiles(file, file), LoadHelper.getUploadParams(dataStrs))// 第一种方法
-//                .upload("http://server.jeasonlzy.com/OkHttpUtils/" + "upload", LoadHelper.getRequestBody(dataStrs, file, file)) // 第二种方法
+                //                .upload("http://server.jeasonlzy.com/OkHttpUtils/" + "upload", LoadHelper.getRequestBody(dataStrs, file, file)) // 第二种方法
                 .compose(RxUtils.<HttpEntity>applySchedulers())
                 .subscribe(new BindSubscriber<HttpEntity>() {
                     @Override

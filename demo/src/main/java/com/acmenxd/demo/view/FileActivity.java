@@ -7,12 +7,12 @@ import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.acmenxd.core.base.BaseActivity;
 import com.acmenxd.core.data.Constants;
+import com.acmenxd.core.utils.TitleUtils;
+import com.acmenxd.demo.R;
 import com.acmenxd.frame.utils.FileUtils;
 import com.acmenxd.logger.Logger;
-import com.acmenxd.demo.R;
-import com.acmenxd.core.base.BaseActivity;
-import com.acmenxd.core.utils.RefreshUtils;
 import com.alibaba.android.arouter.facade.annotation.Route;
 
 import java.io.File;
@@ -32,7 +32,7 @@ public class FileActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file);
         setTitleView(R.layout.layout_title);
-        RefreshUtils.initTitleView(getTitleView(), getBundle().getString("title"), new RefreshUtils.OnTitleListener() {
+        TitleUtils.initTitleView(getTitleView(), getBundle().getString("title"), new TitleUtils.OnTitleListener() {
             @Override
             public void onBack() {
                 FileActivity.this.finish();
@@ -78,6 +78,6 @@ public class FileActivity extends BaseActivity {
         tv.setText("操作成功");
         LinearLayout.LayoutParams pa = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         pa.gravity = Gravity.CENTER;
-        ((LinearLayout)getContentView()).addView(tv, pa);
+        ((LinearLayout) getContentView()).addView(tv, pa);
     }
 }
