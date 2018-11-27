@@ -38,7 +38,7 @@ public final class BaseApplication extends FrameApplication {
         startTime = System.currentTimeMillis();
 
         // 配置框架设置
-        initFrameSetting(AppFrameConfig.class, AppConfig.DEBUG);
+        initFrameSetting(new AppFrameConfig(AppConfig.DEBUG));
         initBaseSetting();
 
         // 初始化App配置
@@ -93,7 +93,7 @@ public final class BaseApplication extends FrameApplication {
          * * 默认为 开 & Log.VERBOSE
          */
         FrescoManager.LOG_OPEN = AppConfig.DEBUG;
-        FrescoManager.LOG_LEVEL = getConfig().LOG_LEVEL.intValue();
+        FrescoManager.LOG_LEVEL = getFrameConfig().LOG_LEVEL.intValue();
         /**
          * 设置缓存图片的存放路径
          * Environment.getExternalStorageDirectory().getAbsolutePath() + "/FrescoView/"

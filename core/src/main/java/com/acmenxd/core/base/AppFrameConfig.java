@@ -1,6 +1,6 @@
 package com.acmenxd.core.base;
 
-import com.acmenxd.frame.configs.FrameConfig;
+import com.acmenxd.frame.basis.FrameConfig;
 
 /**
  * @author AcmenXD
@@ -15,10 +15,12 @@ public final class AppFrameConfig extends FrameConfig {
     public String SP_Config = "spConfig";
     public String SP_User = "spUser";
 
+    protected AppFrameConfig(boolean isDebug) {
+        super(isDebug);
+    }
+
     @Override
     protected void init() {
-        super.init();
-
         DB_NAME = "test_db";
         BASE_DIR = SDCARD_DIR + "/TestApp/";
         spAll = new String[]{SP_Cookie, SP_Device, SP_Config, SP_User};
